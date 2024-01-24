@@ -1,9 +1,9 @@
 package svc
 
 import (
+	"github.com/iot-synergy/synergy-member-rpc/ent"
+	"github.com/iot-synergy/synergy-member-rpc/internal/config"
 	"github.com/redis/go-redis/v9"
-	"github.com/suyuan32/simple-admin-member-rpc/ent"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/config"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

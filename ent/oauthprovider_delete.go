@@ -8,8 +8,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/predicate"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/predicate"
 )
 
 // OauthProviderDelete is the builder for deleting a OauthProvider entity.

@@ -6,13 +6,13 @@ package server
 import (
 	"context"
 
-	"github.com/suyuan32/simple-admin-member-rpc/internal/logic/base"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/logic/member"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/logic/memberrank"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/logic/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/logic/token"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/base"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/member"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/token"
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 )
 
 type MmsServer struct {

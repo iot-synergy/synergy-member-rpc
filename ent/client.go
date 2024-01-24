@@ -10,16 +10,16 @@ import (
 	"reflect"
 
 	uuid "github.com/gofrs/uuid/v5"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/migrate"
+	"github.com/iot-synergy/synergy-member-rpc/ent/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/member"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/memberrank"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/token"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
+	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 
 	stdsql "database/sql"
 )

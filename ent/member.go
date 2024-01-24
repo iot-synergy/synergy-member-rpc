@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	uuid "github.com/gofrs/uuid/v5"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/member"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
+	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 )
 
 // Member is the model entity for the Member schema.

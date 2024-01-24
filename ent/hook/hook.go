@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent"
+	"github.com/iot-synergy/synergy-member-rpc/ent"
 )
 
 // The MemberFunc type is an adapter to allow the use of ordinary

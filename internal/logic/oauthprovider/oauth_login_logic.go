@@ -2,15 +2,16 @@ package oauthprovider
 
 import (
 	"context"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/utils/dberrorhandler"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
 	"strings"
+
+	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 
 	"golang.org/x/oauth2"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
 
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

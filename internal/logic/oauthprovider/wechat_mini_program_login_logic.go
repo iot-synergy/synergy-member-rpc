@@ -4,17 +4,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/suyuan32/simple-admin-common/i18n"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/utils/dberrorhandler"
-	"github.com/zeromicro/go-zero/core/errorx"
-	"golang.org/x/oauth2"
 	"io"
 	"net/http"
 	"strings"
 
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
+	"github.com/iot-synergy/synergy-common/i18n"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
+	"github.com/zeromicro/go-zero/core/errorx"
+	"golang.org/x/oauth2"
+
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

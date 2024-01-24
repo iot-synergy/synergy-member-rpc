@@ -4,25 +4,26 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/member"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/utils/dberrorhandler"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
 	"io"
 	"net/http"
 	"strings"
 
-	"github.com/suyuan32/simple-admin-common/msg/logmsg"
-	"github.com/suyuan32/simple-admin-common/utils/pointy"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
+	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
+
+	"github.com/iot-synergy/synergy-common/msg/logmsg"
+	"github.com/iot-synergy/synergy-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/errorx"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/iot-synergy/synergy-common/i18n"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/ent"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

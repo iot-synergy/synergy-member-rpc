@@ -2,20 +2,21 @@ package token
 
 import (
 	"context"
-	"github.com/suyuan32/simple-admin-common/config"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/utils/dberrorhandler"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
 	"time"
 
-	"github.com/suyuan32/simple-admin-common/msg/logmsg"
-	"github.com/suyuan32/simple-admin-common/utils/uuidx"
+	"github.com/iot-synergy/synergy-common/config"
+	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
+
+	"github.com/iot-synergy/synergy-common/msg/logmsg"
+	"github.com/iot-synergy/synergy-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/errorx"
 
-	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/iot-synergy/synergy-common/i18n"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent/token"
+	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

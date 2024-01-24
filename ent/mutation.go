@@ -12,11 +12,11 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	uuid "github.com/gofrs/uuid/v5"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/member"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/memberrank"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/predicate"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/token"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
+	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/predicate"
+	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 )
 
 const (

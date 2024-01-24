@@ -1,5 +1,5 @@
-# simple-admin-member-rpc
-The member service of Simple Admin. Simple Admin 的会员服务 (RPC。
+# synergy-member-rpc
+The member service (会员服务) RPC。
 
 # 模块介绍
 

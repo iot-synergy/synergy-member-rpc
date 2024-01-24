@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 )
 
 // MemberRank is the model entity for the MemberRank schema.

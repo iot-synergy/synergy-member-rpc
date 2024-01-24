@@ -6,11 +6,11 @@ import (
 	"time"
 
 	uuid "github.com/gofrs/uuid/v5"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/member"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/memberrank"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/oauthprovider"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/schema"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/token"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
+	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
+	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/schema"
+	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 )
 
 // The init function reads all schema descriptors with runtime code

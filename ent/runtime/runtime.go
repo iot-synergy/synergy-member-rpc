@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/suyuan32/simple-admin-member-rpc/ent/runtime.go
+// The schema-stitching logic is generated in github.com/iot-synergy/synergy-member-rpc/ent/runtime.go
 
 const (
 	Version = "v0.12.5"                                         // Version of ent codegen.

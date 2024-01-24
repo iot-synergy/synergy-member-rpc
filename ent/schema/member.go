@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
@@ -8,9 +10,8 @@ import (
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
-	"time"
 
-	"github.com/suyuan32/simple-admin-common/orm/ent/mixins"
+	"github.com/iot-synergy/synergy-common/orm/ent/mixins"
 )
 
 type Member struct {

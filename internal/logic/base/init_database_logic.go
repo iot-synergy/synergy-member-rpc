@@ -2,18 +2,19 @@ package base
 
 import (
 	"context"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/utils/dberrorhandler"
+
+	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/suyuan32/simple-admin-common/enum/errorcode"
-	"github.com/suyuan32/simple-admin-common/i18n"
-	"github.com/suyuan32/simple-admin-common/msg/logmsg"
-	"github.com/suyuan32/simple-admin-common/utils/encrypt"
+	"github.com/iot-synergy/synergy-common/enum/errorcode"
+	"github.com/iot-synergy/synergy-common/i18n"
+	"github.com/iot-synergy/synergy-common/msg/logmsg"
+	"github.com/iot-synergy/synergy-common/utils/encrypt"
 	"github.com/zeromicro/go-zero/core/errorx"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent"
-	"github.com/suyuan32/simple-admin-member-rpc/internal/svc"
-	"github.com/suyuan32/simple-admin-member-rpc/types/mms"
+	"github.com/iot-synergy/synergy-member-rpc/ent"
+	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
+	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

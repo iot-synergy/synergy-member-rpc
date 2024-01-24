@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/suyuan32/simple-admin-member-rpc/ent"
+	"github.com/iot-synergy/synergy-member-rpc/ent"
 	// required by schema hooks.
-	_ "github.com/suyuan32/simple-admin-member-rpc/ent/runtime"
+	_ "github.com/iot-synergy/synergy-member-rpc/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/suyuan32/simple-admin-member-rpc/ent/migrate"
+	"github.com/iot-synergy/synergy-member-rpc/ent/migrate"
 )
 
 type (
