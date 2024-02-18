@@ -49,7 +49,7 @@ func (Member) Fields() []ent.Field {
 			Annotations(entsql.WithComments(true)),
 		field.Time("expired_at").Optional().
 			Comment("Member expired time | 会员到期时间").
-			Default(time.Date(2099, 1, 1, 0, 0, 0, 0, time.Local)).
+			Default(time.Date(2036, 12, 31, 23, 59, 59, 0, time.Local)).
 			Annotations(entsql.WithComments(true)),
 	}
 }
