@@ -187,6 +187,8 @@ service Mms {
   //  group: member
   rpc createMember(MemberInfo) returns (BaseUUIDResp);
   //  group: member
+  rpc registerMember(MemberInfo) returns (BaseUUIDResp);
+  //  group: member
   rpc updateMember(MemberInfo) returns (BaseResp);
   //  group: member
   rpc getMemberList(MemberListReq) returns (MemberListResp);

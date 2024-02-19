@@ -5,7 +5,6 @@ package server
 
 import (
 	"context"
-
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/base"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/memberrank"
@@ -35,6 +34,11 @@ func (s *MmsServer) InitDatabase(ctx context.Context, in *mms.Empty) (*mms.BaseR
 func (s *MmsServer) CreateMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
 	l := member.NewCreateMemberLogic(ctx, s.svcCtx)
 	return l.CreateMember(in)
+}
+
+func (s *MmsServer) RegisterMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
+	l := member.NewRegisterMemberLogic(ctx, s.svcCtx)
+	return l.RegisterMember(in)
 }
 
 func (s *MmsServer) UpdateMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseResp, error) {
