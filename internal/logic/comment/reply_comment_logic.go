@@ -39,8 +39,8 @@ func (l *ReplyCommentLogic) ReplyComment(in *mms.ReplyInfo) (*mms.BaseResp, erro
 	create := l.svcCtx.DB.Reply.Create().
 		SetCommentID(uint64(in.GetCommentId())).
 		SetReply(in.GetReply()).
-		SetAdminId(0).
-		SetAdminName("管理员")
+		SetAdminId(in.GetAdminId()).
+		SetAdminName(in.GetAdminName())
 
 	save, err := create.Save(l.ctx)
 

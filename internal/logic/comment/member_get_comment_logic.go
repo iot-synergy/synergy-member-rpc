@@ -68,7 +68,7 @@ func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.Com
 			Reply:      &reply.Reply,
 			AdminId:    &reply.AdminId,
 			AdminName:  &reply.AdminName,
-			CreatTime:  &createTime2,
+			CreateTime: &createTime2,
 			UpdateTime: &updateTime2,
 		}
 		replyInfos = append(replyInfos, m)
@@ -79,7 +79,7 @@ func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.Com
 		Title:      &data.Title,
 		Content:    &data.Content,
 		MemberId:   &data.MemberId,
-		CreatTime:  &createTime,
+		CreateTime: &createTime,
 		UpdateTime: &updateTime,
 		Reply:      replyInfos,
 	}, nil

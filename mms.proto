@@ -158,7 +158,7 @@ message commentInfo {
   optional string title = 2;
   optional string content = 3;
   optional string memberId = 4;
-  optional int64 creat_time = 5;
+  optional int64 create_time = 5;
   optional int64 update_time = 6;
   repeated replyInfo reply = 7;
 }
@@ -169,7 +169,7 @@ message replyInfo {
   optional string reply = 3;
   optional int64 adminId = 4;
   optional string adminName = 5;
-  optional int64 creat_time = 6;
+  optional int64 create_time = 6;
   optional int64 update_time = 7;
 }
 
