@@ -9,6 +9,24 @@ import (
 )
 
 var (
+	// CommentsColumns holds the columns for the "comments" table.
+	CommentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUint64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
+		{Name: "title", Type: field.TypeString, Nullable: true, Comment: "标签", Default: "", SchemaType: map[string]string{"mysql": "varchar(256)"}},
+		{Name: "content", Type: field.TypeString, Nullable: true, Comment: "正文", Default: "", SchemaType: map[string]string{"mysql": "varchar(2048)"}},
+		{Name: "member_id", Type: field.TypeString, Comment: "会员id", SchemaType: map[string]string{"mysql": "varchar(64)"}},
+		{Name: "create_time", Type: field.TypeTime, Comment: "发布时间"},
+		{Name: "update_time", Type: field.TypeTime, Comment: "更新时间"},
+		{Name: "is_reply", Type: field.TypeBool, Comment: "是否已回复", Default: false},
+	}
+	// CommentsTable holds the schema information for the "comments" table.
+	CommentsTable = &schema.Table{
+		Name:       "comments",
+		Columns:    CommentsColumns,
+		PrimaryKey: []*schema.Column{CommentsColumns[0]},
+	}
 	// MmsMembersColumns holds the columns for the "mms_members" table.
 	MmsMembersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -95,6 +113,32 @@ var (
 		Columns:    MmsOauthProvidersColumns,
 		PrimaryKey: []*schema.Column{MmsOauthProvidersColumns[0]},
 	}
+	// RepliesColumns holds the columns for the "replies" table.
+	RepliesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUint64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
+		{Name: "reply", Type: field.TypeString, Comment: "回复内容", SchemaType: map[string]string{"mysql": "varchar(2048)"}},
+		{Name: "admin_id", Type: field.TypeInt64, Comment: "管理员id"},
+		{Name: "admin_name", Type: field.TypeString, Comment: "管理员名字", SchemaType: map[string]string{"mysql": "varchar(128)"}},
+		{Name: "create_time", Type: field.TypeTime, Comment: "发布时间"},
+		{Name: "update_time", Type: field.TypeTime, Comment: "更新时间"},
+		{Name: "comment_id", Type: field.TypeUint64, Comment: "评论id"},
+	}
+	// RepliesTable holds the schema information for the "replies" table.
+	RepliesTable = &schema.Table{
+		Name:       "replies",
+		Columns:    RepliesColumns,
+		PrimaryKey: []*schema.Column{RepliesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "replies_comments_replys",
+				Columns:    []*schema.Column{RepliesColumns[8]},
+				RefColumns: []*schema.Column{CommentsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
 	// MmsTokensColumns holds the columns for the "mms_tokens" table.
 	MmsTokensColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -127,9 +171,11 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		CommentsTable,
 		MmsMembersTable,
 		MmsRanksTable,
 		MmsOauthProvidersTable,
+		RepliesTable,
 		MmsTokensTable,
 	}
 )
@@ -145,6 +191,7 @@ func init() {
 	MmsOauthProvidersTable.Annotation = &entsql.Annotation{
 		Table: "mms_oauth_providers",
 	}
+	RepliesTable.ForeignKeys[0].RefTable = CommentsTable
 	MmsTokensTable.Annotation = &entsql.Annotation{
 		Table: "mms_tokens",
 	}

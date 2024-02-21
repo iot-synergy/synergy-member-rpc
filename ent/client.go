@@ -16,12 +16,12 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/reply"
 	"github.com/iot-synergy/synergy-member-rpc/ent/token"
-
-	stdsql "database/sql"
 )
 
 // Client is the client that holds all ent builders.
@@ -29,12 +29,16 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// Comment is the client for interacting with the Comment builders.
+	Comment *CommentClient
 	// Member is the client for interacting with the Member builders.
 	Member *MemberClient
 	// MemberRank is the client for interacting with the MemberRank builders.
 	MemberRank *MemberRankClient
 	// OauthProvider is the client for interacting with the OauthProvider builders.
 	OauthProvider *OauthProviderClient
+	// Reply is the client for interacting with the Reply builders.
+	Reply *ReplyClient
 	// Token is the client for interacting with the Token builders.
 	Token *TokenClient
 }
@@ -48,9 +52,11 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.Comment = NewCommentClient(c.config)
 	c.Member = NewMemberClient(c.config)
 	c.MemberRank = NewMemberRankClient(c.config)
 	c.OauthProvider = NewOauthProviderClient(c.config)
+	c.Reply = NewReplyClient(c.config)
 	c.Token = NewTokenClient(c.config)
 }
 
@@ -144,9 +150,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:           ctx,
 		config:        cfg,
+		Comment:       NewCommentClient(cfg),
 		Member:        NewMemberClient(cfg),
 		MemberRank:    NewMemberRankClient(cfg),
 		OauthProvider: NewOauthProviderClient(cfg),
+		Reply:         NewReplyClient(cfg),
 		Token:         NewTokenClient(cfg),
 	}, nil
 }
@@ -167,9 +175,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:           ctx,
 		config:        cfg,
+		Comment:       NewCommentClient(cfg),
 		Member:        NewMemberClient(cfg),
 		MemberRank:    NewMemberRankClient(cfg),
 		OauthProvider: NewOauthProviderClient(cfg),
+		Reply:         NewReplyClient(cfg),
 		Token:         NewTokenClient(cfg),
 	}, nil
 }
@@ -177,7 +187,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Member.
+//		Comment.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -199,34 +209,189 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Member.Use(hooks...)
-	c.MemberRank.Use(hooks...)
-	c.OauthProvider.Use(hooks...)
-	c.Token.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.Comment, c.Member, c.MemberRank, c.OauthProvider, c.Reply, c.Token,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Member.Intercept(interceptors...)
-	c.MemberRank.Intercept(interceptors...)
-	c.OauthProvider.Intercept(interceptors...)
-	c.Token.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.Comment, c.Member, c.MemberRank, c.OauthProvider, c.Reply, c.Token,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *CommentMutation:
+		return c.Comment.mutate(ctx, m)
 	case *MemberMutation:
 		return c.Member.mutate(ctx, m)
 	case *MemberRankMutation:
 		return c.MemberRank.mutate(ctx, m)
 	case *OauthProviderMutation:
 		return c.OauthProvider.mutate(ctx, m)
+	case *ReplyMutation:
+		return c.Reply.mutate(ctx, m)
 	case *TokenMutation:
 		return c.Token.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
+	}
+}
+
+// CommentClient is a client for the Comment schema.
+type CommentClient struct {
+	config
+}
+
+// NewCommentClient returns a client for the Comment from the given config.
+func NewCommentClient(c config) *CommentClient {
+	return &CommentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `comment.Hooks(f(g(h())))`.
+func (c *CommentClient) Use(hooks ...Hook) {
+	c.hooks.Comment = append(c.hooks.Comment, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `comment.Intercept(f(g(h())))`.
+func (c *CommentClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Comment = append(c.inters.Comment, interceptors...)
+}
+
+// Create returns a builder for creating a Comment entity.
+func (c *CommentClient) Create() *CommentCreate {
+	mutation := newCommentMutation(c.config, OpCreate)
+	return &CommentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Comment entities.
+func (c *CommentClient) CreateBulk(builders ...*CommentCreate) *CommentCreateBulk {
+	return &CommentCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CommentClient) MapCreateBulk(slice any, setFunc func(*CommentCreate, int)) *CommentCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CommentCreateBulk{err: fmt.Errorf("calling to CommentClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CommentCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CommentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Comment.
+func (c *CommentClient) Update() *CommentUpdate {
+	mutation := newCommentMutation(c.config, OpUpdate)
+	return &CommentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CommentClient) UpdateOne(co *Comment) *CommentUpdateOne {
+	mutation := newCommentMutation(c.config, OpUpdateOne, withComment(co))
+	return &CommentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CommentClient) UpdateOneID(id uint64) *CommentUpdateOne {
+	mutation := newCommentMutation(c.config, OpUpdateOne, withCommentID(id))
+	return &CommentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Comment.
+func (c *CommentClient) Delete() *CommentDelete {
+	mutation := newCommentMutation(c.config, OpDelete)
+	return &CommentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CommentClient) DeleteOne(co *Comment) *CommentDeleteOne {
+	return c.DeleteOneID(co.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CommentClient) DeleteOneID(id uint64) *CommentDeleteOne {
+	builder := c.Delete().Where(comment.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CommentDeleteOne{builder}
+}
+
+// Query returns a query builder for Comment.
+func (c *CommentClient) Query() *CommentQuery {
+	return &CommentQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeComment},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Comment entity by its id.
+func (c *CommentClient) Get(ctx context.Context, id uint64) (*Comment, error) {
+	return c.Query().Where(comment.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CommentClient) GetX(ctx context.Context, id uint64) *Comment {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryReplys queries the replys edge of a Comment.
+func (c *CommentClient) QueryReplys(co *Comment) *ReplyQuery {
+	query := (&ReplyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(comment.Table, comment.FieldID, id),
+			sqlgraph.To(reply.Table, reply.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, comment.ReplysTable, comment.ReplysColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CommentClient) Hooks() []Hook {
+	return c.hooks.Comment
+}
+
+// Interceptors returns the client interceptors.
+func (c *CommentClient) Interceptors() []Interceptor {
+	return c.inters.Comment
+}
+
+func (c *CommentClient) mutate(ctx context.Context, m *CommentMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CommentCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CommentUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CommentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CommentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Comment mutation op: %q", m.Op())
 	}
 }
 
@@ -661,6 +826,155 @@ func (c *OauthProviderClient) mutate(ctx context.Context, m *OauthProviderMutati
 	}
 }
 
+// ReplyClient is a client for the Reply schema.
+type ReplyClient struct {
+	config
+}
+
+// NewReplyClient returns a client for the Reply from the given config.
+func NewReplyClient(c config) *ReplyClient {
+	return &ReplyClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `reply.Hooks(f(g(h())))`.
+func (c *ReplyClient) Use(hooks ...Hook) {
+	c.hooks.Reply = append(c.hooks.Reply, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `reply.Intercept(f(g(h())))`.
+func (c *ReplyClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Reply = append(c.inters.Reply, interceptors...)
+}
+
+// Create returns a builder for creating a Reply entity.
+func (c *ReplyClient) Create() *ReplyCreate {
+	mutation := newReplyMutation(c.config, OpCreate)
+	return &ReplyCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Reply entities.
+func (c *ReplyClient) CreateBulk(builders ...*ReplyCreate) *ReplyCreateBulk {
+	return &ReplyCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ReplyClient) MapCreateBulk(slice any, setFunc func(*ReplyCreate, int)) *ReplyCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ReplyCreateBulk{err: fmt.Errorf("calling to ReplyClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ReplyCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ReplyCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Reply.
+func (c *ReplyClient) Update() *ReplyUpdate {
+	mutation := newReplyMutation(c.config, OpUpdate)
+	return &ReplyUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ReplyClient) UpdateOne(r *Reply) *ReplyUpdateOne {
+	mutation := newReplyMutation(c.config, OpUpdateOne, withReply(r))
+	return &ReplyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ReplyClient) UpdateOneID(id uint64) *ReplyUpdateOne {
+	mutation := newReplyMutation(c.config, OpUpdateOne, withReplyID(id))
+	return &ReplyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Reply.
+func (c *ReplyClient) Delete() *ReplyDelete {
+	mutation := newReplyMutation(c.config, OpDelete)
+	return &ReplyDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ReplyClient) DeleteOne(r *Reply) *ReplyDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ReplyClient) DeleteOneID(id uint64) *ReplyDeleteOne {
+	builder := c.Delete().Where(reply.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ReplyDeleteOne{builder}
+}
+
+// Query returns a query builder for Reply.
+func (c *ReplyClient) Query() *ReplyQuery {
+	return &ReplyQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeReply},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Reply entity by its id.
+func (c *ReplyClient) Get(ctx context.Context, id uint64) (*Reply, error) {
+	return c.Query().Where(reply.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ReplyClient) GetX(ctx context.Context, id uint64) *Reply {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryComment queries the comment edge of a Reply.
+func (c *ReplyClient) QueryComment(r *Reply) *CommentQuery {
+	query := (&CommentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(reply.Table, reply.FieldID, id),
+			sqlgraph.To(comment.Table, comment.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, reply.CommentTable, reply.CommentColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ReplyClient) Hooks() []Hook {
+	return c.hooks.Reply
+}
+
+// Interceptors returns the client interceptors.
+func (c *ReplyClient) Interceptors() []Interceptor {
+	return c.inters.Reply
+}
+
+func (c *ReplyClient) mutate(ctx context.Context, m *ReplyMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ReplyCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ReplyUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ReplyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ReplyDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Reply mutation op: %q", m.Op())
+	}
+}
+
 // TokenClient is a client for the Token schema.
 type TokenClient struct {
 	config
@@ -797,33 +1111,9 @@ func (c *TokenClient) mutate(ctx context.Context, m *TokenMutation) (Value, erro
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Member, MemberRank, OauthProvider, Token []ent.Hook
+		Comment, Member, MemberRank, OauthProvider, Reply, Token []ent.Hook
 	}
 	inters struct {
-		Member, MemberRank, OauthProvider, Token []ent.Interceptor
+		Comment, Member, MemberRank, OauthProvider, Reply, Token []ent.Interceptor
 	}
 )
-
-// ExecContext allows calling the underlying ExecContext method of the driver if it is supported by it.
-// See, database/sql#DB.ExecContext for more information.
-func (c *config) ExecContext(ctx context.Context, query string, args ...any) (stdsql.Result, error) {
-	ex, ok := c.driver.(interface {
-		ExecContext(context.Context, string, ...any) (stdsql.Result, error)
-	})
-	if !ok {
-		return nil, fmt.Errorf("Driver.ExecContext is not supported")
-	}
-	return ex.ExecContext(ctx, query, args...)
-}
-
-// QueryContext allows calling the underlying QueryContext method of the driver if it is supported by it.
-// See, database/sql#DB.QueryContext for more information.
-func (c *config) QueryContext(ctx context.Context, query string, args ...any) (*stdsql.Rows, error) {
-	q, ok := c.driver.(interface {
-		QueryContext(context.Context, string, ...any) (*stdsql.Rows, error)
-	})
-	if !ok {
-		return nil, fmt.Errorf("Driver.QueryContext is not supported")
-	}
-	return q.QueryContext(ctx, query, args...)
-}

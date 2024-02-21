@@ -17,6 +17,10 @@ type (
 	BaseResp              = mms.BaseResp
 	BaseUUIDResp          = mms.BaseUUIDResp
 	CallbackReq           = mms.CallbackReq
+	CommentIdReq          = mms.CommentIdReq
+	CommentInfo           = mms.CommentInfo
+	CommentList           = mms.CommentList
+	CommentListReq        = mms.CommentListReq
 	Empty                 = mms.Empty
 	IDReq                 = mms.IDReq
 	IDsReq                = mms.IDsReq
@@ -34,6 +38,7 @@ type (
 	OauthProviderListResp = mms.OauthProviderListResp
 	OauthRedirectResp     = mms.OauthRedirectResp
 	PageInfoReq           = mms.PageInfoReq
+	ReplyInfo             = mms.ReplyInfo
 	TokenInfo             = mms.TokenInfo
 	TokenListReq          = mms.TokenListReq
 	TokenListResp         = mms.TokenListResp
@@ -96,6 +101,18 @@ type (
 		BlockUserAllToken(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error)
 		// group: token
 		UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		// Comment management
+		MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		// group: comment
+		MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+		// group: comment
+		MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+		// group: comment
+		ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		// group: comment
+		AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+		// group: comment
+		AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
 	}
 
 	defaultMms struct {
@@ -269,4 +286,40 @@ func (m *defaultMms) BlockUserAllToken(ctx context.Context, in *UUIDReq, opts ..
 func (m *defaultMms) UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.UpdateToken(ctx, in, opts...)
+}
+
+// Comment management
+func (m *defaultMms) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.MemberComment(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.MemberGetCommentList(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.MemberGetComment(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.ReplyComment(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.AdminGetCommentList(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.AdminGetComment(ctx, in, opts...)
 }

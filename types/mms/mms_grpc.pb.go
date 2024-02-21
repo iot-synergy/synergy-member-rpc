@@ -46,6 +46,12 @@ const (
 	Mms_GetTokenById_FullMethodName           = "/mms.Mms/getTokenById"
 	Mms_BlockUserAllToken_FullMethodName      = "/mms.Mms/blockUserAllToken"
 	Mms_UpdateToken_FullMethodName            = "/mms.Mms/updateToken"
+	Mms_MemberComment_FullMethodName          = "/mms.Mms/memberComment"
+	Mms_MemberGetCommentList_FullMethodName   = "/mms.Mms/memberGetCommentList"
+	Mms_MemberGetComment_FullMethodName       = "/mms.Mms/memberGetComment"
+	Mms_ReplyComment_FullMethodName           = "/mms.Mms/replyComment"
+	Mms_AdminGetCommentList_FullMethodName    = "/mms.Mms/adminGetCommentList"
+	Mms_AdminGetComment_FullMethodName        = "/mms.Mms/adminGetComment"
 )
 
 // MmsClient is the client API for Mms service.
@@ -110,6 +116,19 @@ type MmsClient interface {
 	BlockUserAllToken(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: token
 	UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	// Comment management
+	// group: comment
+	MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	// group: comment
+	MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+	// group: comment
+	MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+	// group: comment
+	ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	// group: comment
+	AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+	// group: comment
+	AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
 }
 
 type mmsClient struct {
@@ -363,6 +382,60 @@ func (c *mmsClient) UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc
 	return out, nil
 }
 
+func (c *mmsClient) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Mms_MemberComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
+	out := new(CommentList)
+	err := c.cc.Invoke(ctx, Mms_MemberGetCommentList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
+	out := new(CommentInfo)
+	err := c.cc.Invoke(ctx, Mms_MemberGetComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Mms_ReplyComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
+	out := new(CommentList)
+	err := c.cc.Invoke(ctx, Mms_AdminGetCommentList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
+	out := new(CommentInfo)
+	err := c.cc.Invoke(ctx, Mms_AdminGetComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MmsServer is the server API for Mms service.
 // All implementations must embed UnimplementedMmsServer
 // for forward compatibility
@@ -425,6 +498,19 @@ type MmsServer interface {
 	BlockUserAllToken(context.Context, *UUIDReq) (*BaseResp, error)
 	// group: token
 	UpdateToken(context.Context, *TokenInfo) (*BaseResp, error)
+	// Comment management
+	// group: comment
+	MemberComment(context.Context, *CommentInfo) (*BaseResp, error)
+	// group: comment
+	MemberGetCommentList(context.Context, *CommentListReq) (*CommentList, error)
+	// group: comment
+	MemberGetComment(context.Context, *CommentIdReq) (*CommentInfo, error)
+	// group: comment
+	ReplyComment(context.Context, *ReplyInfo) (*BaseResp, error)
+	// group: comment
+	AdminGetCommentList(context.Context, *CommentListReq) (*CommentList, error)
+	// group: comment
+	AdminGetComment(context.Context, *CommentIdReq) (*CommentInfo, error)
 	mustEmbedUnimplementedMmsServer()
 }
 
@@ -512,6 +598,24 @@ func (UnimplementedMmsServer) BlockUserAllToken(context.Context, *UUIDReq) (*Bas
 }
 func (UnimplementedMmsServer) UpdateToken(context.Context, *TokenInfo) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateToken not implemented")
+}
+func (UnimplementedMmsServer) MemberComment(context.Context, *CommentInfo) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MemberComment not implemented")
+}
+func (UnimplementedMmsServer) MemberGetCommentList(context.Context, *CommentListReq) (*CommentList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MemberGetCommentList not implemented")
+}
+func (UnimplementedMmsServer) MemberGetComment(context.Context, *CommentIdReq) (*CommentInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MemberGetComment not implemented")
+}
+func (UnimplementedMmsServer) ReplyComment(context.Context, *ReplyInfo) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReplyComment not implemented")
+}
+func (UnimplementedMmsServer) AdminGetCommentList(context.Context, *CommentListReq) (*CommentList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdminGetCommentList not implemented")
+}
+func (UnimplementedMmsServer) AdminGetComment(context.Context, *CommentIdReq) (*CommentInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdminGetComment not implemented")
 }
 func (UnimplementedMmsServer) mustEmbedUnimplementedMmsServer() {}
 
@@ -1012,6 +1116,114 @@ func _Mms_UpdateToken_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mms_MemberComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).MemberComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_MemberComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).MemberComment(ctx, req.(*CommentInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_MemberGetCommentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).MemberGetCommentList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_MemberGetCommentList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).MemberGetCommentList(ctx, req.(*CommentListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_MemberGetComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).MemberGetComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_MemberGetComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).MemberGetComment(ctx, req.(*CommentIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_ReplyComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplyInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).ReplyComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_ReplyComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).ReplyComment(ctx, req.(*ReplyInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_AdminGetCommentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).AdminGetCommentList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_AdminGetCommentList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).AdminGetCommentList(ctx, req.(*CommentListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_AdminGetComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).AdminGetComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_AdminGetComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).AdminGetComment(ctx, req.(*CommentIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mms_ServiceDesc is the grpc.ServiceDesc for Mms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1126,6 +1338,30 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "updateToken",
 			Handler:    _Mms_UpdateToken_Handler,
+		},
+		{
+			MethodName: "memberComment",
+			Handler:    _Mms_MemberComment_Handler,
+		},
+		{
+			MethodName: "memberGetCommentList",
+			Handler:    _Mms_MemberGetCommentList_Handler,
+		},
+		{
+			MethodName: "memberGetComment",
+			Handler:    _Mms_MemberGetComment_Handler,
+		},
+		{
+			MethodName: "replyComment",
+			Handler:    _Mms_ReplyComment_Handler,
+		},
+		{
+			MethodName: "adminGetCommentList",
+			Handler:    _Mms_AdminGetCommentList_Handler,
+		},
+		{
+			MethodName: "adminGetComment",
+			Handler:    _Mms_AdminGetComment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

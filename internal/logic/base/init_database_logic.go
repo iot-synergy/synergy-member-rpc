@@ -59,7 +59,7 @@ func (l *InitDatabaseLogic) InitDatabase(in *mms.Empty) (*mms.BaseResp, error) {
 	}, nil
 }
 
-// insert init member data
+// insert init comment data
 func (l *InitDatabaseLogic) insertMemberData() error {
 	var members []*ent.MemberCreate
 	members = append(members, l.svcCtx.DB.Member.Create().
@@ -82,14 +82,14 @@ func (l *InitDatabaseLogic) insertMemberData() error {
 
 	err := l.svcCtx.DB.Member.CreateBulk(members...).Exec(l.ctx)
 	if err != nil {
-		logx.Errorw("failed to insert member data for initialization", logx.Field("detail", err))
+		logx.Errorw("failed to insert comment data for initialization", logx.Field("detail", err))
 		return dberrorhandler.DefaultEntError(l.Logger, err, nil)
 	} else {
 		return nil
 	}
 }
 
-// insert init member rank data
+// insert init comment rank data
 func (l *InitDatabaseLogic) insertMemberRankData() error {
 	var memberRanks []*ent.MemberRankCreate
 	memberRanks = append(memberRanks, l.svcCtx.DB.MemberRank.Create().
@@ -108,7 +108,7 @@ func (l *InitDatabaseLogic) insertMemberRankData() error {
 
 	err := l.svcCtx.DB.MemberRank.CreateBulk(memberRanks...).Exec(l.ctx)
 	if err != nil {
-		logx.Errorw("failed to insert member rank data for initialization", logx.Field("detail", err))
+		logx.Errorw("failed to insert comment rank data for initialization", logx.Field("detail", err))
 		return dberrorhandler.DefaultEntError(l.Logger, err, nil)
 	} else {
 		return nil
@@ -144,7 +144,7 @@ func (l *InitDatabaseLogic) insertProviderData() error {
 
 	err := l.svcCtx.DB.OauthProvider.CreateBulk(providers...).Exec(l.ctx)
 	if err != nil {
-		logx.Errorw("failed to insert member's oauth provider data for initialization", logx.Field("detail", err))
+		logx.Errorw("failed to insert comment's oauth provider data for initialization", logx.Field("detail", err))
 		return dberrorhandler.DefaultEntError(l.Logger, err, nil)
 	} else {
 		return nil

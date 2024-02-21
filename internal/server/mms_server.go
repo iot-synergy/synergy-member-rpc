@@ -6,10 +6,12 @@ package server
 import (
 	"context"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/base"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/oauthprovider"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/token"
+
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 )
@@ -162,4 +164,40 @@ func (s *MmsServer) BlockUserAllToken(ctx context.Context, in *mms.UUIDReq) (*mm
 func (s *MmsServer) UpdateToken(ctx context.Context, in *mms.TokenInfo) (*mms.BaseResp, error) {
 	l := token.NewUpdateTokenLogic(ctx, s.svcCtx)
 	return l.UpdateToken(in)
+}
+
+// Comment management
+func (s *MmsServer) MemberComment(ctx context.Context, in *mms.CommentInfo) (*mms.BaseResp, error) {
+	l := comment.NewMemberCommentLogic(ctx, s.svcCtx)
+	return l.MemberComment(in)
+}
+
+// group: comment
+func (s *MmsServer) MemberGetCommentList(ctx context.Context, in *mms.CommentListReq) (*mms.CommentList, error) {
+	l := comment.NewMemberGetCommentListLogic(ctx, s.svcCtx)
+	return l.MemberGetCommentList(in)
+}
+
+// group: comment
+func (s *MmsServer) MemberGetComment(ctx context.Context, in *mms.CommentIdReq) (*mms.CommentInfo, error) {
+	l := comment.NewMemberGetCommentLogic(ctx, s.svcCtx)
+	return l.MemberGetComment(in)
+}
+
+// group: comment
+func (s *MmsServer) ReplyComment(ctx context.Context, in *mms.ReplyInfo) (*mms.BaseResp, error) {
+	l := comment.NewReplyCommentLogic(ctx, s.svcCtx)
+	return l.ReplyComment(in)
+}
+
+// group: comment
+func (s *MmsServer) AdminGetCommentList(ctx context.Context, in *mms.CommentListReq) (*mms.CommentList, error) {
+	l := comment.NewAdminGetCommentListLogic(ctx, s.svcCtx)
+	return l.AdminGetCommentList(in)
+}
+
+// group: comment
+func (s *MmsServer) AdminGetComment(ctx context.Context, in *mms.CommentIdReq) (*mms.CommentInfo, error) {
+	l := comment.NewAdminGetCommentLogic(ctx, s.svcCtx)
+	return l.AdminGetComment(in)
 }

@@ -6,6 +6,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// Comment is the predicate function for comment builders.
+type Comment func(*sql.Selector)
+
 // Member is the predicate function for member builders.
 type Member func(*sql.Selector)
 
@@ -14,6 +17,9 @@ type MemberRank func(*sql.Selector)
 
 // OauthProvider is the predicate function for oauthprovider builders.
 type OauthProvider func(*sql.Selector)
+
+// Reply is the predicate function for reply builders.
+type Reply func(*sql.Selector)
 
 // Token is the predicate function for token builders.
 type Token func(*sql.Selector)
