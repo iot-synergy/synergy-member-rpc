@@ -37,6 +37,14 @@ func (l *ReplyCommentLogic) ReplyComment(in *mms.ReplyInfo) (*mms.BaseResp, erro
 		return nil, errors.New("commentId no data")
 	}
 
+	if *in.Reply == "" {
+		return nil, errors.New("reply is null")
+	}
+
+	if len(*in.Reply) > 2048 {
+		return nil, errors.New("content length exceeds 2048")
+	}
+
 	create := l.svcCtx.DB.Reply.Create().
 		SetCommentID(uint64(in.GetCommentId())).
 		SetReply(in.GetReply()).

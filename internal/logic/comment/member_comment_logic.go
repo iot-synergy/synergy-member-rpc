@@ -37,6 +37,10 @@ func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.BaseResp, 
 		return nil, errors.New("title or content is null")
 	}
 
+	if len(*in.Title) > 256 || len(*in.Content) > 2048 {
+		return nil, errors.New("title length exceeds 256 or content length exceeds 2048")
+	}
+
 	query := l.svcCtx.DB.Comment.Create().
 		SetTitle(*in.Title).
 		SetContent(*in.Content).
