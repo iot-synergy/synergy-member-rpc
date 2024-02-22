@@ -9,6 +9,18 @@ import (
 	"github.com/iot-synergy/synergy-member-rpc/ent"
 )
 
+// The CommentFunc type is an adapter to allow the use of ordinary
+// function as Comment mutator.
+type CommentFunc func(context.Context, *ent.CommentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CommentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CommentMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CommentMutation", m)
+}
+
 // The MemberFunc type is an adapter to allow the use of ordinary
 // function as Member mutator.
 type MemberFunc func(context.Context, *ent.MemberMutation) (ent.Value, error)
@@ -43,6 +55,18 @@ func (f OauthProviderFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Valu
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OauthProviderMutation", m)
+}
+
+// The ReplyFunc type is an adapter to allow the use of ordinary
+// function as Reply mutator.
+type ReplyFunc func(context.Context, *ent.ReplyMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ReplyFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ReplyMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ReplyMutation", m)
 }
 
 // The TokenFunc type is an adapter to allow the use of ordinary

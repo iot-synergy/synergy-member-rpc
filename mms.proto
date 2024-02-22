@@ -153,6 +153,50 @@ message TokenInfo {
   optional string username = 9;
 }
 
+message commentInfo {
+  optional int64 id = 1;
+  optional string title = 2;
+  optional string content = 3;
+  optional string memberId = 4;
+  optional int64 create_time = 5;
+  optional int64 update_time = 6;
+  repeated replyInfo reply = 7;
+}
+
+message replyInfo {
+  optional int64 id = 1;
+  optional int64 commentId = 2;
+  optional string reply = 3;
+  optional string adminId = 4;
+  optional string adminName = 5;
+  optional int64 create_time = 6;
+  optional int64 update_time = 7;
+}
+
+message commentList {
+  repeated commentInfo titles = 1;
+}
+
+message replyReq{
+  optional string adminId = 1;
+  optional int64 pageNo = 2;
+  optional int64 pageSize = 3;
+}
+
+message replyList{
+  repeated replyInfo replyList = 1;
+}
+
+message commentListReq {
+  optional int32 isReply = 1;
+  optional int64 pageNo = 2;
+  optional int64 pageSize = 3;
+}
+
+message commentIdReq {
+  optional int64 id = 1;
+}
+
 message IDsReq {
   repeated uint64 ids = 1;
 }
@@ -186,6 +230,8 @@ service Mms {
   //  Member management
   //  group: member
   rpc createMember(MemberInfo) returns (BaseUUIDResp);
+  //  group: member
+  rpc registerMember(MemberInfo) returns (BaseUUIDResp);
   //  group: member
   rpc updateMember(MemberInfo) returns (BaseResp);
   //  group: member
@@ -237,5 +283,20 @@ service Mms {
   rpc blockUserAllToken(UUIDReq) returns (BaseResp);
   //  group: token
   rpc updateToken(TokenInfo) returns (BaseResp);
+  //  Comment management
+  //  group: comment
+  rpc memberComment(commentInfo) returns (BaseResp);
+  //  group: comment
+  rpc memberGetCommentList(commentListReq) returns (commentList);
+  //  group: comment
+  rpc memberGetComment(commentIdReq) returns (commentInfo);
+  //  group: comment
+  rpc replyComment(replyInfo) returns (BaseResp);
+  //  group: comment
+  rpc adminGetCommentList(commentListReq) returns (commentList);
+  //  group: comment
+  rpc adminGetComment(commentIdReq) returns (commentInfo);
+  //  group: comment
+  rpc adminGetReplyList(replyReq) returns (replyList);
 }
 

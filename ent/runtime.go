@@ -6,9 +6,11 @@ import (
 	"time"
 
 	uuid "github.com/gofrs/uuid/v5"
+	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/reply"
 	"github.com/iot-synergy/synergy-member-rpc/ent/schema"
 	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 )
@@ -17,6 +19,45 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	commentMixin := schema.Comment{}.Mixin()
+	commentMixinFields0 := commentMixin[0].Fields()
+	_ = commentMixinFields0
+	commentFields := schema.Comment{}.Fields()
+	_ = commentFields
+	// commentDescCreatedAt is the schema descriptor for created_at field.
+	commentDescCreatedAt := commentMixinFields0[1].Descriptor()
+	// comment.DefaultCreatedAt holds the default value on creation for the created_at field.
+	comment.DefaultCreatedAt = commentDescCreatedAt.Default.(func() time.Time)
+	// commentDescUpdatedAt is the schema descriptor for updated_at field.
+	commentDescUpdatedAt := commentMixinFields0[2].Descriptor()
+	// comment.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	comment.DefaultUpdatedAt = commentDescUpdatedAt.Default.(func() time.Time)
+	// comment.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	comment.UpdateDefaultUpdatedAt = commentDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// commentDescTitle is the schema descriptor for title field.
+	commentDescTitle := commentFields[0].Descriptor()
+	// comment.DefaultTitle holds the default value on creation for the title field.
+	comment.DefaultTitle = commentDescTitle.Default.(string)
+	// commentDescContent is the schema descriptor for content field.
+	commentDescContent := commentFields[1].Descriptor()
+	// comment.DefaultContent holds the default value on creation for the content field.
+	comment.DefaultContent = commentDescContent.Default.(string)
+	// commentDescMemberId is the schema descriptor for memberId field.
+	commentDescMemberId := commentFields[2].Descriptor()
+	// comment.MemberIdValidator is a validator for the "memberId" field. It is called by the builders before save.
+	comment.MemberIdValidator = commentDescMemberId.Validators[0].(func(string) error)
+	// commentDescCreateTime is the schema descriptor for create_time field.
+	commentDescCreateTime := commentFields[3].Descriptor()
+	// comment.DefaultCreateTime holds the default value on creation for the create_time field.
+	comment.DefaultCreateTime = commentDescCreateTime.Default.(time.Time)
+	// commentDescUpdateTime is the schema descriptor for update_time field.
+	commentDescUpdateTime := commentFields[4].Descriptor()
+	// comment.DefaultUpdateTime holds the default value on creation for the update_time field.
+	comment.DefaultUpdateTime = commentDescUpdateTime.Default.(time.Time)
+	// commentDescIsReply is the schema descriptor for is_reply field.
+	commentDescIsReply := commentFields[5].Descriptor()
+	// comment.DefaultIsReply holds the default value on creation for the is_reply field.
+	comment.DefaultIsReply = commentDescIsReply.Default.(bool)
 	memberMixin := schema.Member{}.Mixin()
 	memberMixinFields0 := memberMixin[0].Fields()
 	_ = memberMixinFields0
@@ -84,6 +125,33 @@ func init() {
 	oauthprovider.DefaultUpdatedAt = oauthproviderDescUpdatedAt.Default.(func() time.Time)
 	// oauthprovider.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	oauthprovider.UpdateDefaultUpdatedAt = oauthproviderDescUpdatedAt.UpdateDefault.(func() time.Time)
+	replyMixin := schema.Reply{}.Mixin()
+	replyMixinFields0 := replyMixin[0].Fields()
+	_ = replyMixinFields0
+	replyFields := schema.Reply{}.Fields()
+	_ = replyFields
+	// replyDescCreatedAt is the schema descriptor for created_at field.
+	replyDescCreatedAt := replyMixinFields0[1].Descriptor()
+	// reply.DefaultCreatedAt holds the default value on creation for the created_at field.
+	reply.DefaultCreatedAt = replyDescCreatedAt.Default.(func() time.Time)
+	// replyDescUpdatedAt is the schema descriptor for updated_at field.
+	replyDescUpdatedAt := replyMixinFields0[2].Descriptor()
+	// reply.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	reply.DefaultUpdatedAt = replyDescUpdatedAt.Default.(func() time.Time)
+	// reply.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	reply.UpdateDefaultUpdatedAt = replyDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// replyDescAdminId is the schema descriptor for adminId field.
+	replyDescAdminId := replyFields[2].Descriptor()
+	// reply.AdminIdValidator is a validator for the "adminId" field. It is called by the builders before save.
+	reply.AdminIdValidator = replyDescAdminId.Validators[0].(func(string) error)
+	// replyDescCreateTime is the schema descriptor for create_time field.
+	replyDescCreateTime := replyFields[4].Descriptor()
+	// reply.DefaultCreateTime holds the default value on creation for the create_time field.
+	reply.DefaultCreateTime = replyDescCreateTime.Default.(time.Time)
+	// replyDescUpdateTime is the schema descriptor for update_time field.
+	replyDescUpdateTime := replyFields[5].Descriptor()
+	// reply.DefaultUpdateTime holds the default value on creation for the update_time field.
+	reply.DefaultUpdateTime = replyDescUpdateTime.Default.(time.Time)
 	tokenMixin := schema.Token{}.Mixin()
 	tokenMixinFields0 := tokenMixin[0].Fields()
 	_ = tokenMixinFields0

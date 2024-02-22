@@ -12,9 +12,11 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/reply"
 	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 )
 
@@ -76,9 +78,11 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			comment.Table:       comment.ValidColumn,
 			member.Table:        member.ValidColumn,
 			memberrank.Table:    memberrank.ValidColumn,
 			oauthprovider.Table: oauthprovider.ValidColumn,
+			reply.Table:         reply.ValidColumn,
 			token.Table:         token.ValidColumn,
 		})
 	})
