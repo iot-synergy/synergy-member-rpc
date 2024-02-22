@@ -1,4 +1,4 @@
-FROM golang:1.21-git  as builder
+FROM 892087735811.dkr.ecr.us-east-2.amazonaws.com/public/golang:1.21-gitssh  as builder
 
 ENV GO111MODULE=on
 ENV GOPROXY=https://goproxy.cn
