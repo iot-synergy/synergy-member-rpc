@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/iot-synergy/synergy-common/orm/ent/mixins"
@@ -59,5 +60,11 @@ func (Comment) Mixin() []ent.Mixin {
 func (Comment) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("replys", Reply.Type),
+	}
+}
+
+func (Comment) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "mms_comment"},
 	}
 }

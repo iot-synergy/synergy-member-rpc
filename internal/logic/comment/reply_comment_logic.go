@@ -3,6 +3,7 @@ package comment
 import (
 	"context"
 	"errors"
+	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"strconv"
 	"time"
@@ -49,7 +50,7 @@ func (l *ReplyCommentLogic) ReplyComment(in *mms.ReplyInfo) (*mms.BaseResp, erro
 	}
 
 	if get.IsReply == false {
-		l.svcCtx.DB.Comment.Update().SetUpdateTime(time.Now()).SetIsReply(true).SaveX(l.ctx)
+		l.svcCtx.DB.Comment.Update().SetUpdateTime(time.Now()).SetIsReply(true).Where(comment.ID(get.ID)).SaveX(l.ctx)
 	}
 	return &mms.BaseResp{Msg: strconv.FormatUint(save.ID, 10)}, nil
 }

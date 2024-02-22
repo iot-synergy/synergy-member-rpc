@@ -33,12 +33,12 @@ const (
 	// EdgeReplys holds the string denoting the replys edge name in mutations.
 	EdgeReplys = "replys"
 	// Table holds the table name of the comment in the database.
-	Table = "comments"
+	Table = "mms_comment"
 	// ReplysTable is the table that holds the replys relation/edge.
-	ReplysTable = "replies"
+	ReplysTable = "mms_reply"
 	// ReplysInverseTable is the table name for the Reply entity.
 	// It exists in this package in order to avoid circular dependency with the "reply" package.
-	ReplysInverseTable = "replies"
+	ReplysInverseTable = "mms_reply"
 	// ReplysColumn is the table column denoting the replys relation/edge.
 	ReplysColumn = "comment_id"
 )

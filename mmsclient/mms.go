@@ -39,6 +39,8 @@ type (
 	OauthRedirectResp     = mms.OauthRedirectResp
 	PageInfoReq           = mms.PageInfoReq
 	ReplyInfo             = mms.ReplyInfo
+	ReplyList             = mms.ReplyList
+	ReplyReq              = mms.ReplyReq
 	TokenInfo             = mms.TokenInfo
 	TokenListReq          = mms.TokenListReq
 	TokenListResp         = mms.TokenListResp
@@ -113,6 +115,8 @@ type (
 		AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
 		// group: comment
 		AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+		// group: comment
+		AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
 	}
 
 	defaultMms struct {
@@ -322,4 +326,10 @@ func (m *defaultMms) AdminGetCommentList(ctx context.Context, in *CommentListReq
 func (m *defaultMms) AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.AdminGetComment(ctx, in, opts...)
+}
+
+// group: comment
+func (m *defaultMms) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.AdminGetReplyList(ctx, in, opts...)
 }

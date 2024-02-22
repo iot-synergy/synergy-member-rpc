@@ -62,8 +62,8 @@ func (rc *ReplyCreate) SetReply(s string) *ReplyCreate {
 }
 
 // SetAdminId sets the "adminId" field.
-func (rc *ReplyCreate) SetAdminId(i int64) *ReplyCreate {
-	rc.mutation.SetAdminId(i)
+func (rc *ReplyCreate) SetAdminId(s string) *ReplyCreate {
+	rc.mutation.SetAdminId(s)
 	return rc
 }
 
@@ -182,6 +182,11 @@ func (rc *ReplyCreate) check() error {
 	if _, ok := rc.mutation.AdminId(); !ok {
 		return &ValidationError{Name: "adminId", err: errors.New(`ent: missing required field "Reply.adminId"`)}
 	}
+	if v, ok := rc.mutation.AdminId(); ok {
+		if err := reply.AdminIdValidator(v); err != nil {
+			return &ValidationError{Name: "adminId", err: fmt.Errorf(`ent: validator failed for field "Reply.adminId": %w`, err)}
+		}
+	}
 	if _, ok := rc.mutation.AdminName(); !ok {
 		return &ValidationError{Name: "adminName", err: errors.New(`ent: missing required field "Reply.adminName"`)}
 	}
@@ -239,7 +244,7 @@ func (rc *ReplyCreate) createSpec() (*Reply, *sqlgraph.CreateSpec) {
 		_node.Reply = value
 	}
 	if value, ok := rc.mutation.AdminId(); ok {
-		_spec.SetField(reply.FieldAdminId, field.TypeInt64, value)
+		_spec.SetField(reply.FieldAdminId, field.TypeString, value)
 		_node.AdminId = value
 	}
 	if value, ok := rc.mutation.AdminName(); ok {

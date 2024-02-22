@@ -52,6 +52,7 @@ const (
 	Mms_ReplyComment_FullMethodName           = "/mms.Mms/replyComment"
 	Mms_AdminGetCommentList_FullMethodName    = "/mms.Mms/adminGetCommentList"
 	Mms_AdminGetComment_FullMethodName        = "/mms.Mms/adminGetComment"
+	Mms_AdminGetReplyList_FullMethodName      = "/mms.Mms/adminGetReplyList"
 )
 
 // MmsClient is the client API for Mms service.
@@ -129,6 +130,8 @@ type MmsClient interface {
 	AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
 	// group: comment
 	AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+	// group: comment
+	AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
 }
 
 type mmsClient struct {
@@ -436,6 +439,15 @@ func (c *mmsClient) AdminGetComment(ctx context.Context, in *CommentIdReq, opts 
 	return out, nil
 }
 
+func (c *mmsClient) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error) {
+	out := new(ReplyList)
+	err := c.cc.Invoke(ctx, Mms_AdminGetReplyList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MmsServer is the server API for Mms service.
 // All implementations must embed UnimplementedMmsServer
 // for forward compatibility
@@ -511,6 +523,8 @@ type MmsServer interface {
 	AdminGetCommentList(context.Context, *CommentListReq) (*CommentList, error)
 	// group: comment
 	AdminGetComment(context.Context, *CommentIdReq) (*CommentInfo, error)
+	// group: comment
+	AdminGetReplyList(context.Context, *ReplyReq) (*ReplyList, error)
 	mustEmbedUnimplementedMmsServer()
 }
 
@@ -616,6 +630,9 @@ func (UnimplementedMmsServer) AdminGetCommentList(context.Context, *CommentListR
 }
 func (UnimplementedMmsServer) AdminGetComment(context.Context, *CommentIdReq) (*CommentInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminGetComment not implemented")
+}
+func (UnimplementedMmsServer) AdminGetReplyList(context.Context, *ReplyReq) (*ReplyList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdminGetReplyList not implemented")
 }
 func (UnimplementedMmsServer) mustEmbedUnimplementedMmsServer() {}
 
@@ -1224,6 +1241,24 @@ func _Mms_AdminGetComment_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mms_AdminGetReplyList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).AdminGetReplyList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_AdminGetReplyList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).AdminGetReplyList(ctx, req.(*ReplyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mms_ServiceDesc is the grpc.ServiceDesc for Mms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1362,6 +1397,10 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "adminGetComment",
 			Handler:    _Mms_AdminGetComment_Handler,
+		},
+		{
+			MethodName: "adminGetReplyList",
+			Handler:    _Mms_AdminGetReplyList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

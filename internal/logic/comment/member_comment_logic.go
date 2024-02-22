@@ -32,6 +32,11 @@ func NewMemberCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Mem
 // Comment management
 func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.BaseResp, error) {
 	// todo: add your logic here and delete this line
+
+	if *in.Title == "" || *in.Content == "" {
+		return nil, errors.New("title or content is null")
+	}
+
 	query := l.svcCtx.DB.Comment.Create().
 		SetTitle(*in.Title).
 		SetContent(*in.Content).

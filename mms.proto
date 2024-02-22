@@ -167,7 +167,7 @@ message replyInfo {
   optional int64 id = 1;
   optional int64 commentId = 2;
   optional string reply = 3;
-  optional int64 adminId = 4;
+  optional string adminId = 4;
   optional string adminName = 5;
   optional int64 create_time = 6;
   optional int64 update_time = 7;
@@ -175,6 +175,16 @@ message replyInfo {
 
 message commentList {
   repeated commentInfo titles = 1;
+}
+
+message replyReq{
+  optional string adminId = 1;
+  optional int64 pageNo = 2;
+  optional int64 pageSize = 3;
+}
+
+message replyList{
+  repeated replyInfo replyList = 1;
 }
 
 message commentListReq {
@@ -286,5 +296,7 @@ service Mms {
   rpc adminGetCommentList(commentListReq) returns (commentList);
   //  group: comment
   rpc adminGetComment(commentIdReq) returns (commentInfo);
+  //  group: comment
+  rpc adminGetReplyList(replyReq) returns (replyList);
 }
 

@@ -64,23 +64,16 @@ func (ru *ReplyUpdate) SetNillableReply(s *string) *ReplyUpdate {
 }
 
 // SetAdminId sets the "adminId" field.
-func (ru *ReplyUpdate) SetAdminId(i int64) *ReplyUpdate {
-	ru.mutation.ResetAdminId()
-	ru.mutation.SetAdminId(i)
+func (ru *ReplyUpdate) SetAdminId(s string) *ReplyUpdate {
+	ru.mutation.SetAdminId(s)
 	return ru
 }
 
 // SetNillableAdminId sets the "adminId" field if the given value is not nil.
-func (ru *ReplyUpdate) SetNillableAdminId(i *int64) *ReplyUpdate {
-	if i != nil {
-		ru.SetAdminId(*i)
+func (ru *ReplyUpdate) SetNillableAdminId(s *string) *ReplyUpdate {
+	if s != nil {
+		ru.SetAdminId(*s)
 	}
-	return ru
-}
-
-// AddAdminId adds i to the "adminId" field.
-func (ru *ReplyUpdate) AddAdminId(i int64) *ReplyUpdate {
-	ru.mutation.AddAdminId(i)
 	return ru
 }
 
@@ -180,6 +173,11 @@ func (ru *ReplyUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ru *ReplyUpdate) check() error {
+	if v, ok := ru.mutation.AdminId(); ok {
+		if err := reply.AdminIdValidator(v); err != nil {
+			return &ValidationError{Name: "adminId", err: fmt.Errorf(`ent: validator failed for field "Reply.adminId": %w`, err)}
+		}
+	}
 	if _, ok := ru.mutation.CommentID(); ru.mutation.CommentCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Reply.comment"`)
 	}
@@ -205,10 +203,7 @@ func (ru *ReplyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(reply.FieldReply, field.TypeString, value)
 	}
 	if value, ok := ru.mutation.AdminId(); ok {
-		_spec.SetField(reply.FieldAdminId, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedAdminId(); ok {
-		_spec.AddField(reply.FieldAdminId, field.TypeInt64, value)
+		_spec.SetField(reply.FieldAdminId, field.TypeString, value)
 	}
 	if value, ok := ru.mutation.AdminName(); ok {
 		_spec.SetField(reply.FieldAdminName, field.TypeString, value)
@@ -303,23 +298,16 @@ func (ruo *ReplyUpdateOne) SetNillableReply(s *string) *ReplyUpdateOne {
 }
 
 // SetAdminId sets the "adminId" field.
-func (ruo *ReplyUpdateOne) SetAdminId(i int64) *ReplyUpdateOne {
-	ruo.mutation.ResetAdminId()
-	ruo.mutation.SetAdminId(i)
+func (ruo *ReplyUpdateOne) SetAdminId(s string) *ReplyUpdateOne {
+	ruo.mutation.SetAdminId(s)
 	return ruo
 }
 
 // SetNillableAdminId sets the "adminId" field if the given value is not nil.
-func (ruo *ReplyUpdateOne) SetNillableAdminId(i *int64) *ReplyUpdateOne {
-	if i != nil {
-		ruo.SetAdminId(*i)
+func (ruo *ReplyUpdateOne) SetNillableAdminId(s *string) *ReplyUpdateOne {
+	if s != nil {
+		ruo.SetAdminId(*s)
 	}
-	return ruo
-}
-
-// AddAdminId adds i to the "adminId" field.
-func (ruo *ReplyUpdateOne) AddAdminId(i int64) *ReplyUpdateOne {
-	ruo.mutation.AddAdminId(i)
 	return ruo
 }
 
@@ -432,6 +420,11 @@ func (ruo *ReplyUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ruo *ReplyUpdateOne) check() error {
+	if v, ok := ruo.mutation.AdminId(); ok {
+		if err := reply.AdminIdValidator(v); err != nil {
+			return &ValidationError{Name: "adminId", err: fmt.Errorf(`ent: validator failed for field "Reply.adminId": %w`, err)}
+		}
+	}
 	if _, ok := ruo.mutation.CommentID(); ruo.mutation.CommentCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Reply.comment"`)
 	}
@@ -474,10 +467,7 @@ func (ruo *ReplyUpdateOne) sqlSave(ctx context.Context) (_node *Reply, err error
 		_spec.SetField(reply.FieldReply, field.TypeString, value)
 	}
 	if value, ok := ruo.mutation.AdminId(); ok {
-		_spec.SetField(reply.FieldAdminId, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedAdminId(); ok {
-		_spec.AddField(reply.FieldAdminId, field.TypeInt64, value)
+		_spec.SetField(reply.FieldAdminId, field.TypeString, value)
 	}
 	if value, ok := ruo.mutation.AdminName(); ok {
 		_spec.SetField(reply.FieldAdminName, field.TypeString, value)

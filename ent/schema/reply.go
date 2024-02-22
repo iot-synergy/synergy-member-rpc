@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/iot-synergy/synergy-common/orm/ent/mixins"
@@ -25,7 +26,8 @@ func (Reply) Fields() []ent.Field {
 			SchemaType(map[string]string{dialect.MySQL: "varchar(2048)"}).
 			Comment("回复内容").
 			Annotations(entsql.WithComments(true)),
-		field.Int64("adminId").
+		field.String("adminId").NotEmpty().
+			SchemaType(map[string]string{dialect.MySQL: "varchar(64)"}).
 			Comment("管理员id").
 			Annotations(entsql.WithComments(true)),
 		field.String("adminName").
@@ -57,5 +59,11 @@ func (Reply) Edges() []ent.Edge {
 			Unique().
 			Field("comment_id").
 			Required(),
+	}
+}
+
+func (Reply) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "mms_reply"},
 	}
 }

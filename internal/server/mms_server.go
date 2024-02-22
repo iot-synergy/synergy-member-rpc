@@ -201,3 +201,8 @@ func (s *MmsServer) AdminGetComment(ctx context.Context, in *mms.CommentIdReq) (
 	l := comment.NewAdminGetCommentLogic(ctx, s.svcCtx)
 	return l.AdminGetComment(in)
 }
+// group: comment
+func (s *MmsServer) AdminGetReplyList(ctx context.Context, in *mms.ReplyReq) (*mms.ReplyList, error) {
+	l := comment.NewAdminGetReplyListLogic(ctx, s.svcCtx)
+	return l.AdminGetReplyList(in)
+}

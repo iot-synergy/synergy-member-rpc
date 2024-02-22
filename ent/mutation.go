@@ -3660,8 +3660,7 @@ type ReplyMutation struct {
 	created_at     *time.Time
 	updated_at     *time.Time
 	reply          *string
-	adminId        *int64
-	addadminId     *int64
+	adminId        *string
 	adminName      *string
 	create_time    *time.Time
 	update_time    *time.Time
@@ -3922,13 +3921,12 @@ func (m *ReplyMutation) ResetReply() {
 }
 
 // SetAdminId sets the "adminId" field.
-func (m *ReplyMutation) SetAdminId(i int64) {
-	m.adminId = &i
-	m.addadminId = nil
+func (m *ReplyMutation) SetAdminId(s string) {
+	m.adminId = &s
 }
 
 // AdminId returns the value of the "adminId" field in the mutation.
-func (m *ReplyMutation) AdminId() (r int64, exists bool) {
+func (m *ReplyMutation) AdminId() (r string, exists bool) {
 	v := m.adminId
 	if v == nil {
 		return
@@ -3939,7 +3937,7 @@ func (m *ReplyMutation) AdminId() (r int64, exists bool) {
 // OldAdminId returns the old "adminId" field's value of the Reply entity.
 // If the Reply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ReplyMutation) OldAdminId(ctx context.Context) (v int64, err error) {
+func (m *ReplyMutation) OldAdminId(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldAdminId is only allowed on UpdateOne operations")
 	}
@@ -3953,28 +3951,9 @@ func (m *ReplyMutation) OldAdminId(ctx context.Context) (v int64, err error) {
 	return oldValue.AdminId, nil
 }
 
-// AddAdminId adds i to the "adminId" field.
-func (m *ReplyMutation) AddAdminId(i int64) {
-	if m.addadminId != nil {
-		*m.addadminId += i
-	} else {
-		m.addadminId = &i
-	}
-}
-
-// AddedAdminId returns the value that was added to the "adminId" field in this mutation.
-func (m *ReplyMutation) AddedAdminId() (r int64, exists bool) {
-	v := m.addadminId
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetAdminId resets all changes to the "adminId" field.
 func (m *ReplyMutation) ResetAdminId() {
 	m.adminId = nil
-	m.addadminId = nil
 }
 
 // SetAdminName sets the "adminName" field.
@@ -4258,7 +4237,7 @@ func (m *ReplyMutation) SetField(name string, value ent.Value) error {
 		m.SetReply(v)
 		return nil
 	case reply.FieldAdminId:
-		v, ok := value.(int64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4293,9 +4272,6 @@ func (m *ReplyMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *ReplyMutation) AddedFields() []string {
 	var fields []string
-	if m.addadminId != nil {
-		fields = append(fields, reply.FieldAdminId)
-	}
 	return fields
 }
 
@@ -4304,8 +4280,6 @@ func (m *ReplyMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *ReplyMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case reply.FieldAdminId:
-		return m.AddedAdminId()
 	}
 	return nil, false
 }
@@ -4315,13 +4289,6 @@ func (m *ReplyMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *ReplyMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case reply.FieldAdminId:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAdminId(v)
-		return nil
 	}
 	return fmt.Errorf("unknown Reply numeric field %s", name)
 }

@@ -27,7 +27,7 @@ type Reply struct {
 	// 回复内容
 	Reply string `json:"reply,omitempty"`
 	// 管理员id
-	AdminId int64 `json:"adminId,omitempty"`
+	AdminId string `json:"adminId,omitempty"`
 	// 管理员名字
 	AdminName string `json:"adminName,omitempty"`
 	// 发布时间
@@ -67,9 +67,9 @@ func (*Reply) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case reply.FieldID, reply.FieldCommentID, reply.FieldAdminId:
+		case reply.FieldID, reply.FieldCommentID:
 			values[i] = new(sql.NullInt64)
-		case reply.FieldReply, reply.FieldAdminName:
+		case reply.FieldReply, reply.FieldAdminId, reply.FieldAdminName:
 			values[i] = new(sql.NullString)
 		case reply.FieldCreatedAt, reply.FieldUpdatedAt, reply.FieldCreateTime, reply.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -119,10 +119,10 @@ func (r *Reply) assignValues(columns []string, values []any) error {
 				r.Reply = value.String
 			}
 		case reply.FieldAdminId:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field adminId", values[i])
 			} else if value.Valid {
-				r.AdminId = value.Int64
+				r.AdminId = value.String
 			}
 		case reply.FieldAdminName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -196,7 +196,7 @@ func (r *Reply) String() string {
 	builder.WriteString(r.Reply)
 	builder.WriteString(", ")
 	builder.WriteString("adminId=")
-	builder.WriteString(fmt.Sprintf("%v", r.AdminId))
+	builder.WriteString(r.AdminId)
 	builder.WriteString(", ")
 	builder.WriteString("adminName=")
 	builder.WriteString(r.AdminName)

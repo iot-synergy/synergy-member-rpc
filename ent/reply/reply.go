@@ -33,12 +33,12 @@ const (
 	// EdgeComment holds the string denoting the comment edge name in mutations.
 	EdgeComment = "comment"
 	// Table holds the table name of the reply in the database.
-	Table = "replies"
+	Table = "mms_reply"
 	// CommentTable is the table that holds the comment relation/edge.
-	CommentTable = "replies"
+	CommentTable = "mms_reply"
 	// CommentInverseTable is the table name for the Comment entity.
 	// It exists in this package in order to avoid circular dependency with the "comment" package.
-	CommentInverseTable = "comments"
+	CommentInverseTable = "mms_comment"
 	// CommentColumn is the table column denoting the comment relation/edge.
 	CommentColumn = "comment_id"
 )
@@ -73,6 +73,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// AdminIdValidator is a validator for the "adminId" field. It is called by the builders before save.
+	AdminIdValidator func(string) error
 	// DefaultCreateTime holds the default value on creation for the "create_time" field.
 	DefaultCreateTime time.Time
 	// DefaultUpdateTime holds the default value on creation for the "update_time" field.

@@ -140,6 +140,10 @@ func init() {
 	reply.DefaultUpdatedAt = replyDescUpdatedAt.Default.(func() time.Time)
 	// reply.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	reply.UpdateDefaultUpdatedAt = replyDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// replyDescAdminId is the schema descriptor for adminId field.
+	replyDescAdminId := replyFields[2].Descriptor()
+	// reply.AdminIdValidator is a validator for the "adminId" field. It is called by the builders before save.
+	reply.AdminIdValidator = replyDescAdminId.Validators[0].(func(string) error)
 	// replyDescCreateTime is the schema descriptor for create_time field.
 	replyDescCreateTime := replyFields[4].Descriptor()
 	// reply.DefaultCreateTime holds the default value on creation for the create_time field.

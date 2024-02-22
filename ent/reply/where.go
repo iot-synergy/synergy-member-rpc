@@ -76,7 +76,7 @@ func Reply(v string) predicate.Reply {
 }
 
 // AdminId applies equality check predicate on the "adminId" field. It's identical to AdminIdEQ.
-func AdminId(v int64) predicate.Reply {
+func AdminId(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldEQ(FieldAdminId, v))
 }
 
@@ -261,43 +261,68 @@ func ReplyContainsFold(v string) predicate.Reply {
 }
 
 // AdminIdEQ applies the EQ predicate on the "adminId" field.
-func AdminIdEQ(v int64) predicate.Reply {
+func AdminIdEQ(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldEQ(FieldAdminId, v))
 }
 
 // AdminIdNEQ applies the NEQ predicate on the "adminId" field.
-func AdminIdNEQ(v int64) predicate.Reply {
+func AdminIdNEQ(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldNEQ(FieldAdminId, v))
 }
 
 // AdminIdIn applies the In predicate on the "adminId" field.
-func AdminIdIn(vs ...int64) predicate.Reply {
+func AdminIdIn(vs ...string) predicate.Reply {
 	return predicate.Reply(sql.FieldIn(FieldAdminId, vs...))
 }
 
 // AdminIdNotIn applies the NotIn predicate on the "adminId" field.
-func AdminIdNotIn(vs ...int64) predicate.Reply {
+func AdminIdNotIn(vs ...string) predicate.Reply {
 	return predicate.Reply(sql.FieldNotIn(FieldAdminId, vs...))
 }
 
 // AdminIdGT applies the GT predicate on the "adminId" field.
-func AdminIdGT(v int64) predicate.Reply {
+func AdminIdGT(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldGT(FieldAdminId, v))
 }
 
 // AdminIdGTE applies the GTE predicate on the "adminId" field.
-func AdminIdGTE(v int64) predicate.Reply {
+func AdminIdGTE(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldGTE(FieldAdminId, v))
 }
 
 // AdminIdLT applies the LT predicate on the "adminId" field.
-func AdminIdLT(v int64) predicate.Reply {
+func AdminIdLT(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldLT(FieldAdminId, v))
 }
 
 // AdminIdLTE applies the LTE predicate on the "adminId" field.
-func AdminIdLTE(v int64) predicate.Reply {
+func AdminIdLTE(v string) predicate.Reply {
 	return predicate.Reply(sql.FieldLTE(FieldAdminId, v))
+}
+
+// AdminIdContains applies the Contains predicate on the "adminId" field.
+func AdminIdContains(v string) predicate.Reply {
+	return predicate.Reply(sql.FieldContains(FieldAdminId, v))
+}
+
+// AdminIdHasPrefix applies the HasPrefix predicate on the "adminId" field.
+func AdminIdHasPrefix(v string) predicate.Reply {
+	return predicate.Reply(sql.FieldHasPrefix(FieldAdminId, v))
+}
+
+// AdminIdHasSuffix applies the HasSuffix predicate on the "adminId" field.
+func AdminIdHasSuffix(v string) predicate.Reply {
+	return predicate.Reply(sql.FieldHasSuffix(FieldAdminId, v))
+}
+
+// AdminIdEqualFold applies the EqualFold predicate on the "adminId" field.
+func AdminIdEqualFold(v string) predicate.Reply {
+	return predicate.Reply(sql.FieldEqualFold(FieldAdminId, v))
+}
+
+// AdminIdContainsFold applies the ContainsFold predicate on the "adminId" field.
+func AdminIdContainsFold(v string) predicate.Reply {
+	return predicate.Reply(sql.FieldContainsFold(FieldAdminId, v))
 }
 
 // AdminNameEQ applies the EQ predicate on the "adminName" field.
