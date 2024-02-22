@@ -9,8 +9,8 @@ WORKDIR /app
 ENV PROJECT=${PROJECT}
 ENV CONFIG_FILE=${CONFIG_FILE}
 
-COPY --from=builder ./mms-rpc ./
-COPY --from=builder ./etc/${CONFIG_FILE} ./etc/
+COPY ./mms-rpc ./
+COPY ./etc/${CONFIG_FILE} ./etc/
 
 EXPOSE 9104
 
