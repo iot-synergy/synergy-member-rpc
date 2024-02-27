@@ -68,6 +68,11 @@ func (s *MmsServer) GetMemberByUsername(ctx context.Context, in *mms.UsernameReq
 	return l.GetMemberByUsername(in)
 }
 
+func (s *MmsServer) UpdateMember2(ctx context.Context, in *mms.MemberInfo) (*mms.BaseResp, error) {
+	l := member.NewUpdateMember2Logic(ctx, s.svcCtx)
+	return l.UpdateMember2(in)
+}
+
 // MemberRank management
 func (s *MmsServer) CreateMemberRank(ctx context.Context, in *mms.MemberRankInfo) (*mms.BaseIDResp, error) {
 	l := memberrank.NewCreateMemberRankLogic(ctx, s.svcCtx)
