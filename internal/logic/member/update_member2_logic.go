@@ -44,7 +44,9 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.BaseResp, e
 
 	query := l.svcCtx.DB.Member.UpdateOneID(uid).
 		SetNotNilNickname(in.Nickname).
-		SetNotNilAvatar(in.Avatar)
+		SetNotNilAvatar(in.Avatar).
+		SetNotNilMobile(in.Mobile).
+		SetNotNilEmail(in.Email)
 
 	err = query.Exec(l.ctx)
 

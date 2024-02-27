@@ -66,6 +66,8 @@ type (
 		// group: member
 		GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		// group: member
+		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error)
+		// group: member
 		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// MemberRank management
 		CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
@@ -178,6 +180,12 @@ func (m *defaultMms) GetMemberById(ctx context.Context, in *UUIDReq, opts ...grp
 func (m *defaultMms) GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.GetMemberByUsername(ctx, in, opts...)
+}
+
+// group: member
+func (m *defaultMms) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.GetMember(ctx, in, opts...)
 }
 
 // group: member

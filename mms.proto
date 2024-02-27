@@ -243,6 +243,8 @@ service Mms {
   //  group: member
   rpc getMemberByUsername(UsernameReq) returns (MemberInfo);
   //  group: member
+  rpc getMember(Empty) returns(MemberInfo);
+  //  group: member
   rpc updateMember2(MemberInfo) returns (BaseResp);
   //  MemberRank management
   //  group: memberrank
