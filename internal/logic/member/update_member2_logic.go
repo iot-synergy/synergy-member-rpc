@@ -43,6 +43,11 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.BaseResp, e
 		return nil, errors.New("nickname length more 255 or avatar length more 512")
 	}
 
+	//校验昵称的唯一性
+	if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
+		return nil, errors.New("nickname already exists")
+	}
+
 	query := l.svcCtx.DB.Member.Update().Where(member.ForeinIDEQ(forein_id)).
 		SetNotNilNickname(in.Nickname).
 		SetNotNilAvatar(in.Avatar).
