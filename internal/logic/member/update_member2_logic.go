@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/gofrs/uuid/v5"
 	"github.com/iot-synergy/synergy-common/i18n"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"google.golang.org/grpc/metadata"
 	"strings"
@@ -40,6 +41,10 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.BaseResp, e
 
 	if len(in.GetNickname()) > 255 || len(in.GetAvatar()) > 512 {
 		return nil, errors.New("nickname length more 255 or avatar length more 512")
+	}
+
+	if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
+		return nil, errors.New("nickname already exists")
 	}
 
 	query := l.svcCtx.DB.Member.UpdateOneID(uid).
