@@ -65,6 +65,10 @@ type (
 		GetMemberById(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		// group: member
 		GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
+		// group: member
+		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error)
+		// group: member
+		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// MemberRank management
 		CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
 		// group: memberrank
@@ -176,6 +180,18 @@ func (m *defaultMms) GetMemberById(ctx context.Context, in *UUIDReq, opts ...grp
 func (m *defaultMms) GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.GetMemberByUsername(ctx, in, opts...)
+}
+
+// group: member
+func (m *defaultMms) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.GetMember(ctx, in, opts...)
+}
+
+// group: member
+func (m *defaultMms) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.UpdateMember2(ctx, in, opts...)
 }
 
 // MemberRank management

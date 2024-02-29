@@ -27,6 +27,8 @@ const (
 	Mms_DeleteMember_FullMethodName           = "/mms.Mms/deleteMember"
 	Mms_GetMemberById_FullMethodName          = "/mms.Mms/getMemberById"
 	Mms_GetMemberByUsername_FullMethodName    = "/mms.Mms/getMemberByUsername"
+	Mms_GetMember_FullMethodName              = "/mms.Mms/getMember"
+	Mms_UpdateMember2_FullMethodName          = "/mms.Mms/updateMember2"
 	Mms_CreateMemberRank_FullMethodName       = "/mms.Mms/createMemberRank"
 	Mms_UpdateMemberRank_FullMethodName       = "/mms.Mms/updateMemberRank"
 	Mms_GetMemberRankList_FullMethodName      = "/mms.Mms/getMemberRankList"
@@ -76,6 +78,10 @@ type MmsClient interface {
 	GetMemberById(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error)
 	// group: member
 	GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
+	// group: member
+	GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error)
+	// group: member
+	UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
@@ -208,6 +214,24 @@ func (c *mmsClient) GetMemberById(ctx context.Context, in *UUIDReq, opts ...grpc
 func (c *mmsClient) GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error) {
 	out := new(MemberInfo)
 	err := c.cc.Invoke(ctx, Mms_GetMemberByUsername_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error) {
+	out := new(MemberInfo)
+	err := c.cc.Invoke(ctx, Mms_GetMember_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, Mms_UpdateMember2_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -469,6 +493,10 @@ type MmsServer interface {
 	GetMemberById(context.Context, *UUIDReq) (*MemberInfo, error)
 	// group: member
 	GetMemberByUsername(context.Context, *UsernameReq) (*MemberInfo, error)
+	// group: member
+	GetMember(context.Context, *Empty) (*MemberInfo, error)
+	// group: member
+	UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error)
@@ -555,6 +583,12 @@ func (UnimplementedMmsServer) GetMemberById(context.Context, *UUIDReq) (*MemberI
 }
 func (UnimplementedMmsServer) GetMemberByUsername(context.Context, *UsernameReq) (*MemberInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMemberByUsername not implemented")
+}
+func (UnimplementedMmsServer) GetMember(context.Context, *Empty) (*MemberInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMember not implemented")
+}
+func (UnimplementedMmsServer) UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMember2 not implemented")
 }
 func (UnimplementedMmsServer) CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMemberRank not implemented")
@@ -787,6 +821,42 @@ func _Mms_GetMemberByUsername_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MmsServer).GetMemberByUsername(ctx, req.(*UsernameReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_GetMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).GetMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_GetMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).GetMember(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_UpdateMember2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MemberInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).UpdateMember2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_UpdateMember2_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).UpdateMember2(ctx, req.(*MemberInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1297,6 +1367,14 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getMemberByUsername",
 			Handler:    _Mms_GetMemberByUsername_Handler,
+		},
+		{
+			MethodName: "getMember",
+			Handler:    _Mms_GetMember_Handler,
+		},
+		{
+			MethodName: "updateMember2",
+			Handler:    _Mms_UpdateMember2_Handler,
 		},
 		{
 			MethodName: "createMemberRank",

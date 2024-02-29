@@ -56,20 +56,12 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDR
 		query.SetNotNilNickname(in.Nickname)
 	}
 
-	incomingContext, ok := metadata.FromIncomingContext(l.ctx)
-
-	if ok {
-		for key, value := range incomingContext {
-			l.Info("FromIncomingContext: " + key + " >>  " + strings.Join(value, ","))
-			if key == "gateway-firebaseid" {
-				uid, err := uuid.FromString(strings.Join(value, ""))
-				if err != nil {
-					return nil, err
-				}
-				query.SetID(uid)
-			}
-		}
+	value := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
+	uid, err := uuid.FromString(strings.Join(value, ""))
+	if err != nil {
+		return nil, err
 	}
+	query.SetID(uid)
 
 	if in.Password != nil {
 		query.SetNotNilPassword(pointy.GetPointer(encrypt.BcryptEncrypt(*in.Password)))
