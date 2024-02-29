@@ -79,7 +79,7 @@ type MmsClient interface {
 	// group: member
 	GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
 	// group: member
-	GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error)
+	GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 	// group: member
 	UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// MemberRank management
@@ -220,8 +220,8 @@ func (c *mmsClient) GetMemberByUsername(ctx context.Context, in *UsernameReq, op
 	return out, nil
 }
 
-func (c *mmsClient) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error) {
-	out := new(MemberInfo)
+func (c *mmsClient) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error) {
+	out := new(MemberInfoResp)
 	err := c.cc.Invoke(ctx, Mms_GetMember_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -494,7 +494,7 @@ type MmsServer interface {
 	// group: member
 	GetMemberByUsername(context.Context, *UsernameReq) (*MemberInfo, error)
 	// group: member
-	GetMember(context.Context, *Empty) (*MemberInfo, error)
+	GetMember(context.Context, *Empty) (*MemberInfoResp, error)
 	// group: member
 	UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error)
 	// MemberRank management
@@ -584,7 +584,7 @@ func (UnimplementedMmsServer) GetMemberById(context.Context, *UUIDReq) (*MemberI
 func (UnimplementedMmsServer) GetMemberByUsername(context.Context, *UsernameReq) (*MemberInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMemberByUsername not implemented")
 }
-func (UnimplementedMmsServer) GetMember(context.Context, *Empty) (*MemberInfo, error) {
+func (UnimplementedMmsServer) GetMember(context.Context, *Empty) (*MemberInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMember not implemented")
 }
 func (UnimplementedMmsServer) UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error) {

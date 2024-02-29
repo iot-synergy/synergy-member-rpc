@@ -69,7 +69,7 @@ func (s *MmsServer) GetMemberByUsername(ctx context.Context, in *mms.UsernameReq
 }
 
 // group: member
-func (s *MmsServer) GetMember(ctx context.Context, in *mms.Empty) (*mms.MemberInfo, error) {
+func (s *MmsServer) GetMember(ctx context.Context, in *mms.Empty) (*mms.MemberInfoResp, error) {
 	l := member.NewGetMemberLogic(ctx, s.svcCtx)
 	return l.GetMember(in)
 }

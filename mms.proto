@@ -224,6 +224,11 @@ message MemberRankListReq {
   optional string remark = 5;
 }
 
+message MemberInfoResp {
+  int64 isExist = 1;
+  optional MemberInfo memberInfo = 2;
+}
+
 service Mms {
   //  group: base
   rpc initDatabase(Empty) returns (BaseResp);
@@ -243,7 +248,7 @@ service Mms {
   //  group: member
   rpc getMemberByUsername(UsernameReq) returns (MemberInfo);
   //  group: member
-  rpc getMember(Empty) returns(MemberInfo);
+  rpc getMember(Empty) returns(MemberInfoResp);
   //  group: member
   rpc updateMember2(MemberInfo) returns (BaseResp);
   //  MemberRank management

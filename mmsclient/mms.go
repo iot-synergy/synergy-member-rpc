@@ -25,6 +25,7 @@ type (
 	IDReq                 = mms.IDReq
 	IDsReq                = mms.IDsReq
 	MemberInfo            = mms.MemberInfo
+	MemberInfoResp        = mms.MemberInfoResp
 	MemberListReq         = mms.MemberListReq
 	MemberListResp        = mms.MemberListResp
 	MemberLoginResp       = mms.MemberLoginResp
@@ -66,7 +67,7 @@ type (
 		// group: member
 		GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		// group: member
-		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error)
+		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 		// group: member
 		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// MemberRank management
@@ -183,7 +184,7 @@ func (m *defaultMms) GetMemberByUsername(ctx context.Context, in *UsernameReq, o
 }
 
 // group: member
-func (m *defaultMms) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfo, error) {
+func (m *defaultMms) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.GetMember(ctx, in, opts...)
 }

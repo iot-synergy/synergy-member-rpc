@@ -47,8 +47,10 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 
 	infos := make([]*mms.CommentInfo, 0)
 	for _, comm := range all {
+		id := int64(comm.ID)
 		info := mms.CommentInfo{
 			Title: &comm.Title,
+			Id:    &id,
 		}
 		infos = append(infos, &info)
 	}
