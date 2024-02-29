@@ -80,15 +80,15 @@ func init() {
 	// member.DefaultStatus holds the default value on creation for the status field.
 	member.DefaultStatus = memberDescStatus.Default.(uint8)
 	// memberDescRankID is the schema descriptor for rank_id field.
-	memberDescRankID := memberFields[3].Descriptor()
+	memberDescRankID := memberFields[4].Descriptor()
 	// member.DefaultRankID holds the default value on creation for the rank_id field.
 	member.DefaultRankID = memberDescRankID.Default.(uint64)
 	// memberDescAvatar is the schema descriptor for avatar field.
-	memberDescAvatar := memberFields[6].Descriptor()
+	memberDescAvatar := memberFields[7].Descriptor()
 	// member.DefaultAvatar holds the default value on creation for the avatar field.
 	member.DefaultAvatar = memberDescAvatar.Default.(string)
 	// memberDescExpiredAt is the schema descriptor for expired_at field.
-	memberDescExpiredAt := memberFields[8].Descriptor()
+	memberDescExpiredAt := memberFields[9].Descriptor()
 	// member.DefaultExpiredAt holds the default value on creation for the expired_at field.
 	member.DefaultExpiredAt = memberDescExpiredAt.Default.(time.Time)
 	// memberDescID is the schema descriptor for id field.

@@ -20,6 +20,10 @@ type Member struct {
 
 func (Member) Fields() []ent.Field {
 	return []ent.Field{
+		field.String("forein_id").Unique().
+			SchemaType(map[string]string{dialect.MySQL: "varchar(32)"}).
+			Comment("Member's forein id | 外部ID").
+			Annotations(entsql.WithComments(true)),
 		field.String("username").Unique().
 			Comment("Member's login name | 登录名").
 			Annotations(entsql.WithComments(true)),

@@ -26,6 +26,8 @@ type Member struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Status 1: normal 2: ban | 状态 1 正常 2 禁用
 	Status uint8 `json:"status,omitempty"`
+	// Member's forein id | 外部ID
+	ForeinID string `json:"forein_id,omitempty"`
 	// Member's login name | 登录名
 	Username string `json:"username,omitempty"`
 	// Password | 密码
@@ -79,7 +81,7 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldStatus, member.FieldRankID:
 			values[i] = new(sql.NullInt64)
-		case member.FieldUsername, member.FieldPassword, member.FieldNickname, member.FieldMobile, member.FieldEmail, member.FieldAvatar, member.FieldWechatOpenID:
+		case member.FieldForeinID, member.FieldUsername, member.FieldPassword, member.FieldNickname, member.FieldMobile, member.FieldEmail, member.FieldAvatar, member.FieldWechatOpenID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreatedAt, member.FieldUpdatedAt, member.FieldExpiredAt:
 			values[i] = new(sql.NullTime)
@@ -123,6 +125,12 @@ func (m *Member) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				m.Status = uint8(value.Int64)
+			}
+		case member.FieldForeinID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field forein_id", values[i])
+			} else if value.Valid {
+				m.ForeinID = value.String
 			}
 		case member.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -227,6 +235,9 @@ func (m *Member) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", m.Status))
+	builder.WriteString(", ")
+	builder.WriteString("forein_id=")
+	builder.WriteString(m.ForeinID)
 	builder.WriteString(", ")
 	builder.WriteString("username=")
 	builder.WriteString(m.Username)

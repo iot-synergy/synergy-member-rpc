@@ -892,6 +892,7 @@ type MemberMutation struct {
 	updated_at     *time.Time
 	status         *uint8
 	addstatus      *int8
+	forein_id      *string
 	username       *string
 	password       *string
 	nickname       *string
@@ -1152,6 +1153,42 @@ func (m *MemberMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
 	delete(m.clearedFields, member.FieldStatus)
+}
+
+// SetForeinID sets the "forein_id" field.
+func (m *MemberMutation) SetForeinID(s string) {
+	m.forein_id = &s
+}
+
+// ForeinID returns the value of the "forein_id" field in the mutation.
+func (m *MemberMutation) ForeinID() (r string, exists bool) {
+	v := m.forein_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldForeinID returns the old "forein_id" field's value of the Member entity.
+// If the Member object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MemberMutation) OldForeinID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldForeinID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldForeinID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldForeinID: %w", err)
+	}
+	return oldValue.ForeinID, nil
+}
+
+// ResetForeinID resets all changes to the "forein_id" field.
+func (m *MemberMutation) ResetForeinID() {
+	m.forein_id = nil
 }
 
 // SetUsername sets the "username" field.
@@ -1630,7 +1667,7 @@ func (m *MemberMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MemberMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.created_at != nil {
 		fields = append(fields, member.FieldCreatedAt)
 	}
@@ -1639,6 +1676,9 @@ func (m *MemberMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, member.FieldStatus)
+	}
+	if m.forein_id != nil {
+		fields = append(fields, member.FieldForeinID)
 	}
 	if m.username != nil {
 		fields = append(fields, member.FieldUsername)
@@ -1681,6 +1721,8 @@ func (m *MemberMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case member.FieldStatus:
 		return m.Status()
+	case member.FieldForeinID:
+		return m.ForeinID()
 	case member.FieldUsername:
 		return m.Username()
 	case member.FieldPassword:
@@ -1714,6 +1756,8 @@ func (m *MemberMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldUpdatedAt(ctx)
 	case member.FieldStatus:
 		return m.OldStatus(ctx)
+	case member.FieldForeinID:
+		return m.OldForeinID(ctx)
 	case member.FieldUsername:
 		return m.OldUsername(ctx)
 	case member.FieldPassword:
@@ -1761,6 +1805,13 @@ func (m *MemberMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
+		return nil
+	case member.FieldForeinID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetForeinID(v)
 		return nil
 	case member.FieldUsername:
 		v, ok := value.(string)
@@ -1942,6 +1993,9 @@ func (m *MemberMutation) ResetField(name string) error {
 		return nil
 	case member.FieldStatus:
 		m.ResetStatus()
+		return nil
+	case member.FieldForeinID:
+		m.ResetForeinID()
 		return nil
 	case member.FieldUsername:
 		m.ResetUsername()

@@ -2,11 +2,13 @@ package member
 
 import (
 	"context"
-	"github.com/iot-synergy/synergy-common/utils/pointy"
-	"github.com/iot-synergy/synergy-common/utils/uuidx"
-	"google.golang.org/grpc/metadata"
+	"errors"
 	"strings"
 
+	"github.com/iot-synergy/synergy-common/utils/pointy"
+	"google.golang.org/grpc/metadata"
+
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 
@@ -30,9 +32,13 @@ func NewGetMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetMemb
 // group: member
 func (l *GetMemberLogic) GetMember(in *mms.Empty) (*mms.MemberInfoResp, error) {
 	// todo: add your logic here and delete this line
-	value := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
+	forein_id := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
 
-	result, err := l.svcCtx.DB.Member.Get(l.ctx, uuidx.ParseUUIDString(strings.Join(value, "")))
+	if len(forein_id) <= 0 {
+		return nil, errors.New("firebaseid is null")
+	}
+
+	result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(strings.Join(forein_id, ""))).First(l.ctx)
 	if result == nil || err != nil {
 		return &mms.MemberInfoResp{
 			IsExist:    0,

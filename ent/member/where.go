@@ -71,6 +71,11 @@ func Status(v uint8) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldStatus, v))
 }
 
+// ForeinID applies equality check predicate on the "forein_id" field. It's identical to ForeinIDEQ.
+func ForeinID(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldForeinID, v))
+}
+
 // Username applies equality check predicate on the "username" field. It's identical to UsernameEQ.
 func Username(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldUsername, v))
@@ -244,6 +249,71 @@ func StatusIsNil() predicate.Member {
 // StatusNotNil applies the NotNil predicate on the "status" field.
 func StatusNotNil() predicate.Member {
 	return predicate.Member(sql.FieldNotNull(FieldStatus))
+}
+
+// ForeinIDEQ applies the EQ predicate on the "forein_id" field.
+func ForeinIDEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldForeinID, v))
+}
+
+// ForeinIDNEQ applies the NEQ predicate on the "forein_id" field.
+func ForeinIDNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldForeinID, v))
+}
+
+// ForeinIDIn applies the In predicate on the "forein_id" field.
+func ForeinIDIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldForeinID, vs...))
+}
+
+// ForeinIDNotIn applies the NotIn predicate on the "forein_id" field.
+func ForeinIDNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldForeinID, vs...))
+}
+
+// ForeinIDGT applies the GT predicate on the "forein_id" field.
+func ForeinIDGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldForeinID, v))
+}
+
+// ForeinIDGTE applies the GTE predicate on the "forein_id" field.
+func ForeinIDGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldForeinID, v))
+}
+
+// ForeinIDLT applies the LT predicate on the "forein_id" field.
+func ForeinIDLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldForeinID, v))
+}
+
+// ForeinIDLTE applies the LTE predicate on the "forein_id" field.
+func ForeinIDLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldForeinID, v))
+}
+
+// ForeinIDContains applies the Contains predicate on the "forein_id" field.
+func ForeinIDContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldForeinID, v))
+}
+
+// ForeinIDHasPrefix applies the HasPrefix predicate on the "forein_id" field.
+func ForeinIDHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldForeinID, v))
+}
+
+// ForeinIDHasSuffix applies the HasSuffix predicate on the "forein_id" field.
+func ForeinIDHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldForeinID, v))
+}
+
+// ForeinIDEqualFold applies the EqualFold predicate on the "forein_id" field.
+func ForeinIDEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldForeinID, v))
+}
+
+// ForeinIDContainsFold applies the ContainsFold predicate on the "forein_id" field.
+func ForeinIDContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldForeinID, v))
 }
 
 // UsernameEQ applies the EQ predicate on the "username" field.

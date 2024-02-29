@@ -21,6 +21,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldForeinID holds the string denoting the forein_id field in the database.
+	FieldForeinID = "forein_id"
 	// FieldUsername holds the string denoting the username field in the database.
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
@@ -58,6 +60,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldStatus,
+	FieldForeinID,
 	FieldUsername,
 	FieldPassword,
 	FieldNickname,
@@ -119,6 +122,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByForeinID orders the results by the forein_id field.
+func ByForeinID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldForeinID, opts...).ToFunc()
 }
 
 // ByUsername orders the results by the username field.

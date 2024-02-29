@@ -62,6 +62,20 @@ func (mu *MemberUpdate) ClearStatus() *MemberUpdate {
 	return mu
 }
 
+// SetForeinID sets the "forein_id" field.
+func (mu *MemberUpdate) SetForeinID(s string) *MemberUpdate {
+	mu.mutation.SetForeinID(s)
+	return mu
+}
+
+// SetNillableForeinID sets the "forein_id" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableForeinID(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetForeinID(*s)
+	}
+	return mu
+}
+
 // SetUsername sets the "username" field.
 func (mu *MemberUpdate) SetUsername(s string) *MemberUpdate {
 	mu.mutation.SetUsername(s)
@@ -311,6 +325,9 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if mu.mutation.StatusCleared() {
 		_spec.ClearField(member.FieldStatus, field.TypeUint8)
 	}
+	if value, ok := mu.mutation.ForeinID(); ok {
+		_spec.SetField(member.FieldForeinID, field.TypeString, value)
+	}
 	if value, ok := mu.mutation.Username(); ok {
 		_spec.SetField(member.FieldUsername, field.TypeString, value)
 	}
@@ -429,6 +446,20 @@ func (muo *MemberUpdateOne) AddStatus(u int8) *MemberUpdateOne {
 // ClearStatus clears the value of the "status" field.
 func (muo *MemberUpdateOne) ClearStatus() *MemberUpdateOne {
 	muo.mutation.ClearStatus()
+	return muo
+}
+
+// SetForeinID sets the "forein_id" field.
+func (muo *MemberUpdateOne) SetForeinID(s string) *MemberUpdateOne {
+	muo.mutation.SetForeinID(s)
+	return muo
+}
+
+// SetNillableForeinID sets the "forein_id" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableForeinID(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetForeinID(*s)
+	}
 	return muo
 }
 
@@ -710,6 +741,9 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	}
 	if muo.mutation.StatusCleared() {
 		_spec.ClearField(member.FieldStatus, field.TypeUint8)
+	}
+	if value, ok := muo.mutation.ForeinID(); ok {
+		_spec.SetField(member.FieldForeinID, field.TypeString, value)
 	}
 	if value, ok := muo.mutation.Username(); ok {
 		_spec.SetField(member.FieldUsername, field.TypeString, value)

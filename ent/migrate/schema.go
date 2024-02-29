@@ -33,6 +33,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
 		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
 		{Name: "status", Type: field.TypeUint8, Nullable: true, Comment: "Status 1: normal 2: ban | 状态 1 正常 2 禁用", Default: 1},
+		{Name: "forein_id", Type: field.TypeString, Unique: true, Comment: "Member's forein id | 外部ID", SchemaType: map[string]string{"mysql": "varchar(32)"}},
 		{Name: "username", Type: field.TypeString, Unique: true, Comment: "Member's login name | 登录名"},
 		{Name: "password", Type: field.TypeString, Comment: "Password | 密码"},
 		{Name: "nickname", Type: field.TypeString, Unique: true, Comment: "Nickname | 昵称"},
@@ -51,7 +52,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "mms_members_mms_ranks_ranks",
-				Columns:    []*schema.Column{MmsMembersColumns[12]},
+				Columns:    []*schema.Column{MmsMembersColumns[13]},
 				RefColumns: []*schema.Column{MmsRanksColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -60,12 +61,12 @@ var (
 			{
 				Name:    "member_username_email",
 				Unique:  true,
-				Columns: []*schema.Column{MmsMembersColumns[4], MmsMembersColumns[8]},
+				Columns: []*schema.Column{MmsMembersColumns[5], MmsMembersColumns[9]},
 			},
 			{
 				Name:    "member_wechat_open_id",
 				Unique:  true,
-				Columns: []*schema.Column{MmsMembersColumns[10]},
+				Columns: []*schema.Column{MmsMembersColumns[11]},
 			},
 		},
 	}

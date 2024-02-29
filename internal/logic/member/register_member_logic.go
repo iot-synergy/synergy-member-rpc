@@ -3,13 +3,14 @@ package member
 import (
 	"context"
 	"errors"
+	"strings"
+
 	uuid "github.com/gofrs/uuid/v5"
 	"github.com/iot-synergy/synergy-common/i18n"
 	"github.com/iot-synergy/synergy-common/utils/encrypt"
 	"github.com/iot-synergy/synergy-common/utils/pointy"
 	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"google.golang.org/grpc/metadata"
-	"strings"
 
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
@@ -38,7 +39,13 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDR
 		return nil, errors.New("username is null")
 	}
 
+	forein_id := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
+	if len(forein_id) <= 0 {
+		return nil, errors.New("firebaseid is null")
+	}
+
 	query := l.svcCtx.DB.Member.Create().
+		SetForeinID(strings.Join(forein_id, "")).
 		SetNotNilStatus(pointy.GetStatusPointer(in.Status)).
 		SetNotNilUsername(in.Username).
 		SetNotNilRankID(in.RankId).
@@ -56,12 +63,12 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDR
 		query.SetNotNilNickname(in.Nickname)
 	}
 
-	value := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
-	uid, err := uuid.FromString(strings.Join(value, ""))
-	if err != nil {
-		return nil, err
-	}
-	query.SetID(uid)
+	// value := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
+	// uid, err := uuid.FromString(strings.Join(value, ""))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// query.SetID(uid)
 
 	if in.Password != nil {
 		query.SetNotNilPassword(pointy.GetPointer(encrypt.BcryptEncrypt(*in.Password)))

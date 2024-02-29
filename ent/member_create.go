@@ -64,6 +64,12 @@ func (mc *MemberCreate) SetNillableStatus(u *uint8) *MemberCreate {
 	return mc
 }
 
+// SetForeinID sets the "forein_id" field.
+func (mc *MemberCreate) SetForeinID(s string) *MemberCreate {
+	mc.mutation.SetForeinID(s)
+	return mc
+}
+
 // SetUsername sets the "username" field.
 func (mc *MemberCreate) SetUsername(s string) *MemberCreate {
 	mc.mutation.SetUsername(s)
@@ -272,6 +278,9 @@ func (mc *MemberCreate) check() error {
 	if _, ok := mc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Member.updated_at"`)}
 	}
+	if _, ok := mc.mutation.ForeinID(); !ok {
+		return &ValidationError{Name: "forein_id", err: errors.New(`ent: missing required field "Member.forein_id"`)}
+	}
 	if _, ok := mc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "Member.username"`)}
 	}
@@ -327,6 +336,10 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeUint8, value)
 		_node.Status = value
+	}
+	if value, ok := mc.mutation.ForeinID(); ok {
+		_spec.SetField(member.FieldForeinID, field.TypeString, value)
+		_node.ForeinID = value
 	}
 	if value, ok := mc.mutation.Username(); ok {
 		_spec.SetField(member.FieldUsername, field.TypeString, value)
