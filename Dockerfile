@@ -12,6 +12,6 @@ ENV CONFIG_FILE=${CONFIG_FILE}
 COPY ./mms-rpc ./
 COPY ./etc/${CONFIG_FILE} ./etc/
 
-EXPOSE 9104
+EXPOSE 9103
 
 ENTRYPOINT ./mms-rpc -f etc/${CONFIG_FILE}
