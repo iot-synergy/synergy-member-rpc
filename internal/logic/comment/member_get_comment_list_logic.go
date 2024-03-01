@@ -51,8 +51,6 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 
 	all, err := query.All(l.ctx)
 
-	query.Select("title")
-
 	if err != nil {
 		return nil, err
 	}
@@ -60,9 +58,13 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 	infos := make([]*mms.CommentInfo, 0)
 	for _, comm := range all {
 		id := int64(comm.ID)
+		createTime := comm.CreateTime.UnixMilli()
 		info := mms.CommentInfo{
-			Title: &comm.Title,
-			Id:    &id,
+			Id:         &id,
+			Title:      &comm.Title,
+			Content:    &comm.Content,
+			MemberId:   &comm.MemberId,
+			CreateTime: &createTime,
 		}
 		infos = append(infos, &info)
 	}
