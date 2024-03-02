@@ -67,7 +67,7 @@ type MmsClient interface {
 	// group: member
 	CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 	// group: member
-	RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
+	RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error)
 	// group: member
 	UpdateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: member
@@ -81,7 +81,7 @@ type MmsClient interface {
 	// group: member
 	GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 	// group: member
-	UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
@@ -125,11 +125,11 @@ type MmsClient interface {
 	UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// Comment management
 	// group: comment
-	MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error)
 	// group: comment
-	MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+	MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error)
 	// group: comment
-	MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+	MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfoResp, error)
 	// group: comment
 	ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: comment
@@ -166,8 +166,8 @@ func (c *mmsClient) CreateMember(ctx context.Context, in *MemberInfo, opts ...gr
 	return out, nil
 }
 
-func (c *mmsClient) RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error) {
-	out := new(BaseUUIDResp)
+func (c *mmsClient) RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error) {
+	out := new(RegisterMemberResp)
 	err := c.cc.Invoke(ctx, Mms_RegisterMember_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -229,8 +229,8 @@ func (c *mmsClient) GetMember(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *mmsClient) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error) {
-	out := new(BaseResp)
+func (c *mmsClient) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error) {
+	out := new(UpdateMember2Resp)
 	err := c.cc.Invoke(ctx, Mms_UpdateMember2_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -409,8 +409,8 @@ func (c *mmsClient) UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc
 	return out, nil
 }
 
-func (c *mmsClient) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
-	out := new(BaseResp)
+func (c *mmsClient) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error) {
+	out := new(MemberCommentResp)
 	err := c.cc.Invoke(ctx, Mms_MemberComment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -418,8 +418,8 @@ func (c *mmsClient) MemberComment(ctx context.Context, in *CommentInfo, opts ...
 	return out, nil
 }
 
-func (c *mmsClient) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
-	out := new(CommentList)
+func (c *mmsClient) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error) {
+	out := new(CommentListResp)
 	err := c.cc.Invoke(ctx, Mms_MemberGetCommentList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -427,8 +427,8 @@ func (c *mmsClient) MemberGetCommentList(ctx context.Context, in *CommentListReq
 	return out, nil
 }
 
-func (c *mmsClient) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
-	out := new(CommentInfo)
+func (c *mmsClient) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfoResp, error) {
+	out := new(CommentInfoResp)
 	err := c.cc.Invoke(ctx, Mms_MemberGetComment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -482,7 +482,7 @@ type MmsServer interface {
 	// group: member
 	CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error)
 	// group: member
-	RegisterMember(context.Context, *MemberInfo) (*BaseUUIDResp, error)
+	RegisterMember(context.Context, *MemberInfo) (*RegisterMemberResp, error)
 	// group: member
 	UpdateMember(context.Context, *MemberInfo) (*BaseResp, error)
 	// group: member
@@ -496,7 +496,7 @@ type MmsServer interface {
 	// group: member
 	GetMember(context.Context, *Empty) (*MemberInfoResp, error)
 	// group: member
-	UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error)
+	UpdateMember2(context.Context, *MemberInfo) (*UpdateMember2Resp, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error)
@@ -540,11 +540,11 @@ type MmsServer interface {
 	UpdateToken(context.Context, *TokenInfo) (*BaseResp, error)
 	// Comment management
 	// group: comment
-	MemberComment(context.Context, *CommentInfo) (*BaseResp, error)
+	MemberComment(context.Context, *CommentInfo) (*MemberCommentResp, error)
 	// group: comment
-	MemberGetCommentList(context.Context, *CommentListReq) (*CommentList, error)
+	MemberGetCommentList(context.Context, *CommentListReq) (*CommentListResp, error)
 	// group: comment
-	MemberGetComment(context.Context, *CommentIdReq) (*CommentInfo, error)
+	MemberGetComment(context.Context, *CommentIdReq) (*CommentInfoResp, error)
 	// group: comment
 	ReplyComment(context.Context, *ReplyInfo) (*BaseResp, error)
 	// group: comment
@@ -566,7 +566,7 @@ func (UnimplementedMmsServer) InitDatabase(context.Context, *Empty) (*BaseResp, 
 func (UnimplementedMmsServer) CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMember not implemented")
 }
-func (UnimplementedMmsServer) RegisterMember(context.Context, *MemberInfo) (*BaseUUIDResp, error) {
+func (UnimplementedMmsServer) RegisterMember(context.Context, *MemberInfo) (*RegisterMemberResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterMember not implemented")
 }
 func (UnimplementedMmsServer) UpdateMember(context.Context, *MemberInfo) (*BaseResp, error) {
@@ -587,7 +587,7 @@ func (UnimplementedMmsServer) GetMemberByUsername(context.Context, *UsernameReq)
 func (UnimplementedMmsServer) GetMember(context.Context, *Empty) (*MemberInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMember not implemented")
 }
-func (UnimplementedMmsServer) UpdateMember2(context.Context, *MemberInfo) (*BaseResp, error) {
+func (UnimplementedMmsServer) UpdateMember2(context.Context, *MemberInfo) (*UpdateMember2Resp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMember2 not implemented")
 }
 func (UnimplementedMmsServer) CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error) {
@@ -647,13 +647,13 @@ func (UnimplementedMmsServer) BlockUserAllToken(context.Context, *UUIDReq) (*Bas
 func (UnimplementedMmsServer) UpdateToken(context.Context, *TokenInfo) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateToken not implemented")
 }
-func (UnimplementedMmsServer) MemberComment(context.Context, *CommentInfo) (*BaseResp, error) {
+func (UnimplementedMmsServer) MemberComment(context.Context, *CommentInfo) (*MemberCommentResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MemberComment not implemented")
 }
-func (UnimplementedMmsServer) MemberGetCommentList(context.Context, *CommentListReq) (*CommentList, error) {
+func (UnimplementedMmsServer) MemberGetCommentList(context.Context, *CommentListReq) (*CommentListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MemberGetCommentList not implemented")
 }
-func (UnimplementedMmsServer) MemberGetComment(context.Context, *CommentIdReq) (*CommentInfo, error) {
+func (UnimplementedMmsServer) MemberGetComment(context.Context, *CommentIdReq) (*CommentInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MemberGetComment not implemented")
 }
 func (UnimplementedMmsServer) ReplyComment(context.Context, *ReplyInfo) (*BaseResp, error) {

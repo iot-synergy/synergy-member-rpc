@@ -41,25 +41,33 @@ func (l *GetMemberLogic) GetMember(in *mms.Empty) (*mms.MemberInfoResp, error) {
 	result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(strings.Join(forein_id, ""))).First(l.ctx)
 	if result == nil || err != nil {
 		return &mms.MemberInfoResp{
-			IsExist:    0,
-			MemberInfo: nil,
+			Code: 0,
+			Msg:  "成功",
+			Data: &mms.MemberInfoRespData{
+				IsExist:    0,
+				MemberInfo: nil,
+			},
 		}, nil
 	}
 
 	return &mms.MemberInfoResp{
-		IsExist: 1,
-		MemberInfo: &mms.MemberInfo{
-			Id:        pointy.GetPointer(result.ID.String()),
-			CreatedAt: pointy.GetPointer(result.CreatedAt.UnixMilli()),
-			UpdatedAt: pointy.GetPointer(result.UpdatedAt.UnixMilli()),
-			Status:    pointy.GetPointer(uint32(result.Status)),
-			Username:  &result.Username,
-			Nickname:  &result.Nickname,
-			RankId:    &result.RankID,
-			Mobile:    &result.Mobile,
-			Email:     &result.Email,
-			Avatar:    &result.Avatar,
-			ExpiredAt: pointy.GetPointer(result.ExpiredAt.UnixMilli()),
+		Code: 0,
+		Msg:  "成功",
+		Data: &mms.MemberInfoRespData{
+			IsExist: 1,
+			MemberInfo: &mms.MemberInfo{
+				Id:        pointy.GetPointer(result.ID.String()),
+				CreatedAt: pointy.GetPointer(result.CreatedAt.UnixMilli()),
+				UpdatedAt: pointy.GetPointer(result.UpdatedAt.UnixMilli()),
+				Status:    pointy.GetPointer(uint32(result.Status)),
+				Username:  &result.Username,
+				Nickname:  &result.Nickname,
+				RankId:    &result.RankID,
+				Mobile:    &result.Mobile,
+				Email:     &result.Email,
+				Avatar:    &result.Avatar,
+				ExpiredAt: pointy.GetPointer(result.ExpiredAt.UnixMilli()),
+			},
 		},
 	}, nil
 }

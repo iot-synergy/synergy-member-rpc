@@ -27,6 +27,7 @@ func NewMmsServer(svcCtx *svc.ServiceContext) *MmsServer {
 	}
 }
 
+// group: base
 func (s *MmsServer) InitDatabase(ctx context.Context, in *mms.Empty) (*mms.BaseResp, error) {
 	l := base.NewInitDatabaseLogic(ctx, s.svcCtx)
 	return l.InitDatabase(in)
@@ -38,31 +39,37 @@ func (s *MmsServer) CreateMember(ctx context.Context, in *mms.MemberInfo) (*mms.
 	return l.CreateMember(in)
 }
 
-func (s *MmsServer) RegisterMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
+// group: member
+func (s *MmsServer) RegisterMember(ctx context.Context, in *mms.MemberInfo) (*mms.RegisterMemberResp, error) {
 	l := member.NewRegisterMemberLogic(ctx, s.svcCtx)
 	return l.RegisterMember(in)
 }
 
+// group: member
 func (s *MmsServer) UpdateMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseResp, error) {
 	l := member.NewUpdateMemberLogic(ctx, s.svcCtx)
 	return l.UpdateMember(in)
 }
 
+// group: member
 func (s *MmsServer) GetMemberList(ctx context.Context, in *mms.MemberListReq) (*mms.MemberListResp, error) {
 	l := member.NewGetMemberListLogic(ctx, s.svcCtx)
 	return l.GetMemberList(in)
 }
 
+// group: member
 func (s *MmsServer) DeleteMember(ctx context.Context, in *mms.UUIDsReq) (*mms.BaseResp, error) {
 	l := member.NewDeleteMemberLogic(ctx, s.svcCtx)
 	return l.DeleteMember(in)
 }
 
+// group: member
 func (s *MmsServer) GetMemberById(ctx context.Context, in *mms.UUIDReq) (*mms.MemberInfo, error) {
 	l := member.NewGetMemberByIdLogic(ctx, s.svcCtx)
 	return l.GetMemberById(in)
 }
 
+// group: member
 func (s *MmsServer) GetMemberByUsername(ctx context.Context, in *mms.UsernameReq) (*mms.MemberInfo, error) {
 	l := member.NewGetMemberByUsernameLogic(ctx, s.svcCtx)
 	return l.GetMemberByUsername(in)
@@ -74,7 +81,8 @@ func (s *MmsServer) GetMember(ctx context.Context, in *mms.Empty) (*mms.MemberIn
 	return l.GetMember(in)
 }
 
-func (s *MmsServer) UpdateMember2(ctx context.Context, in *mms.MemberInfo) (*mms.BaseResp, error) {
+// group: member
+func (s *MmsServer) UpdateMember2(ctx context.Context, in *mms.MemberInfo) (*mms.UpdateMember2Resp, error) {
 	l := member.NewUpdateMember2Logic(ctx, s.svcCtx)
 	return l.UpdateMember2(in)
 }
@@ -85,21 +93,25 @@ func (s *MmsServer) CreateMemberRank(ctx context.Context, in *mms.MemberRankInfo
 	return l.CreateMemberRank(in)
 }
 
+// group: memberrank
 func (s *MmsServer) UpdateMemberRank(ctx context.Context, in *mms.MemberRankInfo) (*mms.BaseResp, error) {
 	l := memberrank.NewUpdateMemberRankLogic(ctx, s.svcCtx)
 	return l.UpdateMemberRank(in)
 }
 
+// group: memberrank
 func (s *MmsServer) GetMemberRankList(ctx context.Context, in *mms.MemberRankListReq) (*mms.MemberRankListResp, error) {
 	l := memberrank.NewGetMemberRankListLogic(ctx, s.svcCtx)
 	return l.GetMemberRankList(in)
 }
 
+// group: memberrank
 func (s *MmsServer) GetMemberRankById(ctx context.Context, in *mms.IDReq) (*mms.MemberRankInfo, error) {
 	l := memberrank.NewGetMemberRankByIdLogic(ctx, s.svcCtx)
 	return l.GetMemberRankById(in)
 }
 
+// group: memberrank
 func (s *MmsServer) DeleteMemberRank(ctx context.Context, in *mms.IDsReq) (*mms.BaseResp, error) {
 	l := memberrank.NewDeleteMemberRankLogic(ctx, s.svcCtx)
 	return l.DeleteMemberRank(in)
@@ -111,36 +123,43 @@ func (s *MmsServer) CreateOauthProvider(ctx context.Context, in *mms.OauthProvid
 	return l.CreateOauthProvider(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) UpdateOauthProvider(ctx context.Context, in *mms.OauthProviderInfo) (*mms.BaseResp, error) {
 	l := oauthprovider.NewUpdateOauthProviderLogic(ctx, s.svcCtx)
 	return l.UpdateOauthProvider(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) GetOauthProviderList(ctx context.Context, in *mms.OauthProviderListReq) (*mms.OauthProviderListResp, error) {
 	l := oauthprovider.NewGetOauthProviderListLogic(ctx, s.svcCtx)
 	return l.GetOauthProviderList(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) GetOauthProviderById(ctx context.Context, in *mms.IDReq) (*mms.OauthProviderInfo, error) {
 	l := oauthprovider.NewGetOauthProviderByIdLogic(ctx, s.svcCtx)
 	return l.GetOauthProviderById(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) DeleteOauthProvider(ctx context.Context, in *mms.IDsReq) (*mms.BaseResp, error) {
 	l := oauthprovider.NewDeleteOauthProviderLogic(ctx, s.svcCtx)
 	return l.DeleteOauthProvider(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) OauthLogin(ctx context.Context, in *mms.OauthLoginReq) (*mms.OauthRedirectResp, error) {
 	l := oauthprovider.NewOauthLoginLogic(ctx, s.svcCtx)
 	return l.OauthLogin(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) OauthCallback(ctx context.Context, in *mms.CallbackReq) (*mms.MemberInfo, error) {
 	l := oauthprovider.NewOauthCallbackLogic(ctx, s.svcCtx)
 	return l.OauthCallback(in)
 }
 
+// group: oauthprovider
 func (s *MmsServer) WechatMiniProgramLogin(ctx context.Context, in *mms.OauthLoginReq) (*mms.BaseResp, error) {
 	l := oauthprovider.NewWechatMiniProgramLoginLogic(ctx, s.svcCtx)
 	return l.WechatMiniProgramLogin(in)
@@ -152,45 +171,50 @@ func (s *MmsServer) CreateToken(ctx context.Context, in *mms.TokenInfo) (*mms.Ba
 	return l.CreateToken(in)
 }
 
+// group: token
 func (s *MmsServer) DeleteToken(ctx context.Context, in *mms.UUIDsReq) (*mms.BaseResp, error) {
 	l := token.NewDeleteTokenLogic(ctx, s.svcCtx)
 	return l.DeleteToken(in)
 }
 
+// group: token
 func (s *MmsServer) GetTokenList(ctx context.Context, in *mms.TokenListReq) (*mms.TokenListResp, error) {
 	l := token.NewGetTokenListLogic(ctx, s.svcCtx)
 	return l.GetTokenList(in)
 }
 
+// group: token
 func (s *MmsServer) GetTokenById(ctx context.Context, in *mms.UUIDReq) (*mms.TokenInfo, error) {
 	l := token.NewGetTokenByIdLogic(ctx, s.svcCtx)
 	return l.GetTokenById(in)
 }
 
+// group: token
 func (s *MmsServer) BlockUserAllToken(ctx context.Context, in *mms.UUIDReq) (*mms.BaseResp, error) {
 	l := token.NewBlockUserAllTokenLogic(ctx, s.svcCtx)
 	return l.BlockUserAllToken(in)
 }
 
+// group: token
 func (s *MmsServer) UpdateToken(ctx context.Context, in *mms.TokenInfo) (*mms.BaseResp, error) {
 	l := token.NewUpdateTokenLogic(ctx, s.svcCtx)
 	return l.UpdateToken(in)
 }
 
 // Comment management
-func (s *MmsServer) MemberComment(ctx context.Context, in *mms.CommentInfo) (*mms.BaseResp, error) {
+func (s *MmsServer) MemberComment(ctx context.Context, in *mms.CommentInfo) (*mms.MemberCommentResp, error) {
 	l := comment.NewMemberCommentLogic(ctx, s.svcCtx)
 	return l.MemberComment(in)
 }
 
 // group: comment
-func (s *MmsServer) MemberGetCommentList(ctx context.Context, in *mms.CommentListReq) (*mms.CommentList, error) {
+func (s *MmsServer) MemberGetCommentList(ctx context.Context, in *mms.CommentListReq) (*mms.CommentListResp, error) {
 	l := comment.NewMemberGetCommentListLogic(ctx, s.svcCtx)
 	return l.MemberGetCommentList(in)
 }
 
 // group: comment
-func (s *MmsServer) MemberGetComment(ctx context.Context, in *mms.CommentIdReq) (*mms.CommentInfo, error) {
+func (s *MmsServer) MemberGetComment(ctx context.Context, in *mms.CommentIdReq) (*mms.CommentInfoResp, error) {
 	l := comment.NewMemberGetCommentLogic(ctx, s.svcCtx)
 	return l.MemberGetComment(in)
 }
@@ -212,6 +236,7 @@ func (s *MmsServer) AdminGetComment(ctx context.Context, in *mms.CommentIdReq) (
 	l := comment.NewAdminGetCommentLogic(ctx, s.svcCtx)
 	return l.AdminGetComment(in)
 }
+
 // group: comment
 func (s *MmsServer) AdminGetReplyList(ctx context.Context, in *mms.ReplyReq) (*mms.ReplyList, error) {
 	l := comment.NewAdminGetReplyListLogic(ctx, s.svcCtx)

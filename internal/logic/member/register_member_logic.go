@@ -2,15 +2,12 @@ package member
 
 import (
 	"context"
-	"errors"
 	"strings"
 
 	uuid "github.com/gofrs/uuid/v5"
-	"github.com/iot-synergy/synergy-common/i18n"
 	"github.com/iot-synergy/synergy-common/utils/encrypt"
 	"github.com/iot-synergy/synergy-common/utils/pointy"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
-	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"google.golang.org/grpc/metadata"
 
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
@@ -34,19 +31,31 @@ func NewRegisterMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Re
 }
 
 // group: member
-func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
+func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.RegisterMemberResp, error) {
 	// todo: add your logic here and delete this line
 	if in.Username == nil || *in.Username == "" {
-		return nil, errors.New("username is null")
+		return &mms.RegisterMemberResp{
+			Code: -1,
+			Msg:  "username is null",
+			Data: nil,
+		}, nil
 	}
 	//判断username的唯一性
 	if l.svcCtx.DB.Member.Query().Where(member.Username(in.GetUsername())).CountX(l.ctx) > 0 {
-		return nil, errors.New("username already exists")
+		return &mms.RegisterMemberResp{
+			Code: -1,
+			Msg:  "username already exists",
+			Data: nil,
+		}, nil
 	}
 
 	forein_id := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
 	if len(forein_id) <= 0 {
-		return nil, errors.New("firebaseid is null")
+		return &mms.RegisterMemberResp{
+			Code: -1,
+			Msg:  "firebaseid is null",
+			Data: nil,
+		}, nil
 	}
 
 	query := l.svcCtx.DB.Member.Create().
@@ -67,7 +76,11 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDR
 	} else {
 		//校验昵称的唯一性
 		if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
-			return nil, errors.New("nickname already exists")
+			return &mms.RegisterMemberResp{
+				Code: -1,
+				Msg:  "nickname already exists",
+				Data: nil,
+			}, nil
 		}
 		query.SetNotNilNickname(in.Nickname)
 	}
@@ -88,8 +101,16 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.BaseUUIDR
 	result, err := query.Save(l.ctx)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
+		return &mms.RegisterMemberResp{
+			Code: -1,
+			Msg:  err.Error(),
+			Data: nil,
+		}, nil
 	}
 
-	return &mms.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
+	return &mms.RegisterMemberResp{
+		Code: 0,
+		Msg:  "成功",
+		Data: &mms.RegisterMemberRespData{Id: result.ID.String()},
+	}, nil
 }

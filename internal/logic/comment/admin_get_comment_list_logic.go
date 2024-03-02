@@ -35,7 +35,7 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	}
 
 	query.Limit(int(in.GetPageSize()))
-	query.Offset(int((in.GetPageNo() - 1) * in.GetPageSize()))
+	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
 
 	all, err := query.All(l.ctx)
 
@@ -58,6 +58,6 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	}
 
 	return &mms.CommentList{
-		Titles: infos,
+		List: infos,
 	}, nil
 }

@@ -13,41 +13,48 @@ import (
 )
 
 type (
-	BaseIDResp            = mms.BaseIDResp
-	BaseResp              = mms.BaseResp
-	BaseUUIDResp          = mms.BaseUUIDResp
-	CallbackReq           = mms.CallbackReq
-	CommentIdReq          = mms.CommentIdReq
-	CommentInfo           = mms.CommentInfo
-	CommentList           = mms.CommentList
-	CommentListReq        = mms.CommentListReq
-	Empty                 = mms.Empty
-	IDReq                 = mms.IDReq
-	IDsReq                = mms.IDsReq
-	MemberInfo            = mms.MemberInfo
-	MemberInfoResp        = mms.MemberInfoResp
-	MemberListReq         = mms.MemberListReq
-	MemberListResp        = mms.MemberListResp
-	MemberLoginResp       = mms.MemberLoginResp
-	MemberRankInfo        = mms.MemberRankInfo
-	MemberRankListReq     = mms.MemberRankListReq
-	MemberRankListResp    = mms.MemberRankListResp
-	MemberRegisterReq     = mms.MemberRegisterReq
-	OauthLoginReq         = mms.OauthLoginReq
-	OauthProviderInfo     = mms.OauthProviderInfo
-	OauthProviderListReq  = mms.OauthProviderListReq
-	OauthProviderListResp = mms.OauthProviderListResp
-	OauthRedirectResp     = mms.OauthRedirectResp
-	PageInfoReq           = mms.PageInfoReq
-	ReplyInfo             = mms.ReplyInfo
-	ReplyList             = mms.ReplyList
-	ReplyReq              = mms.ReplyReq
-	TokenInfo             = mms.TokenInfo
-	TokenListReq          = mms.TokenListReq
-	TokenListResp         = mms.TokenListResp
-	UUIDReq               = mms.UUIDReq
-	UUIDsReq              = mms.UUIDsReq
-	UsernameReq           = mms.UsernameReq
+	BaseIDResp             = mms.BaseIDResp
+	BaseResp               = mms.BaseResp
+	BaseUUIDResp           = mms.BaseUUIDResp
+	CallbackReq            = mms.CallbackReq
+	CommentIdReq           = mms.CommentIdReq
+	CommentInfo            = mms.CommentInfo
+	CommentInfoResp        = mms.CommentInfoResp
+	CommentList            = mms.CommentList
+	CommentListReq         = mms.CommentListReq
+	CommentListResp        = mms.CommentListResp
+	Empty                  = mms.Empty
+	IDReq                  = mms.IDReq
+	IDsReq                 = mms.IDsReq
+	MemberCommentResp      = mms.MemberCommentResp
+	MemberInfo             = mms.MemberInfo
+	MemberInfoResp         = mms.MemberInfoResp
+	MemberInfoRespData     = mms.MemberInfoRespData
+	MemberListReq          = mms.MemberListReq
+	MemberListResp         = mms.MemberListResp
+	MemberLoginResp        = mms.MemberLoginResp
+	MemberRankInfo         = mms.MemberRankInfo
+	MemberRankListReq      = mms.MemberRankListReq
+	MemberRankListResp     = mms.MemberRankListResp
+	MemberRegisterReq      = mms.MemberRegisterReq
+	OauthLoginReq          = mms.OauthLoginReq
+	OauthProviderInfo      = mms.OauthProviderInfo
+	OauthProviderListReq   = mms.OauthProviderListReq
+	OauthProviderListResp  = mms.OauthProviderListResp
+	OauthRedirectResp      = mms.OauthRedirectResp
+	PageInfoReq            = mms.PageInfoReq
+	RegisterMemberResp     = mms.RegisterMemberResp
+	RegisterMemberRespData = mms.RegisterMemberRespData
+	ReplyInfo              = mms.ReplyInfo
+	ReplyList              = mms.ReplyList
+	ReplyReq               = mms.ReplyReq
+	TokenInfo              = mms.TokenInfo
+	TokenListReq           = mms.TokenListReq
+	TokenListResp          = mms.TokenListResp
+	UUIDReq                = mms.UUIDReq
+	UUIDsReq               = mms.UUIDsReq
+	UpdateMember2Resp      = mms.UpdateMember2Resp
+	UsernameReq            = mms.UsernameReq
 
 	Mms interface {
 		// group: base
@@ -55,7 +62,7 @@ type (
 		// Member management
 		CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 		// group: member
-		RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
+		RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error)
 		// group: member
 		UpdateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// group: member
@@ -69,7 +76,7 @@ type (
 		// group: member
 		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 		// group: member
-		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error)
 		// MemberRank management
 		CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
 		// group: memberrank
@@ -109,11 +116,11 @@ type (
 		// group: token
 		UpdateToken(ctx context.Context, in *TokenInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// Comment management
-		MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error)
 		// group: comment
-		MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
+		MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error)
 		// group: comment
-		MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
+		MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfoResp, error)
 		// group: comment
 		ReplyComment(ctx context.Context, in *ReplyInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		// group: comment
@@ -148,7 +155,7 @@ func (m *defaultMms) CreateMember(ctx context.Context, in *MemberInfo, opts ...g
 }
 
 // group: member
-func (m *defaultMms) RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error) {
+func (m *defaultMms) RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.RegisterMember(ctx, in, opts...)
 }
@@ -190,7 +197,7 @@ func (m *defaultMms) GetMember(ctx context.Context, in *Empty, opts ...grpc.Call
 }
 
 // group: member
-func (m *defaultMms) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+func (m *defaultMms) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.UpdateMember2(ctx, in, opts...)
 }
@@ -310,19 +317,19 @@ func (m *defaultMms) UpdateToken(ctx context.Context, in *TokenInfo, opts ...grp
 }
 
 // Comment management
-func (m *defaultMms) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+func (m *defaultMms) MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.MemberComment(ctx, in, opts...)
 }
 
 // group: comment
-func (m *defaultMms) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error) {
+func (m *defaultMms) MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.MemberGetCommentList(ctx, in, opts...)
 }
 
 // group: comment
-func (m *defaultMms) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error) {
+func (m *defaultMms) MemberGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfoResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.MemberGetComment(ctx, in, opts...)
 }

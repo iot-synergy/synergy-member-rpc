@@ -2,7 +2,6 @@ package comment
 
 import (
 	"context"
-	"errors"
 	"github.com/iot-synergy/synergy-member-rpc/ent/reply"
 	"google.golang.org/grpc/metadata"
 	"strings"
@@ -28,7 +27,7 @@ func NewMemberGetCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 // group: comment
-func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.CommentInfo, error) {
+func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.CommentInfoResp, error) {
 	// todo: add your logic here and delete this line
 	data, err := l.svcCtx.DB.Comment.Get(l.ctx, uint64(in.GetId()))
 
@@ -40,10 +39,18 @@ func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.Com
 	if ok {
 		value := incomingContext.Get("gateway-firebaseid")
 		if value == nil || len(value) == 0 {
-			return nil, errors.New("member token is null")
+			return &mms.CommentInfoResp{
+				Code: -1,
+				Msg:  "member token is null",
+				Data: nil,
+			}, nil
 		}
 		if data.MemberId != strings.Join(value, "") {
-			return nil, errors.New("member token error")
+			return &mms.CommentInfoResp{
+				Code: -1,
+				Msg:  "member token error",
+				Data: nil,
+			}, nil
 		}
 	}
 	id := int64(data.ID)
@@ -53,7 +60,11 @@ func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.Com
 	replies, err := l.svcCtx.DB.Reply.Query().Where(reply.CommentID(data.ID)).All(l.ctx)
 
 	if err != nil {
-		return nil, err
+		return &mms.CommentInfoResp{
+			Code: -1,
+			Msg:  err.Error(),
+			Data: nil,
+		}, nil
 	}
 
 	replyInfos := make([]*mms.ReplyInfo, 0)
@@ -74,13 +85,17 @@ func (l *MemberGetCommentLogic) MemberGetComment(in *mms.CommentIdReq) (*mms.Com
 		replyInfos = append(replyInfos, m)
 	}
 
-	return &mms.CommentInfo{
-		Id:         &id,
-		Title:      &data.Title,
-		Content:    &data.Content,
-		MemberId:   &data.MemberId,
-		CreateTime: &createTime,
-		UpdateTime: &updateTime,
-		Reply:      replyInfos,
+	return &mms.CommentInfoResp{
+		Code: 0,
+		Msg:  "成功",
+		Data: &mms.CommentInfo{
+			Id:         &id,
+			Title:      &data.Title,
+			Content:    &data.Content,
+			MemberId:   &data.MemberId,
+			CreateTime: &createTime,
+			UpdateTime: &updateTime,
+			Reply:      replyInfos,
+		},
 	}, nil
 }

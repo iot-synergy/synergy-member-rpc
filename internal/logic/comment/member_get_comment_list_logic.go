@@ -2,7 +2,6 @@ package comment
 
 import (
 	"context"
-	"errors"
 	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
@@ -27,7 +26,7 @@ func NewMemberGetCommentListLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 // group: comment
-func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq) (*mms.CommentList, error) {
+func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq) (*mms.CommentListResp, error) {
 	// todo: add your logic here and delete this line
 	query := l.svcCtx.DB.Comment.Query()
 
@@ -35,7 +34,11 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 	if ok {
 		value := incomingContext.Get("gateway-firebaseid")
 		if value == nil || len(value) == 0 {
-			return nil, errors.New("member token is null")
+			return &mms.CommentListResp{
+				Code: -1,
+				Msg:  "member token is null",
+				Data: nil,
+			}, nil
 		}
 		query.Where(comment.MemberId(strings.Join(value, "")))
 	}
@@ -47,12 +50,16 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 	}
 
 	query.Limit(int(in.GetPageSize()))
-	query.Offset(int((in.GetPageNo() - 1) * in.GetPageSize()))
+	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
 
 	all, err := query.All(l.ctx)
 
 	if err != nil {
-		return nil, err
+		return &mms.CommentListResp{
+			Code: -1,
+			Msg:  err.Error(),
+			Data: nil,
+		}, nil
 	}
 
 	infos := make([]*mms.CommentInfo, 0)
@@ -69,7 +76,11 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 		infos = append(infos, &info)
 	}
 
-	return &mms.CommentList{
-		Titles: infos,
+	return &mms.CommentListResp{
+		Code: 0,
+		Msg:  "成功",
+		Data: &mms.CommentList{
+			List: infos,
+		},
 	}, nil
 }

@@ -2,8 +2,6 @@ package comment
 
 import (
 	"context"
-	"errors"
-	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"google.golang.org/grpc/metadata"
 	"strconv"
 	"strings"
@@ -30,15 +28,23 @@ func NewMemberCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Mem
 }
 
 // Comment management
-func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.BaseResp, error) {
+func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.MemberCommentResp, error) {
 	// todo: add your logic here and delete this line
 
 	if *in.Title == "" || *in.Content == "" {
-		return nil, errors.New("title or content is null")
+		return &mms.MemberCommentResp{
+			Code: -1,
+			Msg:  "title or content is null",
+			Data: "",
+		}, nil
 	}
 
 	if len(*in.Title) > 256 || len(*in.Content) > 2048 {
-		return nil, errors.New("title length exceeds 256 or content length exceeds 2048")
+		return &mms.MemberCommentResp{
+			Code: -1,
+			Msg:  "title length exceeds 256 or content length exceeds 2048",
+			Data: "",
+		}, nil
 	}
 
 	query := l.svcCtx.DB.Comment.Create().
@@ -52,7 +58,11 @@ func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.BaseResp, 
 	if ok {
 		value := incomingContext.Get("gateway-firebaseid")
 		if value == nil || len(value) == 0 {
-			return nil, errors.New("member token is null")
+			return &mms.MemberCommentResp{
+				Code: -1,
+				Msg:  "member token is null",
+				Data: "",
+			}, nil
 		}
 		query.SetMemberId(strings.Join(value, ""))
 	}
@@ -60,7 +70,15 @@ func (l *MemberCommentLogic) MemberComment(in *mms.CommentInfo) (*mms.BaseResp, 
 	save, err := query.Save(l.ctx)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
+		return &mms.MemberCommentResp{
+			Code: -1,
+			Msg:  err.Error(),
+			Data: "",
+		}, nil
 	}
-	return &mms.BaseResp{Msg: strconv.FormatUint(save.ID, 10)}, nil
+	return &mms.MemberCommentResp{
+		Code: 0,
+		Msg:  "成功",
+		Data: strconv.FormatUint(save.ID, 10),
+	}, nil
 }

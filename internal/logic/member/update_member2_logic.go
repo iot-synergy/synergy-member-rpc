@@ -2,12 +2,9 @@ package member
 
 import (
 	"context"
-	"errors"
 	"strings"
 
-	"github.com/iot-synergy/synergy-common/i18n"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
-	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"google.golang.org/grpc/metadata"
 
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
@@ -31,21 +28,33 @@ func NewUpdateMember2Logic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 // group: member
-func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.BaseResp, error) {
+func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.UpdateMember2Resp, error) {
 	// todo: add your logic here and delete this line
 	value := metadata.ValueFromIncomingContext(l.ctx, "gateway-firebaseid")
 	forein_id := strings.Join(value, "")
 	if len(forein_id) <= 0 {
-		return nil, errors.New("forein_id is null")
+		return &mms.UpdateMember2Resp{
+			Code: -1,
+			Msg:  "forein_id is null",
+			Data: false,
+		}, nil
 	}
 
 	if len(in.GetNickname()) > 255 || len(in.GetAvatar()) > 512 {
-		return nil, errors.New("nickname length more 255 or avatar length more 512")
+		return &mms.UpdateMember2Resp{
+			Code: -1,
+			Msg:  "nickname length more 255 or avatar length more 512",
+			Data: false,
+		}, nil
 	}
 
 	//校验昵称的唯一性
 	if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
-		return nil, errors.New("nickname already exists")
+		return &mms.UpdateMember2Resp{
+			Code: -1,
+			Msg:  "nickname already exists",
+			Data: false,
+		}, nil
 	}
 
 	query := l.svcCtx.DB.Member.Update().Where(member.ForeinIDEQ(forein_id)).
@@ -57,8 +66,16 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.BaseResp, e
 	err := query.Exec(l.ctx)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
+		return &mms.UpdateMember2Resp{
+			Code: -1,
+			Msg:  err.Error(),
+			Data: false,
+		}, nil
 	}
 
-	return &mms.BaseResp{Msg: i18n.UpdateSuccess}, nil
+	return &mms.UpdateMember2Resp{
+		Code: 0,
+		Msg:  "成功",
+		Data: true,
+	}, nil
 }
