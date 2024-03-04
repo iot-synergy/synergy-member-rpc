@@ -179,6 +179,11 @@ message replyInfo {
   optional int64 update_time = 7;
 }
 
+message CommentListData {
+  repeated commentInfo data = 1;
+  int64 total = 2;
+}
+
 message commentList {
   repeated commentInfo list = 1;
 }
@@ -186,7 +191,7 @@ message commentList {
 message CommentListResp {
   int64 code = 1;
   string msg = 2;
-  optional commentList data = 3;
+  optional CommentListData data = 3;
 }
 
 message replyReq{

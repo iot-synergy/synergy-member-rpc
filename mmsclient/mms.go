@@ -21,6 +21,7 @@ type (
 	CommentInfo            = mms.CommentInfo
 	CommentInfoResp        = mms.CommentInfoResp
 	CommentList            = mms.CommentList
+	CommentListData        = mms.CommentListData
 	CommentListReq         = mms.CommentListReq
 	CommentListResp        = mms.CommentListResp
 	Empty                  = mms.Empty

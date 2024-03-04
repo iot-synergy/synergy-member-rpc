@@ -79,8 +79,9 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 	return &mms.CommentListResp{
 		Code: 0,
 		Msg:  "成功",
-		Data: &mms.CommentList{
-			List: infos,
+		Data: &mms.CommentListData{
+			Data:  infos,
+			Total: int64(len(infos)),
 		},
 	}, nil
 }
