@@ -31,7 +31,7 @@ func (l *AdminGetReplyListLogic) AdminGetReplyList(in *mms.ReplyReq) (*mms.Reply
 	replies, err := l.svcCtx.DB.Reply.Query().
 		Where(reply.AdminId(in.GetAdminId())).
 		Limit(int(in.GetPageSize())).
-		Offset(int((in.GetPageNo() - 1) * in.GetPageSize())).
+		Offset(int((in.GetPage() - 1) * in.GetPageSize())).
 		All(l.ctx)
 
 	if err != nil {
