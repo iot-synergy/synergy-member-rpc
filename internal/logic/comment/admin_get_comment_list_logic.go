@@ -5,6 +5,7 @@ import (
 	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,6 +34,16 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	} else if in.GetIsReply() == 1 {
 		query.Where(comment.IsReply(true))
 	}
+	if in.GetTitle() != "" {
+		query.Where(comment.TitleContains(in.GetTitle()))
+	}
+	if in.GetContent() != "" {
+		query.Where(comment.ContentContains(in.GetContent()))
+	}
+	if in.GetCommentTime() != nil && len(in.GetCommentTime()) == 2 {
+		query.Where(comment.CreateTimeGTE(time.UnixMilli(in.GetCommentTime()[0])))
+		query.Where(comment.CreateTimeLTE(time.UnixMilli(in.GetCommentTime()[1])))
+	}
 
 	query.Limit(int(in.GetPageSize()))
 	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
@@ -53,6 +64,7 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 			Content:    &comm.Content,
 			MemberId:   &comm.MemberId,
 			CreateTime: &createTime,
+			IsReply:    &comm.IsReply,
 		}
 		infos = append(infos, &info)
 	}

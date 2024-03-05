@@ -161,6 +161,7 @@ message commentInfo {
   optional int64 create_time = 5;
   optional int64 update_time = 6;
   repeated replyInfo reply = 7;
+  optional bool isReply = 8;
 }
 
 message CommentInfoResp {
@@ -198,6 +199,7 @@ message replyReq{
   optional string adminId = 1;
   optional int64 page = 2;
   optional int64 pageSize = 3;
+  optional string reply = 4;
 }
 
 message replyList{
@@ -208,6 +210,9 @@ message commentListReq {
   optional int32 isReply = 1;
   optional int64 page = 2;
   optional int64 pageSize = 3;
+  optional string title = 4;
+  optional string content = 5;
+  repeated int64 commentTime = 6;
 }
 
 message commentIdReq {
