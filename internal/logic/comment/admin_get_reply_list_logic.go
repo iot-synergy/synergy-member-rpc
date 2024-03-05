@@ -28,11 +28,14 @@ func NewAdminGetReplyListLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *AdminGetReplyListLogic) AdminGetReplyList(in *mms.ReplyReq) (*mms.ReplyList, error) {
 	// todo: add your logic here and delete this line
 
-	replies, err := l.svcCtx.DB.Reply.Query().
+	query := l.svcCtx.DB.Reply.Query().
 		Where(reply.AdminId(in.GetAdminId())).
 		Limit(int(in.GetPageSize())).
-		Offset(int((in.GetPage() - 1) * in.GetPageSize())).
-		All(l.ctx)
+		Offset(int((in.GetPage() - 1) * in.GetPageSize()))
+	if in.GetReply() != "" {
+		query.Where(reply.ReplyContains(in.GetReply()))
+	}
+	replies, err := query.All(l.ctx)
 
 	if err != nil {
 		return nil, err
