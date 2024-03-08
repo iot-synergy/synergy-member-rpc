@@ -11,4 +11,5 @@ type Config struct {
 	DatabaseConf config.DatabaseConf
 	RedisConf    config.RedisConf
 	CoreRpc      zrpc.RpcClientConf
+	FcmRpc       zrpc.RpcClientConf
 }

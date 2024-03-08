@@ -3,6 +3,7 @@ package comment
 import (
 	"context"
 	"errors"
+	"github.com/iot-synergy/synergy-fcm/synergyFCM"
 	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/utils/dberrorhandler"
 	"strconv"
@@ -60,5 +61,18 @@ func (l *ReplyCommentLogic) ReplyComment(in *mms.ReplyInfo) (*mms.BaseResp, erro
 	if get.IsReply == false {
 		l.svcCtx.DB.Comment.Update().SetUpdateTime(time.Now()).SetIsReply(true).Where(comment.ID(get.ID)).SaveX(l.ctx)
 	}
+
+	//通知会员
+	notify := make(map[string]string)
+	notify["title"] = "peckperk"
+	notify["body"] = "We have replied to your message。"
+	data := make(map[string]string)
+	data["type"] = "COMMENT_MSG"
+	l.svcCtx.Fcm.SendMessage(l.ctx, &synergyFCM.SendMessageRequest{
+		UserId: in.GetAdminId(),
+		Notify: notify,
+		Data:   data,
+	})
+
 	return &mms.BaseResp{Msg: strconv.FormatUint(save.ID, 10)}, nil
 }

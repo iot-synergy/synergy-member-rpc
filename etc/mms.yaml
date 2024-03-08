@@ -37,3 +37,8 @@ Prometheus:
   Host: 0.0.0.0
   Port: 4003
   Path: /metrics
+
+FcmRpc:
+  Endpoints:
+    - 127.0.0.1:9120
+  Enabled: true
