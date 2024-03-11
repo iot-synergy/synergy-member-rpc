@@ -60,6 +60,13 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 		query.Where(comment.CreateTimeLTE(time.UnixMilli(in.GetCommentTime()[1])))
 	}
 
+	count := int64(query.CountX(l.ctx))
+	if in.GetPage() <= 0 {
+		*in.Page = 1
+	}
+	if in.GetPageSize() <= 0 {
+		*in.PageSize = 1
+	}
 	query.Limit(int(in.GetPageSize()))
 	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
 
@@ -93,7 +100,7 @@ func (l *MemberGetCommentListLogic) MemberGetCommentList(in *mms.CommentListReq)
 		Msg:  "成功",
 		Data: &mms.CommentListData{
 			Data:  infos,
-			Total: int64(len(infos)),
+			Total: count,
 		},
 	}, nil
 }

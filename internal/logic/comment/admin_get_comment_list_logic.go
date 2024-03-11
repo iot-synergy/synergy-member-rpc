@@ -45,6 +45,13 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 		query.Where(comment.CreateTimeLTE(time.UnixMilli(in.GetCommentTime()[1])))
 	}
 
+	count := int64(query.CountX(l.ctx))
+	if in.GetPage() <= 0 {
+		*in.Page = 1
+	}
+	if in.GetPageSize() <= 0 {
+		*in.PageSize = 1
+	}
 	query.Limit(int(in.GetPageSize()))
 	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
 
@@ -70,6 +77,7 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	}
 
 	return &mms.CommentList{
-		List: infos,
+		List:  infos,
+		Count: &count,
 	}, nil
 }

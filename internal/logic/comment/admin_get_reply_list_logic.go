@@ -29,12 +29,20 @@ func (l *AdminGetReplyListLogic) AdminGetReplyList(in *mms.ReplyReq) (*mms.Reply
 	// todo: add your logic here and delete this line
 
 	query := l.svcCtx.DB.Reply.Query().
-		Where(reply.AdminId(in.GetAdminId())).
-		Limit(int(in.GetPageSize())).
-		Offset(int((in.GetPage() - 1) * in.GetPageSize()))
+		Where(reply.AdminId(in.GetAdminId()))
 	if in.GetReply() != "" {
 		query.Where(reply.ReplyContains(in.GetReply()))
 	}
+
+	count := int64(query.CountX(l.ctx))
+	if in.GetPage() <= 0 {
+		*in.Page = 1
+	}
+	if in.GetPageSize() <= 0 {
+		*in.PageSize = 1
+	}
+	query.Limit(int(in.GetPageSize())).
+		Offset(int((in.GetPage() - 1) * in.GetPageSize()))
 	replies, err := query.All(l.ctx)
 
 	if err != nil {
@@ -62,5 +70,6 @@ func (l *AdminGetReplyListLogic) AdminGetReplyList(in *mms.ReplyReq) (*mms.Reply
 
 	return &mms.ReplyList{
 		ReplyList: replyList,
+		Count:     &count,
 	}, nil
 }
