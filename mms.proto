@@ -85,6 +85,7 @@ message MemberInfo {
   optional string wechat_id = 12;
   optional string rank_code = 13;
   optional int64 expired_at = 14;
+  optional string forein_id = 15;
 }
 
 message MemberListResp {
