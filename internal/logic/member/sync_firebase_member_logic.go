@@ -66,7 +66,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 				member.Avatar = *d.Avatar
 				member.Email = *d.Email
 				member.UpdatedAt = time.Now()
-				l.svcCtx.DB.Member.UpdateOne(member)
+				l.svcCtx.DB.Member.UpdateOne(member).Exec(context.Background())
 				all += 1
 				updated += 1
 			} else {
