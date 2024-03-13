@@ -31,7 +31,7 @@ func NewSyncFirebaseMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMemberResp, error) {
 	// todo: add your logic here and delete this line
 	page := 0
-	pageSize := 10
+	pageSize := 100
 	pageToken := ""
 
 	all := 0
@@ -83,14 +83,16 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 
 				if err != nil {
 					l.Error("query.Save error:" + err.Error())
-					continue
+
+				} else {
+					new += 1
 				}
-				new += 1
+
 			}
 
 		}
 
-		if resp.NextPageToken == "" {
+		if pageToken == "" {
 			break
 		}
 
