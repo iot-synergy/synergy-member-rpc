@@ -1,0 +1,92 @@
+ syntax = "proto3";
+ 
+message CommentInfo {
+  optional int64 id = 1;
+  optional string title = 2;
+  optional string content = 3;
+  optional string memberId = 4;
+  optional int64 create_time = 5;
+  optional int64 update_time = 6;
+  repeated ReplyInfo reply = 7;
+  optional bool isReply = 8;
+}
+
+message CommentInfoResp {
+  int64 code = 1;
+  string msg = 2;
+  optional CommentInfo data = 3;
+}
+
+message ReplyInfo {
+  optional int64 id = 1;
+  optional int64 commentId = 2;
+  optional string reply = 3;
+  optional string adminId = 4;
+  optional string adminName = 5;
+  optional int64 create_time = 6;
+  optional int64 update_time = 7;
+}
+
+message CommentListData {
+  repeated CommentInfo data = 1;
+  int64 total = 2;
+}
+
+message CommentList {
+  repeated CommentInfo list = 1;
+  optional int64 count = 2;
+}
+
+message CommentListResp {
+  int64 code = 1;
+  string msg = 2;
+  optional CommentListData data = 3;
+}
+
+message ReplyReq{
+  optional string adminId = 1;
+  optional int64 page = 2;
+  optional int64 pageSize = 3;
+  optional string reply = 4;
+}
+
+message ReplyList{
+  repeated ReplyInfo replyList = 1;
+  optional int64 count = 2;
+}
+
+message CommentListReq {
+  optional int32 isReply = 1;
+  optional int64 page = 2;
+  optional int64 pageSize = 3;
+  optional string title = 4;
+  optional string content = 5;
+  repeated int64 commentTime = 6;
+}
+
+message CommentIdReq {
+  optional int64 id = 1;
+}
+
+message MemberCommentResp {
+  int64 code = 1;
+  string msg = 2;
+  string data = 3;
+}
+ 
+service Mms {
+ //  group: comment
+  rpc memberComment(CommentInfo) returns (MemberCommentResp);
+  //  group: comment
+  rpc memberGetCommentList(CommentListReq) returns (CommentListResp);
+  //  group: comment
+  rpc memberGetComment(CommentIdReq) returns (CommentInfoResp);
+  //  group: comment
+  rpc replyComment(ReplyInfo) returns (BaseResp);
+  //  group: comment
+  rpc adminGetCommentList(CommentListReq) returns (CommentList);
+  //  group: comment
+  rpc adminGetComment(CommentIdReq) returns (CommentInfo);
+  //  group: comment
+  rpc adminGetReplyList(ReplyReq) returns (ReplyList);  
+}
