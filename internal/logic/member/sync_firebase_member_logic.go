@@ -60,7 +60,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 		for _, d := range resp.Data {
 
 			member, err := l.svcCtx.DB.Member.Query().Where(member.ForeinID(d.Uid)).First(context.Background())
-			if err != nil && member != nil {
+			if err == nil && member != nil {
 				member.Username = d.UserName
 				member.Nickname = d.NickName
 				member.Avatar = *d.Avatar
