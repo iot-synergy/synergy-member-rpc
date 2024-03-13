@@ -39,7 +39,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 	updated := 0
 
 	for {
-		resp, err := l.svcCtx.Fcm.GetUsers(l.ctx, &synergyFCM.PageInfoReq{
+		resp, err := l.svcCtx.Fcm.GetUsers(context.Background(), &synergyFCM.PageInfoReq{
 			Page:      uint64(page),
 			PageSize:  uint64(pageSize),
 			PageToken: pageToken,
@@ -79,7 +79,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 					SetNotNilNickname(&d.NickName).
 					SetNotNilPassword(pointy.GetPointer(encrypt.BcryptEncrypt("Abcd1234")))
 
-				_, err := query.Save(l.ctx)
+				_, err := query.Save(context.Background())
 
 				if err != nil {
 					continue
