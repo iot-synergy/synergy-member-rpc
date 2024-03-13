@@ -56,7 +56,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 				},
 			}, err
 		}
-
+		pageToken = resp.NextPageToken
 		for _, d := range resp.Data {
 
 			member, err := l.svcCtx.DB.Member.Query().Where(member.ForeinID(d.Uid)).First(context.Background())
@@ -82,6 +82,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 				_, err := query.Save(context.Background())
 
 				if err != nil {
+					l.Error("query.Save error:" + err.Error())
 					continue
 				}
 				new += 1
@@ -93,7 +94,6 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 			break
 		}
 
-		pageToken = resp.NextPageToken
 	}
 
 	return &mms.SyncMemberResp{
