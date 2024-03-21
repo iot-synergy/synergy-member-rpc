@@ -79,6 +79,7 @@ type (
 		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error)
 		SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error)
+		GetMemberByForeinId(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		// MemberRank management
 		CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
 		UpdateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseResp, error)
@@ -203,6 +204,11 @@ func (m *defaultMms) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...
 func (m *defaultMms) SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.SyncFirebaseMember(ctx, in, opts...)
+}
+
+func (m *defaultMms) GetMemberByForeinId(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.GetMemberByForeinId(ctx, in, opts...)
 }
 
 // MemberRank management

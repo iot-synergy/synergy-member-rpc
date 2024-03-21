@@ -37,6 +37,7 @@ const (
 	Mms_GetMember_FullMethodName              = "/mms.Mms/getMember"
 	Mms_UpdateMember2_FullMethodName          = "/mms.Mms/updateMember2"
 	Mms_SyncFirebaseMember_FullMethodName     = "/mms.Mms/syncFirebaseMember"
+	Mms_GetMemberByForeinId_FullMethodName    = "/mms.Mms/getMemberByForeinId"
 	Mms_CreateMemberRank_FullMethodName       = "/mms.Mms/createMemberRank"
 	Mms_UpdateMemberRank_FullMethodName       = "/mms.Mms/updateMemberRank"
 	Mms_GetMemberRankList_FullMethodName      = "/mms.Mms/getMemberRankList"
@@ -99,6 +100,8 @@ type MmsClient interface {
 	UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error)
 	// group: member
 	SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error)
+	// group: member
+	GetMemberByForeinId(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(ctx context.Context, in *MemberRankInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
@@ -306,6 +309,15 @@ func (c *mmsClient) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...g
 func (c *mmsClient) SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error) {
 	out := new(SyncMemberResp)
 	err := c.cc.Invoke(ctx, Mms_SyncFirebaseMember_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) GetMemberByForeinId(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error) {
+	out := new(MemberInfo)
+	err := c.cc.Invoke(ctx, Mms_GetMemberByForeinId_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -524,6 +536,8 @@ type MmsServer interface {
 	UpdateMember2(context.Context, *MemberInfo) (*UpdateMember2Resp, error)
 	// group: member
 	SyncFirebaseMember(context.Context, *Empty) (*SyncMemberResp, error)
+	// group: member
+	GetMemberByForeinId(context.Context, *UUIDReq) (*MemberInfo, error)
 	// MemberRank management
 	// group: memberrank
 	CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error)
@@ -625,6 +639,9 @@ func (UnimplementedMmsServer) UpdateMember2(context.Context, *MemberInfo) (*Upda
 }
 func (UnimplementedMmsServer) SyncFirebaseMember(context.Context, *Empty) (*SyncMemberResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncFirebaseMember not implemented")
+}
+func (UnimplementedMmsServer) GetMemberByForeinId(context.Context, *UUIDReq) (*MemberInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMemberByForeinId not implemented")
 }
 func (UnimplementedMmsServer) CreateMemberRank(context.Context, *MemberRankInfo) (*BaseIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMemberRank not implemented")
@@ -1016,6 +1033,24 @@ func _Mms_SyncFirebaseMember_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MmsServer).SyncFirebaseMember(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_GetMemberByForeinId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UUIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).GetMemberByForeinId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_GetMemberByForeinId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).GetMemberByForeinId(ctx, req.(*UUIDReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1440,6 +1475,10 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "syncFirebaseMember",
 			Handler:    _Mms_SyncFirebaseMember_Handler,
+		},
+		{
+			MethodName: "getMemberByForeinId",
+			Handler:    _Mms_GetMemberByForeinId_Handler,
 		},
 		{
 			MethodName: "createMemberRank",

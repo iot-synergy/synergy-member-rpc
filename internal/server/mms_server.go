@@ -118,6 +118,11 @@ func (s *MmsServer) SyncFirebaseMember(ctx context.Context, in *mms.Empty) (*mms
 	return l.SyncFirebaseMember(in)
 }
 
+func (s *MmsServer) GetMemberByForeinId(ctx context.Context, in *mms.UUIDReq) (*mms.MemberInfo, error) {
+	l := member.NewGetMemberByForeinIdLogic(ctx, s.svcCtx)
+	return l.GetMemberByForeinId(in)
+}
+
 // MemberRank management
 func (s *MmsServer) CreateMemberRank(ctx context.Context, in *mms.MemberRankInfo) (*mms.BaseIDResp, error) {
 	l := memberrank.NewCreateMemberRankLogic(ctx, s.svcCtx)
