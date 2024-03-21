@@ -3,18 +3,25 @@ ListenOn: 0.0.0.0:9103
 
 DatabaseConf:
   Type: mysql
-  Host: database-1.chwxvihnhaot.us-east-2.rds.amazonaws.com
+  Host: 127.0.0.1
   Port: 3306
-  DBName: peckperk
-  Username: peckperk # set your username
-  Password: peckperk # set your password
+  DBName: database240219
+  Username: root # set your username
+  Password: xiaocaihong # set your password
   MaxOpenConn: 100
   SSLMode: disable
   CacheTime: 5
 
 RedisConf:
-  Host: redis.synergy-prod:6379
+  Host: 192.168.200.128:6379
+  Type: "node"
+  Key: "123"
   Db: 1
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: mms.rpc
 
 Log:
   ServiceName: mmsRpcLogger
@@ -34,4 +41,4 @@ Prometheus:
 FcmRpc:
   Endpoints:
     - 127.0.0.1:9120
-  Enabled: true
+  Enabled: false
