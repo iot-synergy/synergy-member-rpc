@@ -123,6 +123,11 @@ func (s *MmsServer) GetMemberByForeinId(ctx context.Context, in *mms.UUIDReq) (*
 	return l.GetMemberByForeinId(in)
 }
 
+func (s *MmsServer) GetMemberByForeinId2(ctx context.Context, in *mms.UUIDReq) (*mms.MemberInfoResp, error) {
+	l := member.NewGetMemberByForeinId2Logic(ctx, s.svcCtx)
+	return l.GetMemberByForeinId2(in)
+}
+
 // MemberRank management
 func (s *MmsServer) CreateMemberRank(ctx context.Context, in *mms.MemberRankInfo) (*mms.BaseIDResp, error) {
 	l := memberrank.NewCreateMemberRankLogic(ctx, s.svcCtx)

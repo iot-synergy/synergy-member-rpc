@@ -28,7 +28,6 @@ func NewGetMemberByForeinIdLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 // group: member
 func (l *GetMemberByForeinIdLogic) GetMemberByForeinId(in *mms.UUIDReq) (*mms.MemberInfo, error) {
-	// todo: add your logic here and delete this line
 	result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(in.Id)).WithRanks().First(l.ctx)
 	if err != nil {
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
@@ -49,5 +48,4 @@ func (l *GetMemberByForeinIdLogic) GetMemberByForeinId(in *mms.UUIDReq) (*mms.Me
 		ExpiredAt: pointy.GetPointer(result.ExpiredAt.UnixMilli()),
 		ForeinId:  &result.ForeinID,
 	}, nil
-	return &mms.MemberInfo{}, nil
 }

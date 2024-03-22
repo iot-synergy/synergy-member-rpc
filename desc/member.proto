@@ -126,4 +126,6 @@ service Mms {
   rpc syncFirebaseMember(Empty) returns (SyncMemberResp);
   //  group: member
   rpc getMemberByForeinId(UUIDReq) returns (MemberInfo);
+  //  group: member
+  rpc getMemberByForeinId2(UUIDReq) returns (MemberInfoResp);
 }
