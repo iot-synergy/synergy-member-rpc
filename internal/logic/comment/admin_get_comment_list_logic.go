@@ -2,7 +2,9 @@ package comment
 
 import (
 	"context"
+	"github.com/iot-synergy/synergy-member-rpc/ent"
 	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
+	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
 	"time"
@@ -65,6 +67,11 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	for _, comm := range all {
 		id := int64(comm.ID)
 		createTime := comm.CreateTime.UnixMilli()
+		result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(comm.MemberId)).WithRanks().First(l.ctx)
+		if err != nil {
+			l.Logger.Error(err, err.Error())
+			result = new(ent.Member)
+		}
 		info := mms.CommentInfo{
 			Id:         &id,
 			Title:      &comm.Title,
@@ -72,6 +79,10 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 			MemberId:   &comm.MemberId,
 			CreateTime: &createTime,
 			IsReply:    &comm.IsReply,
+			UserName:   &result.Username,
+			NickName:   &result.Nickname,
+			Email:      &result.Email,
+			Avatar:     &result.Avatar,
 		}
 		infos = append(infos, &info)
 	}

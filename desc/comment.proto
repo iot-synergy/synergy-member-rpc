@@ -9,6 +9,10 @@ message CommentInfo {
   optional int64 update_time = 6;
   repeated ReplyInfo reply = 7;
   optional bool isReply = 8;
+  optional string userName = 9;
+  optional string nickName = 10;
+  optional string email = 11;
+  optional string avatar = 12;
 }
 
 message CommentInfoResp {
