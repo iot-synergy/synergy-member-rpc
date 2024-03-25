@@ -39,7 +39,6 @@ func (l *GetMemberByForeinIdLogic) GetMemberByForeinId(in *mms.UUIDReq) (*mms.Me
 		UpdatedAt: pointy.GetPointer(result.UpdatedAt.UnixMilli()),
 		Status:    pointy.GetPointer(uint32(result.Status)),
 		Username:  &result.Username,
-		Password:  &result.Password,
 		Nickname:  &result.Nickname,
 		RankId:    &result.RankID,
 		Mobile:    &result.Mobile,
