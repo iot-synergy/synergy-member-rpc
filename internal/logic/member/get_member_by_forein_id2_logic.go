@@ -28,8 +28,11 @@ func NewGetMemberByForeinId2Logic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *GetMemberByForeinId2Logic) GetMemberByForeinId2(in *mms.UUIDReq) (*mms.MemberInfoResp, error) {
-	re := regexp.MustCompile("^peckperk_peckperk-")
-	result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(re.ReplaceAllLiteralString(in.Id, ""))).WithRanks().First(l.ctx)
+	re := regexp.MustCompile("^peckperk_")
+	literalString := re.ReplaceAllLiteralString(in.Id, "")
+	re = regexp.MustCompile("^peckperk-")
+	literalString = re.ReplaceAllLiteralString(literalString, "")
+	result, err := l.svcCtx.DB.Member.Query().Where(member.ForeinIDEQ(literalString)).WithRanks().First(l.ctx)
 	if err != nil {
 		return &mms.MemberInfoResp{
 			Code: 0,
