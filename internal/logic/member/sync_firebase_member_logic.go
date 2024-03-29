@@ -59,14 +59,19 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.Empty) (*mms.SyncMe
 		pageToken = resp.NextPageToken
 		for _, d := range resp.Data {
 
-			member, err := l.svcCtx.DB.Member.Query().Where(member.ForeinID(d.Uid)).First(context.Background())
-			if err == nil && member != nil {
-				member.Username = d.UserName
-				member.Nickname = d.NickName
-				member.Avatar = *d.Avatar
-				member.Email = *d.Email
-				member.UpdatedAt = time.Now()
-				l.svcCtx.DB.Member.UpdateOne(member).Exec(context.Background())
+			mem, err := l.svcCtx.DB.Member.Query().Where(member.ForeinID(d.Uid)).First(context.Background())
+			if err == nil && mem != nil {
+				mem.Username = d.UserName
+				mem.Nickname = d.NickName
+				mem.Avatar = *d.Avatar
+				mem.Email = *d.Email
+				mem.UpdatedAt = time.Now()
+				l.svcCtx.DB.Member.UpdateOneID(mem.ID).
+					SetNotNilUsername(&d.UserName).
+					SetNotNilEmail(d.Email).
+					SetNotNilAvatar(d.Avatar).
+					SetNotNilNickname(&d.NickName).Exec(context.Background())
+				// l.svcCtx.DB.Member.UpdateOneID(mem.ID)..Exec(context.Background())
 				all += 1
 				updated += 1
 			} else {
