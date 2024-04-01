@@ -31,7 +31,6 @@ func NewSyncFirebaseMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.SyncMemberReq) (*mms.SyncMemberResp, error) {
 	// todo: add your logic here and delete this line
 	page := 0
-	pageSize := 100
 
 	all := 0
 	new := 0
@@ -39,7 +38,7 @@ func (l *SyncFirebaseMemberLogic) SyncFirebaseMember(in *mms.SyncMemberReq) (*mm
 
 	resp, err := l.svcCtx.Fcm.GetUsers(context.Background(), &synergyFCM.PageInfoReq{
 		Page:      uint64(page),
-		PageSize:  uint64(pageSize),
+		PageSize:  uint64(in.Size),
 		PageToken: in.NextPageToken,
 	})
 
