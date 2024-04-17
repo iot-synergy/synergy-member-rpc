@@ -67,6 +67,7 @@ func (l *GetMemberLogic) GetMember(in *mms.Empty) (*mms.MemberInfoResp, error) {
 				Email:     &result.Email,
 				Avatar:    &result.Avatar,
 				ExpiredAt: pointy.GetPointer(result.ExpiredAt.UnixMilli()),
+				ForeinId:  &result.ForeinID,
 			},
 		},
 	}, nil

@@ -72,6 +72,7 @@ func (l *GetMemberListLogic) GetMemberList(in *mms.MemberListReq) (*mms.MemberLi
 			Email:     &v.Email,
 			Avatar:    &v.Avatar,
 			ExpiredAt: pointy.GetPointer(v.ExpiredAt.UnixMilli()),
+			ForeinId:  &v.ForeinID,
 		})
 	}
 
