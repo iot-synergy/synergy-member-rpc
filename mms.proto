@@ -3,9 +3,24 @@ syntax = "proto3";
 package mms;
 option go_package="./mms";
 
-message OauthLoginReq {
-  string state = 1;
-  string provider = 2;
+message MemberRegisterReq {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message SyncMemberResp {
+  int64 code = 1;
+  string msg = 2;
+  uint64 total = 3;
+  repeated MemberInfo data = 4;
+  string nextPageToken = 5;
+}
+
+message OauthProviderListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
 }
 
 message TokenInfo {
@@ -20,12 +35,30 @@ message TokenInfo {
   optional string username = 9;
 }
 
-message UUIDsReq {
-  repeated string ids = 1;
+message BaseResp {
+  string msg = 1;
 }
 
-message CommentIdReq {
-  optional int64 id = 1;
+message CommentListResp {
+  int64 code = 1;
+  string msg = 2;
+  optional CommentListData data = 3;
+}
+
+message UUIDReq {
+  string id = 1;
+}
+
+message BaseIDResp {
+  uint64 id = 1;
+  string msg = 2;
+}
+
+message ReplyReq {
+  optional string adminId = 1;
+  optional int64 page = 2;
+  optional int64 pageSize = 3;
+  optional string reply = 4;
 }
 
 message MemberLoginResp {
@@ -35,65 +68,50 @@ message MemberLoginResp {
   uint64 rank_id = 4;
 }
 
-message UsernameReq {
-  string username = 1;
+message SyncMemberReq {
+  int64 size = 1;
+  string nextPageToken = 2;
 }
 
-message CallbackReq {
-  string state = 1;
-  string code = 2;
-}
-
-message BaseUUIDResp {
-  string id = 1;
-  string msg = 2;
-}
-
-message CommentInfoResp {
-  int64 code = 1;
-  string msg = 2;
-  optional CommentInfo data = 3;
-}
-
-message MemberCommentResp {
-  int64 code = 1;
-  string msg = 2;
-  string data = 3;
-}
-
-message OauthProviderListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
+message MemberRankInfo {
+  optional uint64 id = 1;
+  optional int64 created_at = 2;
+  optional int64 updated_at = 3;
+  optional string name = 4;
+  optional string description = 5;
+  optional string remark = 6;
+  optional string code = 7;
 }
 
 message IDsReq {
   repeated uint64 ids = 1;
 }
 
-message BaseResp {
-  string msg = 1;
+message UUIDsReq {
+  repeated string ids = 1;
 }
 
-message ReplyInfo {
-  optional int64 id = 1;
-  optional int64 commentId = 2;
-  optional string reply = 3;
-  optional string adminId = 4;
-  optional string adminName = 5;
-  optional int64 create_time = 6;
-  optional int64 update_time = 7;
+message MemberRankListResp {
+  uint64 total = 1;
+  repeated MemberRankInfo data = 2;
 }
 
-message ReplyList {
-  repeated ReplyInfo replyList = 1;
-  optional int64 count = 2;
-}
-
-message SyncMemberResp {
+message UpdateMember2Resp {
   int64 code = 1;
   string msg = 2;
-  optional SyncResult data = 3;
+  bool data = 3;
+}
+
+message MemberRankListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
+  optional string description = 4;
+  optional string remark = 5;
+}
+
+message OauthRedirectResp {
+  string url = 1;
 }
 
 message TokenListResp {
@@ -101,13 +119,81 @@ message TokenListResp {
   repeated TokenInfo data = 2;
 }
 
-message IDReq {
-  uint64 id = 1;
+message MemberListResp {
+  uint64 total = 1;
+  repeated MemberInfo data = 2;
 }
 
-message PageInfoReq {
+message MemberListReq {
   uint64 page = 1;
   uint64 page_size = 2;
+  optional string username = 3;
+  optional string nickname = 4;
+  optional string mobile = 5;
+  optional string email = 6;
+  optional uint64 rank_id = 7;
+  optional string wechat_id = 8;
+}
+
+message CommentListData {
+  repeated CommentInfo data = 1;
+  int64 total = 2;
+}
+
+message ReplyList {
+  repeated ReplyInfo replyList = 1;
+  optional int64 count = 2;
+}
+
+message CommentListReq {
+  optional int32 isReply = 1;
+  optional int64 page = 2;
+  optional int64 pageSize = 3;
+  optional string title = 4;
+  optional string content = 5;
+  repeated int64 commentTime = 6;
+}
+
+message OauthProviderInfo {
+  optional uint64 id = 1;
+  optional int64 created_at = 2;
+  optional int64 updated_at = 3;
+  optional string name = 4;
+  optional string client_id = 5;
+  optional string client_secret = 6;
+  optional string redirect_url = 7;
+  optional string scopes = 8;
+  optional string auth_url = 9;
+  optional string token_url = 10;
+  optional uint64 auth_style = 11;
+  optional string info_url = 12;
+}
+
+message CallbackReq {
+  string state = 1;
+  string code = 2;
+}
+
+message OauthLoginReq {
+  string state = 1;
+  string provider = 2;
+}
+
+//  base message
+message Empty {}
+
+message BaseUUIDResp {
+  string id = 1;
+  string msg = 2;
+}
+
+message TokenListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string username = 3;
+  optional string nickname = 4;
+  optional string email = 5;
+  optional string uuid = 6;
 }
 
 message CommentInfo {
@@ -123,6 +209,46 @@ message CommentInfo {
   optional string nickName = 10;
   optional string email = 11;
   optional string avatar = 12;
+}
+
+message ReplyInfo {
+  optional int64 id = 1;
+  optional int64 commentId = 2;
+  optional string reply = 3;
+  optional string adminId = 4;
+  optional string adminName = 5;
+  optional int64 create_time = 6;
+  optional int64 update_time = 7;
+}
+
+message MemberCommentResp {
+  int64 code = 1;
+  string msg = 2;
+  string data = 3;
+}
+
+message RegisterMemberRespData {
+  string id = 1;
+}
+
+message CommentInfoResp {
+  int64 code = 1;
+  string msg = 2;
+  optional CommentInfo data = 3;
+}
+
+message CommentList {
+  repeated CommentInfo list = 1;
+  optional int64 count = 2;
+}
+
+message UsernameReq {
+  string username = 1;
+}
+
+message OauthProviderListResp {
+  uint64 total = 1;
+  repeated OauthProviderInfo data = 2;
 }
 
 message MemberInfo {
@@ -143,102 +269,14 @@ message MemberInfo {
   optional string forein_id = 15;
 }
 
-message ReplyReq {
-  optional string adminId = 1;
-  optional int64 page = 2;
-  optional int64 pageSize = 3;
-  optional string reply = 4;
-}
-
-message CommentListReq {
-  optional int32 isReply = 1;
-  optional int64 page = 2;
-  optional int64 pageSize = 3;
-  optional string title = 4;
-  optional string content = 5;
-  repeated int64 commentTime = 6;
-}
-
 message RegisterMemberResp {
   int64 code = 1;
   string msg = 2;
   optional RegisterMemberRespData data = 3;
 }
 
-message OauthRedirectResp {
-  string url = 1;
-}
-
-message MemberRankListResp {
-  uint64 total = 1;
-  repeated MemberRankInfo data = 2;
-}
-
-//  base message
-message Empty {}
-
-message UUIDReq {
-  string id = 1;
-}
-
-message CommentList {
-  repeated CommentInfo list = 1;
-  optional int64 count = 2;
-}
-
-message MemberRegisterReq {
-  string username = 1;
-  string email = 2;
-  string password = 3;
-}
-
-message MemberInfoRespData {
-  int64 isExist = 1;
-  optional MemberInfo memberInfo = 2;
-}
-
-message RegisterMemberRespData {
-  string id = 1;
-}
-
-message OauthProviderInfo {
-  optional uint64 id = 1;
-  optional int64 created_at = 2;
-  optional int64 updated_at = 3;
-  optional string name = 4;
-  optional string client_id = 5;
-  optional string client_secret = 6;
-  optional string redirect_url = 7;
-  optional string scopes = 8;
-  optional string auth_url = 9;
-  optional string token_url = 10;
-  optional uint64 auth_style = 11;
-  optional string info_url = 12;
-}
-
-message TokenListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string username = 3;
-  optional string nickname = 4;
-  optional string email = 5;
-  optional string uuid = 6;
-}
-
-message CommentListData {
-  repeated CommentInfo data = 1;
-  int64 total = 2;
-}
-
-message CommentListResp {
-  int64 code = 1;
-  string msg = 2;
-  optional CommentListData data = 3;
-}
-
-message MemberListResp {
-  uint64 total = 1;
-  repeated MemberInfo data = 2;
+message CommentIdReq {
+  optional int64 id = 1;
 }
 
 message MemberInfoResp {
@@ -247,55 +285,18 @@ message MemberInfoResp {
   optional MemberInfoRespData data = 3;
 }
 
-message MemberRankInfo {
-  optional uint64 id = 1;
-  optional int64 created_at = 2;
-  optional int64 updated_at = 3;
-  optional string name = 4;
-  optional string description = 5;
-  optional string remark = 6;
-  optional string code = 7;
+message MemberInfoRespData {
+  int64 isExist = 1;
+  optional MemberInfo memberInfo = 2;
 }
 
-message MemberRankListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
-  optional string description = 4;
-  optional string remark = 5;
-}
-
-message OauthProviderListResp {
-  uint64 total = 1;
-  repeated OauthProviderInfo data = 2;
-}
-
-message BaseIDResp {
+message IDReq {
   uint64 id = 1;
-  string msg = 2;
 }
 
-message MemberListReq {
+message PageInfoReq {
   uint64 page = 1;
   uint64 page_size = 2;
-  optional string username = 3;
-  optional string nickname = 4;
-  optional string mobile = 5;
-  optional string email = 6;
-  optional uint64 rank_id = 7;
-  optional string wechat_id = 8;
-}
-
-message UpdateMember2Resp {
-  int64 code = 1;
-  string msg = 2;
-  bool data = 3;
-}
-
-message SyncResult {
-  int64 all = 1;
-  int64 new = 2;
-  int64 updated = 3;
 }
 
 service Mms {
@@ -335,7 +336,7 @@ service Mms {
   //   group: member
   rpc updateMember2(MemberInfo) returns (UpdateMember2Resp);
   //   group: member
-  rpc syncFirebaseMember(Empty) returns (SyncMemberResp);
+  rpc syncFirebaseMember(SyncMemberReq) returns (SyncMemberResp);
   //   group: member
   rpc getMemberByForeinId(UUIDReq) returns (MemberInfo);
   //   group: member

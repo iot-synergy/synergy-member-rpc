@@ -49,8 +49,8 @@ type (
 	ReplyInfo              = mms.ReplyInfo
 	ReplyList              = mms.ReplyList
 	ReplyReq               = mms.ReplyReq
+	SyncMemberReq          = mms.SyncMemberReq
 	SyncMemberResp         = mms.SyncMemberResp
-	SyncResult             = mms.SyncResult
 	TokenInfo              = mms.TokenInfo
 	TokenListReq           = mms.TokenListReq
 	TokenListResp          = mms.TokenListResp
@@ -78,7 +78,7 @@ type (
 		GetMemberByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		GetMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MemberInfoResp, error)
 		UpdateMember2(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*UpdateMember2Resp, error)
-		SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error)
+		SyncFirebaseMember(ctx context.Context, in *SyncMemberReq, opts ...grpc.CallOption) (*SyncMemberResp, error)
 		GetMemberByForeinId(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfo, error)
 		GetMemberByForeinId2(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*MemberInfoResp, error)
 		// MemberRank management
@@ -202,7 +202,7 @@ func (m *defaultMms) UpdateMember2(ctx context.Context, in *MemberInfo, opts ...
 	return client.UpdateMember2(ctx, in, opts...)
 }
 
-func (m *defaultMms) SyncFirebaseMember(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SyncMemberResp, error) {
+func (m *defaultMms) SyncFirebaseMember(ctx context.Context, in *SyncMemberReq, opts ...grpc.CallOption) (*SyncMemberResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.SyncFirebaseMember(ctx, in, opts...)
 }

@@ -87,19 +87,20 @@ message UpdateMember2Resp {
   bool data = 3;
 }
 
-
-
-message SyncResult {
-  int64 all = 1;
-  int64 new = 2;
-  int64 updated = 3;
-}
-
 message SyncMemberResp {
   int64 code = 1;
   string msg = 2;
-  optional SyncResult data = 3;
+  uint64 total = 3;
+  repeated MemberInfo data = 4;
+  string nextPageToken = 5;
 }
+
+message SyncMemberReq {
+  int64 size = 1;
+  string nextPageToken = 2;
+}
+
+
 
 service Mms {
 
@@ -123,9 +124,10 @@ service Mms {
   //  group: member
   rpc updateMember2(MemberInfo) returns (UpdateMember2Resp);
    //  group: member
-  rpc syncFirebaseMember(Empty) returns (SyncMemberResp);
+  rpc syncFirebaseMember(SyncMemberReq) returns (SyncMemberResp);
   //  group: member
   rpc getMemberByForeinId(UUIDReq) returns (MemberInfo);
   //  group: member
   rpc getMemberByForeinId2(UUIDReq) returns (MemberInfoResp);
+
 }

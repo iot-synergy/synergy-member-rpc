@@ -113,7 +113,7 @@ func (s *MmsServer) UpdateMember2(ctx context.Context, in *mms.MemberInfo) (*mms
 	return l.UpdateMember2(in)
 }
 
-func (s *MmsServer) SyncFirebaseMember(ctx context.Context, in *mms.Empty) (*mms.SyncMemberResp, error) {
+func (s *MmsServer) SyncFirebaseMember(ctx context.Context, in *mms.SyncMemberReq) (*mms.SyncMemberResp, error) {
 	l := member.NewSyncFirebaseMemberLogic(ctx, s.svcCtx)
 	return l.SyncFirebaseMember(in)
 }
