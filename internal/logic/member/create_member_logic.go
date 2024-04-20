@@ -42,7 +42,8 @@ func (l *CreateMemberLogic) CreateMember(in *mms.MemberInfo) (*mms.BaseUUIDResp,
 		SetNotNilEmail(in.Email).
 		SetNotNilAvatar(in.Avatar).
 		SetNotNilWechatOpenID(in.WechatId).
-		SetNotNilExpiredAt(pointy.GetTimeMilliPointer(in.ExpiredAt))
+		SetNotNilExpiredAt(pointy.GetTimeMilliPointer(in.ExpiredAt)).
+		SetForeinID(in.GetForeinId())
 
 	if in.Password != nil {
 		query.SetNotNilPassword(pointy.GetPointer(encrypt.BcryptEncrypt(*in.Password)))
