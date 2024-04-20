@@ -29,6 +29,10 @@ func NewCreateMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Crea
 }
 
 func (l *CreateMemberLogic) CreateMember(in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
+	if in.GetForeinId() == "" {
+		username := in.GetUsername()
+		in.ForeinId = &username
+	}
 	query := l.svcCtx.DB.Member.Create().
 		SetNotNilStatus(pointy.GetStatusPointer(in.Status)).
 		SetNotNilUsername(in.Username).
