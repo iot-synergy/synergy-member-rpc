@@ -6,9 +6,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/ent/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/ent/oauthprovider"
+	"github.com/iot-synergy/synergy-member-rpc/ent/reply"
 	"github.com/iot-synergy/synergy-member-rpc/ent/token"
 )
 
@@ -57,6 +59,85 @@ func (o OrderDirection) reverse() OrderDirection {
 }
 
 const errInvalidPagination = "INVALID_PAGINATION"
+
+type CommentPager struct {
+	Order  comment.OrderOption
+	Filter func(*CommentQuery) (*CommentQuery, error)
+}
+
+// CommentPaginateOption enables pagination customization.
+type CommentPaginateOption func(*CommentPager)
+
+// DefaultCommentOrder is the default ordering of Comment.
+var DefaultCommentOrder = Desc(comment.FieldID)
+
+func newCommentPager(opts []CommentPaginateOption) (*CommentPager, error) {
+	pager := &CommentPager{}
+	for _, opt := range opts {
+		opt(pager)
+	}
+	if pager.Order == nil {
+		pager.Order = DefaultCommentOrder
+	}
+	return pager, nil
+}
+
+func (p *CommentPager) ApplyFilter(query *CommentQuery) (*CommentQuery, error) {
+	if p.Filter != nil {
+		return p.Filter(query)
+	}
+	return query, nil
+}
+
+// CommentPageList is Comment PageList result.
+type CommentPageList struct {
+	List        []*Comment   `json:"list"`
+	PageDetails *PageDetails `json:"pageDetails"`
+}
+
+func (c *CommentQuery) Page(
+	ctx context.Context, pageNum uint64, pageSize uint64, opts ...CommentPaginateOption,
+) (*CommentPageList, error) {
+
+	pager, err := newCommentPager(opts)
+	if err != nil {
+		return nil, err
+	}
+
+	if c, err = pager.ApplyFilter(c); err != nil {
+		return nil, err
+	}
+
+	ret := &CommentPageList{}
+
+	ret.PageDetails = &PageDetails{
+		Page: pageNum,
+		Size: pageSize,
+	}
+
+	count, err := c.Clone().Count(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ret.PageDetails.Total = uint64(count)
+
+	if pager.Order != nil {
+		c = c.Order(pager.Order)
+	} else {
+		c = c.Order(DefaultCommentOrder)
+	}
+
+	c = c.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
+	list, err := c.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	ret.List = list
+
+	return ret, nil
+}
 
 type MemberPager struct {
 	Order  member.OrderOption
@@ -287,6 +368,85 @@ func (op *OauthProviderQuery) Page(
 
 	op = op.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
 	list, err := op.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	ret.List = list
+
+	return ret, nil
+}
+
+type ReplyPager struct {
+	Order  reply.OrderOption
+	Filter func(*ReplyQuery) (*ReplyQuery, error)
+}
+
+// ReplyPaginateOption enables pagination customization.
+type ReplyPaginateOption func(*ReplyPager)
+
+// DefaultReplyOrder is the default ordering of Reply.
+var DefaultReplyOrder = Desc(reply.FieldID)
+
+func newReplyPager(opts []ReplyPaginateOption) (*ReplyPager, error) {
+	pager := &ReplyPager{}
+	for _, opt := range opts {
+		opt(pager)
+	}
+	if pager.Order == nil {
+		pager.Order = DefaultReplyOrder
+	}
+	return pager, nil
+}
+
+func (p *ReplyPager) ApplyFilter(query *ReplyQuery) (*ReplyQuery, error) {
+	if p.Filter != nil {
+		return p.Filter(query)
+	}
+	return query, nil
+}
+
+// ReplyPageList is Reply PageList result.
+type ReplyPageList struct {
+	List        []*Reply     `json:"list"`
+	PageDetails *PageDetails `json:"pageDetails"`
+}
+
+func (r *ReplyQuery) Page(
+	ctx context.Context, pageNum uint64, pageSize uint64, opts ...ReplyPaginateOption,
+) (*ReplyPageList, error) {
+
+	pager, err := newReplyPager(opts)
+	if err != nil {
+		return nil, err
+	}
+
+	if r, err = pager.ApplyFilter(r); err != nil {
+		return nil, err
+	}
+
+	ret := &ReplyPageList{}
+
+	ret.PageDetails = &PageDetails{
+		Page: pageNum,
+		Size: pageSize,
+	}
+
+	count, err := r.Clone().Count(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ret.PageDetails.Total = uint64(count)
+
+	if pager.Order != nil {
+		r = r.Order(pager.Order)
+	} else {
+		r = r.Order(DefaultReplyOrder)
+	}
+
+	r = r.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
+	list, err := r.All(ctx)
 	if err != nil {
 		return nil, err
 	}

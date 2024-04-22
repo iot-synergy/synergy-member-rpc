@@ -13,6 +13,8 @@ import (
 )
 
 type (
+	AlarmConfigInit        = mms.AlarmConfigInit
+	AlarmConfigResp        = mms.AlarmConfigResp
 	BaseIDResp             = mms.BaseIDResp
 	BaseResp               = mms.BaseResp
 	BaseUUIDResp           = mms.BaseUUIDResp
@@ -25,6 +27,7 @@ type (
 	CommentListReq         = mms.CommentListReq
 	CommentListResp        = mms.CommentListResp
 	Empty                  = mms.Empty
+	FindAlarmConfigReq     = mms.FindAlarmConfigReq
 	IDReq                  = mms.IDReq
 	IDsReq                 = mms.IDsReq
 	MemberCommentResp      = mms.MemberCommentResp
@@ -49,6 +52,7 @@ type (
 	ReplyInfo              = mms.ReplyInfo
 	ReplyList              = mms.ReplyList
 	ReplyReq               = mms.ReplyReq
+	SetAlarmConfigReq      = mms.SetAlarmConfigReq
 	SyncMemberReq          = mms.SyncMemberReq
 	SyncMemberResp         = mms.SyncMemberResp
 	TokenInfo              = mms.TokenInfo
@@ -60,6 +64,9 @@ type (
 	UsernameReq            = mms.UsernameReq
 
 	Mms interface {
+		// Member management
+		FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
+		SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
 		InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 		MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error)
 		MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error)
@@ -114,6 +121,17 @@ func NewMms(cli zrpc.Client) Mms {
 	return &defaultMms{
 		cli: cli,
 	}
+}
+
+// Member management
+func (m *defaultMms) FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.FindAlarmConfig(ctx, in, opts...)
+}
+
+func (m *defaultMms) SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.SetAlarmConfig(ctx, in, opts...)
 }
 
 func (m *defaultMms) InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error) {

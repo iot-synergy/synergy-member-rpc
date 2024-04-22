@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+// Member message
+
+message AlarmConfigInit{
+  optional string id = 1;
+  optional string user_id = 2;
+  optional string device_sn = 3;
+  optional int32 config = 4;
+}
+message SetAlarmConfigReq {
+  string device_sn = 1;
+  int32 config = 2;
+}
+message AlarmConfigResp {
+  int32 code = 1;
+  string msg = 2;
+  AlarmConfigInit data = 3;
+}
+message FindAlarmConfigReq{
+  string device_sn = 1;
+}
+
+service Mms {
+
+  // Member management
+  // group: alarmconfig
+  rpc findAlarmConfig (FindAlarmConfigReq) returns (AlarmConfigResp);
+  // group: alarmconfig
+  rpc setAlarmConfig (SetAlarmConfigReq) returns (AlarmConfigResp);
+}

@@ -83,6 +83,10 @@ gen-rpc-ent-logic: # Generate logic code from Ent, need model and group params |
 	goctls rpc ent --schema=./ent/schema  --style=$(PROJECT_STYLE) --multiple=false --service_name=$(SERVICE) --search_key_num=3 --output=./ --model=$(model) --group=$(group) --proto_out=./desc/$(shell echo $(model) | tr A-Z a-z).proto --i18n=$(PROJECT_I18N) --overwrite=true
 	@echo "Generate logic codes from Ent successfully"
 
+.PHONY: gen-mongo
+gen-mongo: # 生成mongo的代码
+	goctl model mongo --type alarm_config --dir ./storage/alarm_config --style=$(PROJECT_STYLE)
+
 .PHONY: build-win
 build-win: # Build project for Windows | 构建Windows下的可执行文件
 	env CGO_ENABLED=0 GOOS=windows GOARCH=$(GOARCH) go build -ldflags "$(LDFLAGS)" -trimpath -o $(SERVICE_STYLE)_$(PROJECT_BUILD_SUFFIX).exe $(SERVICE_STYLE).go

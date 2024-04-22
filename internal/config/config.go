@@ -12,4 +12,10 @@ type Config struct {
 	RedisConf    config.RedisConf
 	CoreRpc      zrpc.RpcClientConf
 	FcmRpc       zrpc.RpcClientConf
+	MonDb        MonConfig
+}
+
+type MonConfig struct {
+	Url    string
+	DbName string
 }

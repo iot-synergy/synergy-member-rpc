@@ -6,6 +6,7 @@ package server
 import (
 	"context"
 
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/alarmconfig"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/base"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/comment"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/member"
@@ -25,6 +26,17 @@ func NewMmsServer(svcCtx *svc.ServiceContext) *MmsServer {
 	return &MmsServer{
 		svcCtx: svcCtx,
 	}
+}
+
+// Member management
+func (s *MmsServer) FindAlarmConfig(ctx context.Context, in *mms.FindAlarmConfigReq) (*mms.AlarmConfigResp, error) {
+	l := alarmconfig.NewFindAlarmConfigLogic(ctx, s.svcCtx)
+	return l.FindAlarmConfig(in)
+}
+
+func (s *MmsServer) SetAlarmConfig(ctx context.Context, in *mms.SetAlarmConfigReq) (*mms.AlarmConfigResp, error) {
+	l := alarmconfig.NewSetAlarmConfigLogic(ctx, s.svcCtx)
+	return l.SetAlarmConfig(in)
 }
 
 func (s *MmsServer) InitDatabase(ctx context.Context, in *mms.Empty) (*mms.BaseResp, error) {
