@@ -13,6 +13,7 @@ type Config struct {
 	CoreRpc      zrpc.RpcClientConf
 	FcmRpc       zrpc.RpcClientConf
 	MonDb        MonConfig
+	AddxRpc      zrpc.RpcClientConf
 }
 
 type MonConfig struct {

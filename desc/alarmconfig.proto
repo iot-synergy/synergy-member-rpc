@@ -4,12 +4,12 @@ syntax = "proto3";
 
 message AlarmConfigInit{
   optional string id = 1;
-  optional string user_id = 2;
-  optional string device_sn = 3;
+  optional string addx_user_id = 2;
+  optional string serial_number = 3;
   optional int32 config = 4;
 }
 message SetAlarmConfigReq {
-  string device_sn = 1;
+  string serial_number = 1;
   int32 config = 2;
 }
 message AlarmConfigResp {
@@ -18,9 +18,17 @@ message AlarmConfigResp {
   AlarmConfigInit data = 3;
 }
 message FindAlarmConfigReq{
-  string device_sn = 1;
+  string serial_number = 1;
 }
 
+message SendAlarmReq {
+  string addxUserId = 1;
+  string serialNumber = 2;
+}
+
+message EmptyResp {
+
+}
 service Mms {
 
   // Member management
@@ -28,4 +36,6 @@ service Mms {
   rpc findAlarmConfig (FindAlarmConfigReq) returns (AlarmConfigResp);
   // group: alarmconfig
   rpc setAlarmConfig (SetAlarmConfigReq) returns (AlarmConfigResp);
+  // group: alarmconfig
+  rpc SendAlarm(SendAlarmReq) returns(EmptyResp);
 }

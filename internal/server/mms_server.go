@@ -39,6 +39,11 @@ func (s *MmsServer) SetAlarmConfig(ctx context.Context, in *mms.SetAlarmConfigRe
 	return l.SetAlarmConfig(in)
 }
 
+func (s *MmsServer) SendAlarm(ctx context.Context, in *mms.SendAlarmReq) (*mms.EmptyResp, error) {
+	l := alarmconfig.NewSendAlarmLogic(ctx, s.svcCtx)
+	return l.SendAlarm(in)
+}
+
 func (s *MmsServer) InitDatabase(ctx context.Context, in *mms.Empty) (*mms.BaseResp, error) {
 	l := base.NewInitDatabaseLogic(ctx, s.svcCtx)
 	return l.InitDatabase(in)

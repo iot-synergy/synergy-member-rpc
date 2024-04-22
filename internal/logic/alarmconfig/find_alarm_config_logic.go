@@ -40,18 +40,18 @@ func (l *FindAlarmConfigLogic) FindAlarmConfig(in *mms.FindAlarmConfigReq) (*mms
 		}, nil
 	}
 	forein_id := strings.Join(value, "")
-	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, forein_id, in.DeviceSn)
+	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, forein_id, in.SerialNumber)
 	if err != nil {
 		return nil, err
 	}
 	if alarmConfig == nil || alarmConfig.ID.Hex() == "" {
 		alarmConfig = &model.Alarm_config{
-			ID:       primitive.ObjectID{},
-			UpdateAt: time.Time{},
-			CreateAt: time.Time{},
-			UserId:   forein_id,
-			DeviceSn: in.DeviceSn,
-			Config:   0,
+			ID:           primitive.ObjectID{},
+			UpdateAt:     time.Time{},
+			CreateAt:     time.Time{},
+			AddxUserId:   forein_id,
+			SerialNumber: in.SerialNumber,
+			Config:       0,
 		}
 		err = l.svcCtx.AlarmConfigModel.Insert(l.ctx, alarmConfig)
 		if err != nil {
@@ -64,10 +64,10 @@ func (l *FindAlarmConfigLogic) FindAlarmConfig(in *mms.FindAlarmConfigReq) (*mms
 		Code: 0,
 		Msg:  "成功",
 		Data: &mms.AlarmConfigInit{
-			Id:       &id,
-			UserId:   &alarmConfig.UserId,
-			DeviceSn: &alarmConfig.DeviceSn,
-			Config:   &alarmConfig.Config,
+			Id:           &id,
+			AddxUserId:   &alarmConfig.AddxUserId,
+			SerialNumber: &alarmConfig.SerialNumber,
+			Config:       &alarmConfig.Config,
 		},
 	}, nil
 }

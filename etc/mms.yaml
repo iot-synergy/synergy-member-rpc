@@ -43,6 +43,11 @@ FcmRpc:
     - 127.0.0.1:9120
   Enabled: false
 
+AddxRpc:
+  Endpoints:
+    - 127.0.0.1:9112
+  Enabled: false
+
 MonDb:
   Url: mongodb://192.168.200.128:27017
   DbName: peckperk

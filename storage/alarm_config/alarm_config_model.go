@@ -13,8 +13,8 @@ type (
 	// and implement the added methods in customAlarm_configModel.
 	Alarm_configModel interface {
 		alarm_configModel
-		FindOneByUserIdAndDeviceSn(ctx context.Context, userId, deviceSn string) (*Alarm_config, error)
-		SetConfigByUserIdAndDeviceSn(ctx context.Context, userId, deviceSn string, config int32) error
+		FindOneByUserIdAndDeviceSn(ctx context.Context, addxUserId, serialNumber string) (*Alarm_config, error)
+		SetConfigByUserIdAndDeviceSn(ctx context.Context, addxUserId, serialNumber string, config int32) error
 	}
 
 	customAlarm_configModel struct {
@@ -32,7 +32,7 @@ func NewAlarm_configModel(url, db, collection string) Alarm_configModel {
 
 func (m *customAlarm_configModel) FindOneByUserIdAndDeviceSn(ctx context.Context, userId, deviceSn string) (*Alarm_config, error) {
 	var data Alarm_config
-	err := m.conn.FindOne(ctx, &data, bson.M{"userId": userId, "deviceSn": deviceSn})
+	err := m.conn.FindOne(ctx, &data, bson.M{"addxUserId": userId, "serialNumber": deviceSn})
 	switch err {
 	case nil:
 		return &data, nil
@@ -43,7 +43,7 @@ func (m *customAlarm_configModel) FindOneByUserIdAndDeviceSn(ctx context.Context
 	}
 }
 
-func (m *customAlarm_configModel) SetConfigByUserIdAndDeviceSn(ctx context.Context, userId, deviceSn string, config int32) error {
-	_, err := m.conn.UpdateOne(ctx, bson.M{"userId": userId, "deviceSn": deviceSn}, bson.M{"config": config})
+func (m *customAlarm_configModel) SetConfigByUserIdAndDeviceSn(ctx context.Context, addxUserId, serialNumber string, config int32) error {
+	_, err := m.conn.UpdateOne(ctx, bson.M{"addxUserId": addxUserId, "serialNumber": serialNumber}, bson.M{"config": config})
 	return err
 }

@@ -1,6 +1,7 @@
 package svc
 
 import (
+	"github.com/iot-synergy/synergy-addx-proxy/synergy_addx_proxy_client"
 	"github.com/iot-synergy/synergy-fcm/fcm"
 	"github.com/iot-synergy/synergy-member-rpc/ent"
 	"github.com/iot-synergy/synergy-member-rpc/internal/config"
@@ -16,6 +17,7 @@ type ServiceContext struct {
 	Redis            redis.UniversalClient
 	Fcm              fcm.Fcm
 	AlarmConfigModel model.Alarm_configModel
+	AddxRpc          synergy_addx_proxy_client.SynergyAddxProxy
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -31,5 +33,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Redis:            c.RedisConf.MustNewUniversalRedis(),
 		Fcm:              fcm.NewFcm(zrpc.MustNewClient(c.FcmRpc)),
 		AlarmConfigModel: model.NewAlarm_configModel(c.MonDb.Url, c.MonDb.DbName, "alarm_config"),
+		AddxRpc:          synergy_addx_proxy_client.NewSynergyAddxProxy(zrpc.MustNewClient(c.AddxRpc)),
 	}
 }

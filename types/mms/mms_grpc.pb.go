@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Mms_FindAlarmConfig_FullMethodName        = "/mms.Mms/findAlarmConfig"
 	Mms_SetAlarmConfig_FullMethodName         = "/mms.Mms/setAlarmConfig"
+	Mms_SendAlarm_FullMethodName              = "/mms.Mms/SendAlarm"
 	Mms_InitDatabase_FullMethodName           = "/mms.Mms/initDatabase"
 	Mms_MemberComment_FullMethodName          = "/mms.Mms/memberComment"
 	Mms_MemberGetCommentList_FullMethodName   = "/mms.Mms/memberGetCommentList"
@@ -71,6 +72,8 @@ type MmsClient interface {
 	FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
 	// group: alarmconfig
 	SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
+	// group: alarmconfig
+	SendAlarm(ctx context.Context, in *SendAlarmReq, opts ...grpc.CallOption) (*EmptyResp, error)
 	// group: base
 	InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: comment
@@ -175,6 +178,15 @@ func (c *mmsClient) FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq,
 func (c *mmsClient) SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error) {
 	out := new(AlarmConfigResp)
 	err := c.cc.Invoke(ctx, Mms_SetAlarmConfig_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) SendAlarm(ctx context.Context, in *SendAlarmReq, opts ...grpc.CallOption) (*EmptyResp, error) {
+	out := new(EmptyResp)
+	err := c.cc.Invoke(ctx, Mms_SendAlarm_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -541,6 +553,8 @@ type MmsServer interface {
 	FindAlarmConfig(context.Context, *FindAlarmConfigReq) (*AlarmConfigResp, error)
 	// group: alarmconfig
 	SetAlarmConfig(context.Context, *SetAlarmConfigReq) (*AlarmConfigResp, error)
+	// group: alarmconfig
+	SendAlarm(context.Context, *SendAlarmReq) (*EmptyResp, error)
 	// group: base
 	InitDatabase(context.Context, *Empty) (*BaseResp, error)
 	// group: comment
@@ -635,6 +649,9 @@ func (UnimplementedMmsServer) FindAlarmConfig(context.Context, *FindAlarmConfigR
 }
 func (UnimplementedMmsServer) SetAlarmConfig(context.Context, *SetAlarmConfigReq) (*AlarmConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetAlarmConfig not implemented")
+}
+func (UnimplementedMmsServer) SendAlarm(context.Context, *SendAlarmReq) (*EmptyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendAlarm not implemented")
 }
 func (UnimplementedMmsServer) InitDatabase(context.Context, *Empty) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitDatabase not implemented")
@@ -798,6 +815,24 @@ func _Mms_SetAlarmConfig_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MmsServer).SetAlarmConfig(ctx, req.(*SetAlarmConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_SendAlarm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendAlarmReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).SendAlarm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_SendAlarm_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).SendAlarm(ctx, req.(*SendAlarmReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1518,6 +1553,10 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "setAlarmConfig",
 			Handler:    _Mms_SetAlarmConfig_Handler,
+		},
+		{
+			MethodName: "SendAlarm",
+			Handler:    _Mms_SendAlarm_Handler,
 		},
 		{
 			MethodName: "initDatabase",

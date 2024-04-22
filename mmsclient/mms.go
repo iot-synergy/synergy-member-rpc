@@ -27,6 +27,7 @@ type (
 	CommentListReq         = mms.CommentListReq
 	CommentListResp        = mms.CommentListResp
 	Empty                  = mms.Empty
+	EmptyResp              = mms.EmptyResp
 	FindAlarmConfigReq     = mms.FindAlarmConfigReq
 	IDReq                  = mms.IDReq
 	IDsReq                 = mms.IDsReq
@@ -52,6 +53,7 @@ type (
 	ReplyInfo              = mms.ReplyInfo
 	ReplyList              = mms.ReplyList
 	ReplyReq               = mms.ReplyReq
+	SendAlarmReq           = mms.SendAlarmReq
 	SetAlarmConfigReq      = mms.SetAlarmConfigReq
 	SyncMemberReq          = mms.SyncMemberReq
 	SyncMemberResp         = mms.SyncMemberResp
@@ -67,6 +69,7 @@ type (
 		// Member management
 		FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
 		SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error)
+		SendAlarm(ctx context.Context, in *SendAlarmReq, opts ...grpc.CallOption) (*EmptyResp, error)
 		InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 		MemberComment(ctx context.Context, in *CommentInfo, opts ...grpc.CallOption) (*MemberCommentResp, error)
 		MemberGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentListResp, error)
@@ -132,6 +135,11 @@ func (m *defaultMms) FindAlarmConfig(ctx context.Context, in *FindAlarmConfigReq
 func (m *defaultMms) SetAlarmConfig(ctx context.Context, in *SetAlarmConfigReq, opts ...grpc.CallOption) (*AlarmConfigResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.SetAlarmConfig(ctx, in, opts...)
+}
+
+func (m *defaultMms) SendAlarm(ctx context.Context, in *SendAlarmReq, opts ...grpc.CallOption) (*EmptyResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.SendAlarm(ctx, in, opts...)
 }
 
 func (m *defaultMms) InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error) {
