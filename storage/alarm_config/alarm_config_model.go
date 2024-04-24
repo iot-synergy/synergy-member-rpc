@@ -37,7 +37,7 @@ func (m *customAlarm_configModel) FindOneByUserIdAndDeviceSn(ctx context.Context
 	case nil:
 		return &data, nil
 	case mon.ErrNotFound:
-		return nil, ErrNotFound
+		return nil, nil
 	default:
 		return nil, err
 	}
