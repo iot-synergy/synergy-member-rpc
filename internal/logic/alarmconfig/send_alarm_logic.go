@@ -25,7 +25,6 @@ func NewSendAlarmLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAla
 }
 
 func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error) {
-	l.Error("send alarm(addxUserId:" + in.GetAddxUserId() + ",serialNumber:" + in.GetSerialNumber() + ")")
 	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, in.GetAddxUserId(), in.GetSerialNumber())
 	if err != nil {
 		l.Error(err)
@@ -42,6 +41,5 @@ func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error)
 		l.Error(err)
 		return nil, err
 	}
-	l.Error("send alarm exit")
 	return &mms.EmptyResp{}, nil
 }
