@@ -26,7 +26,7 @@ func NewSendAlarmLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAla
 
 func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error) {
 	l.Logger.Info("sendAlarm:{serialNumber:" + in.GetSerialNumber() + ",addxUserId:" + in.GetAddxUserId() + "}")
-	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, "peckperk-"+in.GetAddxUserId(), in.GetSerialNumber())
+	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, in.GetAddxUserId(), in.GetSerialNumber())
 	if err != nil {
 		l.Logger.Error(err)
 		return nil, err
@@ -35,7 +35,7 @@ func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error)
 		return nil, nil
 	}
 	_, err = l.svcCtx.AddxRpc.SendAlarm(l.ctx, &synergy_addx_proxy_client.SendAlarmReq{
-		AddxUserId:   in.AddxUserId,
+		AddxUserId:   "peckperk-" + in.AddxUserId,
 		SerialNumber: in.SerialNumber,
 	})
 	if err != nil {
