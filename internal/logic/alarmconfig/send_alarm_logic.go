@@ -26,7 +26,7 @@ func NewSendAlarmLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAla
 
 func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error) {
 	l.Logger.Info("sendAlarm:{serialNumber:" + in.GetSerialNumber() + ",addxUserId:" + in.GetAddxUserId() + "}")
-	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, in.GetAddxUserId(), in.GetSerialNumber())
+	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, "peckperk-"+in.GetAddxUserId(), in.GetSerialNumber())
 	if err != nil {
 		l.Logger.Error(err)
 		return nil, err
