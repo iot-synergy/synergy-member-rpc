@@ -25,9 +25,10 @@ func NewSendAlarmLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAla
 }
 
 func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error) {
+	l.Logger.Info("sendAlarm:{serialNumber:" + in.GetSerialNumber() + ",addxUserId:" + in.GetAddxUserId() + "}")
 	alarmConfig, err := l.svcCtx.AlarmConfigModel.FindOneByUserIdAndDeviceSn(l.ctx, in.GetAddxUserId(), in.GetSerialNumber())
 	if err != nil {
-		l.Error(err)
+		l.Logger.Error(err)
 		return nil, err
 	}
 	if alarmConfig == nil || alarmConfig.Config == 0 {
@@ -38,7 +39,7 @@ func (l *SendAlarmLogic) SendAlarm(in *mms.SendAlarmReq) (*mms.EmptyResp, error)
 		SerialNumber: in.SerialNumber,
 	})
 	if err != nil {
-		l.Error(err)
+		l.Logger.Error(err)
 		return nil, err
 	}
 	return &mms.EmptyResp{}, nil
