@@ -44,6 +44,6 @@ func (m *customAlarm_configModel) FindOneByUserIdAndDeviceSn(ctx context.Context
 }
 
 func (m *customAlarm_configModel) SetConfigByUserIdAndDeviceSn(ctx context.Context, addxUserId, serialNumber string, config int32) error {
-	_, err := m.conn.UpdateOne(ctx, bson.M{"addxUserId": addxUserId, "serialNumber": serialNumber}, bson.M{"config": config})
+	_, err := m.conn.UpdateMany(ctx, bson.M{"addxUserId": addxUserId, "serialNumber": serialNumber}, bson.M{"$set": bson.M{"config": config}})
 	return err
 }

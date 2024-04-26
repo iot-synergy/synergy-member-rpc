@@ -1,27 +1,27 @@
 Name: mms.rpc
 ListenOn: 0.0.0.0:9103
+Timeout: 10000
+Etcd:
+  Hosts:
+    - 192.168.10.181:2379
+  Key: mms.rpc
 
 DatabaseConf:
   Type: mysql
-  Host: 127.0.0.1
+  Host: 192.168.10.181
   Port: 3306
-  DBName: database240219
+  DBName: peckperk
   Username: root # set your username
-  Password: xiaocaihong # set your password
+  Password: "123456" # set your password
   MaxOpenConn: 100
   SSLMode: disable
   CacheTime: 5
 
 RedisConf:
-  Host: 192.168.200.128:6379
+  Host: 192.168.10.181:6379
   Type: "node"
   Key: "123"
   Db: 1
-
-Etcd:
-  Hosts:
-    - 127.0.0.1:2379
-  Key: mms.rpc
 
 Log:
   ServiceName: mmsRpcLogger
@@ -40,14 +40,16 @@ Prometheus:
 
 FcmRpc:
   Endpoints:
-    - 127.0.0.1:9120
-  Enabled: false
+    - 192.168.10.181:9120
+  Enabled: true
+  Timeout: 5000
 
 AddxRpc:
   Endpoints:
-    - 127.0.0.1:9112
-  Enabled: false
+    - 192.168.10.181:9112
+  Enabled: true
+  Timeout: 5000
 
 MonDb:
-  Url: mongodb://192.168.200.128:27017
+  Url: mongodb://admin:123456@192.168.10.181:27017/
   DbName: peckperk

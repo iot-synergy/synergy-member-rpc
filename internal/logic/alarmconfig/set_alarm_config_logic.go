@@ -59,7 +59,7 @@ func (l *SetAlarmConfigLogic) SetAlarmConfig(in *mms.SetAlarmConfigReq) (*mms.Al
 		}
 	} else {
 		alarmConfig.Config = in.Config
-		_, err = l.svcCtx.AlarmConfigModel.Update(l.ctx, alarmConfig)
+		err = l.svcCtx.AlarmConfigModel.SetConfigByUserIdAndDeviceSn(l.ctx, alarmConfig.AddxUserId, alarmConfig.SerialNumber, in.Config)
 		if err != nil {
 			return nil, err
 		}
