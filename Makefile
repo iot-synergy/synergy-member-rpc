@@ -73,6 +73,10 @@ else
 endif
 	@echo "Generate RPC codes successfully"
 
+.PHONY: gen-pb
+gen-pb:
+	protoc --descriptor_set_out=./$(SERVICE_STYLE).pb ./$(SERVICE_STYLE).proto
+
 .PHONY: gen-ent
 gen-ent: # Generate Ent codes | 生成 Ent 的代码
 	go run -mod=mod entgo.io/ent/cmd/ent generate --template glob="./ent/template/*.tmpl" ./ent/schema --feature $(ENT_FEATURE)

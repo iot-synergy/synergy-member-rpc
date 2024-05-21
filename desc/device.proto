@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+message ActivatingDeviceVipReq {
+  string serialNumber = 1;
+  string productId = 2;
+  string activationCode = 3;
+}
+
+message ActivatingDeviceVipResp {
+  int64 code = 1;
+  string msg = 2;
+  string data = 3;
+}
+
+service Mms {
+  // group: device
+  rpc activatingDeviceVip (ActivatingDeviceVipReq) returns (ActivatingDeviceVipResp);
+}

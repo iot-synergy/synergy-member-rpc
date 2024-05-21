@@ -30,6 +30,7 @@ const (
 	Mms_AdminGetCommentList_FullMethodName    = "/mms.Mms/adminGetCommentList"
 	Mms_AdminGetComment_FullMethodName        = "/mms.Mms/adminGetComment"
 	Mms_AdminGetReplyList_FullMethodName      = "/mms.Mms/adminGetReplyList"
+	Mms_ActivatingDeviceVip_FullMethodName    = "/mms.Mms/activatingDeviceVip"
 	Mms_CreateMember_FullMethodName           = "/mms.Mms/createMember"
 	Mms_RegisterMember_FullMethodName         = "/mms.Mms/registerMember"
 	Mms_UpdateMember_FullMethodName           = "/mms.Mms/updateMember"
@@ -90,6 +91,8 @@ type MmsClient interface {
 	AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
 	// group: comment
 	AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
+	// group: device
+	ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error)
 	// Member management
 	// group: member
 	CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
@@ -259,6 +262,15 @@ func (c *mmsClient) AdminGetComment(ctx context.Context, in *CommentIdReq, opts 
 func (c *mmsClient) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error) {
 	out := new(ReplyList)
 	err := c.cc.Invoke(ctx, Mms_AdminGetReplyList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error) {
+	out := new(ActivatingDeviceVipResp)
+	err := c.cc.Invoke(ctx, Mms_ActivatingDeviceVip_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -571,6 +583,8 @@ type MmsServer interface {
 	AdminGetComment(context.Context, *CommentIdReq) (*CommentInfo, error)
 	// group: comment
 	AdminGetReplyList(context.Context, *ReplyReq) (*ReplyList, error)
+	// group: device
+	ActivatingDeviceVip(context.Context, *ActivatingDeviceVipReq) (*ActivatingDeviceVipResp, error)
 	// Member management
 	// group: member
 	CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error)
@@ -676,6 +690,9 @@ func (UnimplementedMmsServer) AdminGetComment(context.Context, *CommentIdReq) (*
 }
 func (UnimplementedMmsServer) AdminGetReplyList(context.Context, *ReplyReq) (*ReplyList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminGetReplyList not implemented")
+}
+func (UnimplementedMmsServer) ActivatingDeviceVip(context.Context, *ActivatingDeviceVipReq) (*ActivatingDeviceVipResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivatingDeviceVip not implemented")
 }
 func (UnimplementedMmsServer) CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMember not implemented")
@@ -977,6 +994,24 @@ func _Mms_AdminGetReplyList_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MmsServer).AdminGetReplyList(ctx, req.(*ReplyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_ActivatingDeviceVip_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivatingDeviceVipReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).ActivatingDeviceVip(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_ActivatingDeviceVip_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).ActivatingDeviceVip(ctx, req.(*ActivatingDeviceVipReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1589,6 +1624,10 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "adminGetReplyList",
 			Handler:    _Mms_AdminGetReplyList_Handler,
+		},
+		{
+			MethodName: "activatingDeviceVip",
+			Handler:    _Mms_ActivatingDeviceVip_Handler,
 		},
 		{
 			MethodName: "createMember",

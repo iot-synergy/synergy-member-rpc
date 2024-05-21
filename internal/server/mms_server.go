@@ -9,6 +9,7 @@ import (
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/alarmconfig"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/base"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/comment"
+	"github.com/iot-synergy/synergy-member-rpc/internal/logic/device"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/memberrank"
 	"github.com/iot-synergy/synergy-member-rpc/internal/logic/oauthprovider"
@@ -82,6 +83,11 @@ func (s *MmsServer) AdminGetComment(ctx context.Context, in *mms.CommentIdReq) (
 func (s *MmsServer) AdminGetReplyList(ctx context.Context, in *mms.ReplyReq) (*mms.ReplyList, error) {
 	l := comment.NewAdminGetReplyListLogic(ctx, s.svcCtx)
 	return l.AdminGetReplyList(in)
+}
+
+func (s *MmsServer) ActivatingDeviceVip(ctx context.Context, in *mms.ActivatingDeviceVipReq) (*mms.ActivatingDeviceVipResp, error) {
+	l := device.NewActivatingDeviceVipLogic(ctx, s.svcCtx)
+	return l.ActivatingDeviceVip(in)
 }
 
 // Member management

@@ -8,12 +8,13 @@ import (
 
 type Config struct {
 	zrpc.RpcServerConf
-	DatabaseConf config.DatabaseConf
-	RedisConf    config.RedisConf
-	CoreRpc      zrpc.RpcClientConf
-	FcmRpc       zrpc.RpcClientConf
-	MonDb        MonConfig
-	AddxRpc      zrpc.RpcClientConf
+	DatabaseConf             config.DatabaseConf
+	RedisConf                config.RedisConf
+	CoreRpc                  zrpc.RpcClientConf
+	FcmRpc                   zrpc.RpcClientConf
+	MonDb                    MonConfig
+	AddxRpc                  zrpc.RpcClientConf
+	SynergyActivationCodeRpc zrpc.RpcClientConf
 }
 
 type MonConfig struct {

@@ -43,6 +43,13 @@ FcmRpc:
     - 192.168.10.181:9120
   Enabled: true
   Timeout: 5000
+SynergyActivationCodeRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: activationCode.rpc
+  Enabled: true
+  Timeout: 5000
 
 AddxRpc:
   Endpoints:
