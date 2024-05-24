@@ -100,8 +100,7 @@ github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542 h1:2VTzZjLZBgl62/EtslC
 github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542/go.mod h1:Ow0tF8D4Kplbc8s8sSb3V2oUCygFHVp8gC3Dn6U4MNI=
 github.com/hashicorp/hcl/v2 v2.16.2 h1:mpkHZh/Tv+xet3sy3F9Ld4FyI2tUpWe9x3XtPx9f1a0=
 github.com/hashicorp/hcl/v2 v2.16.2/go.mod h1:JRmR89jycNkrrqnMmvPDMd56n1rQJ2Q6KocSLCMCXng=
-github.com/iot-synergy/synergy-activation-code-rpc v0.0.0 h1:wfNLSNhhb34y4gM+gZx1Dm2N6LdqntWhrhQvLQlYxG8=
-github.com/iot-synergy/synergy-activation-code-rpc v0.0.0/go.mod h1:gG2X3a/cdQiyfZMDX8UcGPkrIeh38Z5HEXmma4DX89U=
+github.com/iot-synergy/synergy-activation-code-rpc v0.0.1 h1:6hKUk7Evbe6g9XKk4akMus36un7LlJzwPGETLaOGDl4=
 github.com/iot-synergy/synergy-activation-code-rpc v0.0.1/go.mod h1:gG2X3a/cdQiyfZMDX8UcGPkrIeh38Z5HEXmma4DX89U=
 github.com/iot-synergy/synergy-addx-proxy v0.1.4 h1:nL523naMG1c2jQFa3viQv/asi1yxNB6/LlY6P6Sf8qk=
 github.com/iot-synergy/synergy-addx-proxy v0.1.4/go.mod h1:P/QMiQHQU5zfvR1eT9jsnslNjtWpWwWuiVyFGrrhYnM=
