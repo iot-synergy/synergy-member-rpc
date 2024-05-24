@@ -31,6 +31,7 @@ const (
 	Mms_AdminGetComment_FullMethodName        = "/mms.Mms/adminGetComment"
 	Mms_AdminGetReplyList_FullMethodName      = "/mms.Mms/adminGetReplyList"
 	Mms_ActivatingDeviceVip_FullMethodName    = "/mms.Mms/activatingDeviceVip"
+	Mms_QueryVipConfig_FullMethodName         = "/mms.Mms/QueryVipConfig"
 	Mms_CreateMember_FullMethodName           = "/mms.Mms/createMember"
 	Mms_RegisterMember_FullMethodName         = "/mms.Mms/registerMember"
 	Mms_UpdateMember_FullMethodName           = "/mms.Mms/updateMember"
@@ -93,6 +94,8 @@ type MmsClient interface {
 	AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
 	// group: device
 	ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error)
+	// group: device
+	QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error)
 	// Member management
 	// group: member
 	CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
@@ -271,6 +274,15 @@ func (c *mmsClient) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ..
 func (c *mmsClient) ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error) {
 	out := new(ActivatingDeviceVipResp)
 	err := c.cc.Invoke(ctx, Mms_ActivatingDeviceVip_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mmsClient) QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error) {
+	out := new(QueryVipConfigResp)
+	err := c.cc.Invoke(ctx, Mms_QueryVipConfig_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -585,6 +597,8 @@ type MmsServer interface {
 	AdminGetReplyList(context.Context, *ReplyReq) (*ReplyList, error)
 	// group: device
 	ActivatingDeviceVip(context.Context, *ActivatingDeviceVipReq) (*ActivatingDeviceVipResp, error)
+	// group: device
+	QueryVipConfig(context.Context, *QueryVipConfigReq) (*QueryVipConfigResp, error)
 	// Member management
 	// group: member
 	CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error)
@@ -693,6 +707,9 @@ func (UnimplementedMmsServer) AdminGetReplyList(context.Context, *ReplyReq) (*Re
 }
 func (UnimplementedMmsServer) ActivatingDeviceVip(context.Context, *ActivatingDeviceVipReq) (*ActivatingDeviceVipResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivatingDeviceVip not implemented")
+}
+func (UnimplementedMmsServer) QueryVipConfig(context.Context, *QueryVipConfigReq) (*QueryVipConfigResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryVipConfig not implemented")
 }
 func (UnimplementedMmsServer) CreateMember(context.Context, *MemberInfo) (*BaseUUIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMember not implemented")
@@ -1012,6 +1029,24 @@ func _Mms_ActivatingDeviceVip_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MmsServer).ActivatingDeviceVip(ctx, req.(*ActivatingDeviceVipReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mms_QueryVipConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVipConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MmsServer).QueryVipConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mms_QueryVipConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MmsServer).QueryVipConfig(ctx, req.(*QueryVipConfigReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1628,6 +1663,10 @@ var Mms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "activatingDeviceVip",
 			Handler:    _Mms_ActivatingDeviceVip_Handler,
+		},
+		{
+			MethodName: "QueryVipConfig",
+			Handler:    _Mms_QueryVipConfig_Handler,
 		},
 		{
 			MethodName: "createMember",

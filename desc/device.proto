@@ -2,8 +2,7 @@ syntax = "proto3";
 
 message ActivatingDeviceVipReq {
   string serialNumber = 1;
-  string productId = 2;
-  string activationCode = 3;
+  string activationCode = 2;
 }
 
 message ActivatingDeviceVipResp {
@@ -12,7 +11,25 @@ message ActivatingDeviceVipResp {
   string data = 3;
 }
 
+message QueryVipConfigReq {
+  string serialNumber = 1;
+}
+
+message QueryVipConfigResp {
+  int64 code = 1;
+  string msg = 2;
+  QueryVipConfigRespData data = 3;
+}
+
+message QueryVipConfigRespData {
+  int32 vipLevel = 1;
+  int64 endTime = 2;
+  string sn = 3;
+}
+
 service Mms {
   // group: device
   rpc activatingDeviceVip (ActivatingDeviceVipReq) returns (ActivatingDeviceVipResp);
+  // group: device
+  rpc QueryVipConfig (QueryVipConfigReq) returns (QueryVipConfigResp);
 }

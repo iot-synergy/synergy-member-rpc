@@ -90,6 +90,11 @@ func (s *MmsServer) ActivatingDeviceVip(ctx context.Context, in *mms.ActivatingD
 	return l.ActivatingDeviceVip(in)
 }
 
+func (s *MmsServer) QueryVipConfig(ctx context.Context, in *mms.QueryVipConfigReq) (*mms.QueryVipConfigResp, error) {
+	l := device.NewQueryVipConfigLogic(ctx, s.svcCtx)
+	return l.QueryVipConfig(in)
+}
+
 // Member management
 func (s *MmsServer) CreateMember(ctx context.Context, in *mms.MemberInfo) (*mms.BaseUUIDResp, error) {
 	l := member.NewCreateMemberLogic(ctx, s.svcCtx)

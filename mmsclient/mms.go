@@ -50,6 +50,9 @@ type (
 	OauthProviderListResp   = mms.OauthProviderListResp
 	OauthRedirectResp       = mms.OauthRedirectResp
 	PageInfoReq             = mms.PageInfoReq
+	QueryVipConfigReq       = mms.QueryVipConfigReq
+	QueryVipConfigResp      = mms.QueryVipConfigResp
+	QueryVipConfigRespData  = mms.QueryVipConfigRespData
 	RegisterMemberResp      = mms.RegisterMemberResp
 	RegisterMemberRespData  = mms.RegisterMemberRespData
 	ReplyInfo               = mms.ReplyInfo
@@ -81,6 +84,7 @@ type (
 		AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
 		AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
 		ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error)
+		QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error)
 		// Member management
 		CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 		RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error)
@@ -188,6 +192,11 @@ func (m *defaultMms) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts .
 func (m *defaultMms) ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.ActivatingDeviceVip(ctx, in, opts...)
+}
+
+func (m *defaultMms) QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error) {
+	client := mms.NewMmsClient(m.cli.Conn())
+	return client.QueryVipConfig(ctx, in, opts...)
 }
 
 // Member management

@@ -27,7 +27,7 @@ func NewActivatingDeviceVipLogic(ctx context.Context, svcCtx *svc.ServiceContext
 func (l *ActivatingDeviceVipLogic) ActivatingDeviceVip(in *mms.ActivatingDeviceVipReq) (*mms.ActivatingDeviceVipResp, error) {
 	data, err := l.svcCtx.SynergyActivationCodeRpc.ActivatingDeviceVip(l.ctx, &activationcoderpcclient.ActivatingDeviceVipReq{
 		SerialNumber:   in.SerialNumber,
-		ProductId:      in.ProductId,
+		ProductId:      "3",
 		ActivationCode: in.ActivationCode,
 	})
 	if err != nil {
