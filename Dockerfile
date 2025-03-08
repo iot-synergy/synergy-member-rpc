@@ -9,9 +9,9 @@ WORKDIR /app
 ENV PROJECT=${PROJECT}
 ENV CONFIG_FILE=${CONFIG_FILE}
 
-COPY ./mms-rpc ./
+COPY ./mms_rpc ./
 COPY ./etc/${CONFIG_FILE} ./etc/
 
 EXPOSE 9103
 
-ENTRYPOINT ./mms-rpc -f etc/${CONFIG_FILE}
+ENTRYPOINT ./mms_rpc -f etc/${CONFIG_FILE}
