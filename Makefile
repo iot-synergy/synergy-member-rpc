@@ -102,10 +102,15 @@ build-mac: # Build project for MacOS | 构建MacOS下的可执行文件
 	@echo "Build project for MacOS successfully"
 
 .PHONY: build-linux
-build-linux: # Build project for Linux | 构建Linux下的可执行文件
+build-linux: clean install # Build project for Linux | 构建Linux下的可执行文件
 	env CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -ldflags "$(LDFLAGS)" -trimpath -o $(SERVICE_STYLE)_$(PROJECT_BUILD_SUFFIX) $(SERVICE_STYLE).go
 	@echo "Build project for Linux successfully"
 
-.PHONY: help
-help: # Show help | 显示帮助
-	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
+.PHONY: clean
+clean:
+	rm -f $(SERVICE_STYLE)_$(PROJECT_BUILD_SUFFIX)
+
+.PHONY: install
+install:
+	git config --global url.git@github.com:.insteadOf https://github.com
+	env GO111MODULE=on GOPRIVATE="github.com/iot-synergy" go mod tidy
