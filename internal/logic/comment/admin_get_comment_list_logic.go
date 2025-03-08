@@ -2,12 +2,13 @@ package comment
 
 import (
 	"context"
+	"time"
+
 	"github.com/iot-synergy/synergy-member-rpc/ent"
 	"github.com/iot-synergy/synergy-member-rpc/ent/comment"
 	"github.com/iot-synergy/synergy-member-rpc/ent/member"
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
 	"github.com/iot-synergy/synergy-member-rpc/types/mms"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -46,7 +47,7 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 		query.Where(comment.CreateTimeGTE(time.UnixMilli(in.GetCommentTime()[0])))
 		query.Where(comment.CreateTimeLTE(time.UnixMilli(in.GetCommentTime()[1])))
 	}
-
+	query.Order(ent.Desc(comment.FieldCreateTime))
 	count := int64(query.CountX(l.ctx))
 	if in.GetPage() <= 0 {
 		*in.Page = 1
@@ -56,6 +57,7 @@ func (l *AdminGetCommentListLogic) AdminGetCommentList(in *mms.CommentListReq) (
 	}
 	query.Limit(int(in.GetPageSize()))
 	query.Offset(int((in.GetPage() - 1) * in.GetPageSize()))
+	//
 
 	all, err := query.All(l.ctx)
 
