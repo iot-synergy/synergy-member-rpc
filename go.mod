@@ -2,6 +2,8 @@ module github.com/iot-synergy/synergy-member-rpc
 
 go 1.22.3
 
+toolchain go1.23.7
+
 replace github.com/zeromicro/go-zero v1.6.5 => github.com/suyuan32/simple-admin-tools v1.6.4
 
 require (

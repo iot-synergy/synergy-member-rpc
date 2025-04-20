@@ -2,6 +2,7 @@ package device
 
 import (
 	"context"
+
 	"github.com/iot-synergy/synergy-activation-code-rpc/activationcoderpcclient"
 
 	"github.com/iot-synergy/synergy-member-rpc/internal/svc"
@@ -25,7 +26,7 @@ func NewActivatingDeviceVipLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *ActivatingDeviceVipLogic) ActivatingDeviceVip(in *mms.ActivatingDeviceVipReq) (*mms.ActivatingDeviceVipResp, error) {
-	data, err := l.svcCtx.SynergyActivationCodeRpc.ActivatingDeviceVip(l.ctx, &activationcoderpcclient.ActivatingDeviceVipReq{
+	data, err := l.svcCtx.AddxRpc.ActivatingDeviceVip(l.ctx, &activationcoderpcclient.ActivatingDeviceVipReq{
 		SerialNumber:   in.SerialNumber,
 		ProductId:      "3",
 		ActivationCode: in.ActivationCode,
