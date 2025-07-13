@@ -1,6 +1,9 @@
 package svc
 
 import (
+	"context"
+
+	"entgo.io/ent/dialect/sql/schema"
 	"github.com/iot-synergy/synergy-addx-proxy/synergy_addx_proxy_client"
 	"github.com/iot-synergy/synergy-fcm/fcm"
 	"github.com/iot-synergy/synergy-member-rpc/ent"
@@ -12,27 +15,32 @@ import (
 )
 
 type ServiceContext struct {
-	Config                   config.Config
-	DB                       *ent.Client
-	Redis                    redis.UniversalClient
-	Fcm                      fcm.Fcm
-	AlarmConfigModel         model.Alarm_configModel
-	AddxRpc                  synergy_addx_proxy_client.SynergyAddxProxy
+	Config           config.Config
+	DB               *ent.Client
+	Redis            redis.UniversalClient
+	Fcm              fcm.Fcm
+	AlarmConfigModel model.Alarm_configModel
+	AddxRpc          synergy_addx_proxy_client.SynergyAddxProxy
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+
 	db := ent.NewClient(
 		ent.Log(logx.Info), // logger
 		ent.Driver(c.DatabaseConf.NewNoCacheDriver()),
 		ent.Debug(), // debug mode
 	)
 
+	if err := db.Schema.Create(context.Background(), schema.WithForeignKeys(false)); err != nil {
+		return nil
+	}
+
 	return &ServiceContext{
-		Config:                   c,
-		DB:                       db,
-		Redis:                    c.RedisConf.MustNewUniversalRedis(),
-		Fcm:                      fcm.NewFcm(zrpc.MustNewClient(c.FcmRpc)),
-		AlarmConfigModel:         model.NewAlarm_configModel(c.MonDb.Url, c.MonDb.DbName, "alarm_config"),
-		AddxRpc:                  synergy_addx_proxy_client.NewSynergyAddxProxy(zrpc.MustNewClient(c.AddxRpc)),
+		Config:           c,
+		DB:               db,
+		Redis:            c.RedisConf.MustNewUniversalRedis(),
+		Fcm:              fcm.NewFcm(zrpc.MustNewClient(c.FcmRpc)),
+		AlarmConfigModel: model.NewAlarm_configModel(c.MonDb.Url, c.MonDb.DbName, "alarm_config"),
+		AddxRpc:          synergy_addx_proxy_client.NewSynergyAddxProxy(zrpc.MustNewClient(c.AddxRpc)),
 	}
 }
