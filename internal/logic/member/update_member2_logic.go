@@ -48,14 +48,14 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.UpdateMembe
 		}, nil
 	}
 
-	//校验昵称的唯一性
-	if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
-		return &mms.UpdateMember2Resp{
-			Code: -1,
-			Msg:  "nickname already exists",
-			Data: false,
-		}, nil
-	}
+	// //校验昵称的唯一性
+	// if l.svcCtx.DB.Member.Query().Where(member.Nickname(in.GetNickname())).CountX(l.ctx) > 0 {
+	// 	return &mms.UpdateMember2Resp{
+	// 		Code: -1,
+	// 		Msg:  "nickname already exists",
+	// 		Data: false,
+	// 	}, nil
+	// }
 
 	query := l.svcCtx.DB.Member.Update().Where(member.ForeinIDEQ(forein_id)).
 		SetNotNilNickname(in.Nickname).
