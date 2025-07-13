@@ -1,7 +1,6 @@
 package svc
 
 import (
-	"github.com/iot-synergy/synergy-activation-code-rpc/activationcoderpcclient"
 	"github.com/iot-synergy/synergy-addx-proxy/synergy_addx_proxy_client"
 	"github.com/iot-synergy/synergy-fcm/fcm"
 	"github.com/iot-synergy/synergy-member-rpc/ent"
@@ -19,7 +18,6 @@ type ServiceContext struct {
 	Fcm                      fcm.Fcm
 	AlarmConfigModel         model.Alarm_configModel
 	AddxRpc                  synergy_addx_proxy_client.SynergyAddxProxy
-	SynergyActivationCodeRpc activationcoderpcclient.Activationcoderpc
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -36,6 +34,5 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Fcm:                      fcm.NewFcm(zrpc.MustNewClient(c.FcmRpc)),
 		AlarmConfigModel:         model.NewAlarm_configModel(c.MonDb.Url, c.MonDb.DbName, "alarm_config"),
 		AddxRpc:                  synergy_addx_proxy_client.NewSynergyAddxProxy(zrpc.MustNewClient(c.AddxRpc)),
-		SynergyActivationCodeRpc: activationcoderpcclient.NewActivationcoderpc(zrpc.MustNewClient(c.SynergyActivationCodeRpc)),
 	}
 }
