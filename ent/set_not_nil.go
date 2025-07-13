@@ -393,6 +393,54 @@ func (m *MemberCreate) SetNotNilEmail(value *string) *MemberCreate {
 }
 
 // set field if value's pointer is not nil.
+func (m *MemberUpdate) SetNotNilGender(value *string) *MemberUpdate {
+	if value != nil {
+		return m.SetGender(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
+func (m *MemberUpdateOne) SetNotNilGender(value *string) *MemberUpdateOne {
+	if value != nil {
+		return m.SetGender(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
+func (m *MemberCreate) SetNotNilGender(value *string) *MemberCreate {
+	if value != nil {
+		return m.SetGender(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
+func (m *MemberUpdate) SetNotNilBirthday(value *string) *MemberUpdate {
+	if value != nil {
+		return m.SetBirthday(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
+func (m *MemberUpdateOne) SetNotNilBirthday(value *string) *MemberUpdateOne {
+	if value != nil {
+		return m.SetBirthday(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
+func (m *MemberCreate) SetNotNilBirthday(value *string) *MemberCreate {
+	if value != nil {
+		return m.SetBirthday(*value)
+	}
+	return m
+}
+
+// set field if value's pointer is not nil.
 func (m *MemberUpdate) SetNotNilAvatar(value *string) *MemberUpdate {
 	if value != nil {
 		return m.SetAvatar(*value)

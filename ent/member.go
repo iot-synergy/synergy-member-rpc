@@ -40,6 +40,10 @@ type Member struct {
 	Mobile string `json:"mobile,omitempty"`
 	// Email | 邮箱号
 	Email string `json:"email,omitempty"`
+	// Gender | 性别
+	Gender string `json:"gender,omitempty"`
+	// Birthday | 生日
+	Birthday string `json:"birthday,omitempty"`
 	// Avatar | 头像路径
 	Avatar string `json:"avatar,omitempty"`
 	// Wechat Open ID | 微信 Open ID
@@ -64,12 +68,10 @@ type MemberEdges struct {
 // RanksOrErr returns the Ranks value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e MemberEdges) RanksOrErr() (*MemberRank, error) {
-	if e.loadedTypes[0] {
-		if e.Ranks == nil {
-			// Edge was loaded but was not found.
-			return nil, &NotFoundError{label: memberrank.Label}
-		}
+	if e.Ranks != nil {
 		return e.Ranks, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: memberrank.Label}
 	}
 	return nil, &NotLoadedError{edge: "ranks"}
 }
@@ -81,7 +83,7 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldStatus, member.FieldRankID:
 			values[i] = new(sql.NullInt64)
-		case member.FieldForeinID, member.FieldUsername, member.FieldPassword, member.FieldNickname, member.FieldMobile, member.FieldEmail, member.FieldAvatar, member.FieldWechatOpenID:
+		case member.FieldForeinID, member.FieldUsername, member.FieldPassword, member.FieldNickname, member.FieldMobile, member.FieldEmail, member.FieldGender, member.FieldBirthday, member.FieldAvatar, member.FieldWechatOpenID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreatedAt, member.FieldUpdatedAt, member.FieldExpiredAt:
 			values[i] = new(sql.NullTime)
@@ -167,6 +169,18 @@ func (m *Member) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
 				m.Email = value.String
+			}
+		case member.FieldGender:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field gender", values[i])
+			} else if value.Valid {
+				m.Gender = value.String
+			}
+		case member.FieldBirthday:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field birthday", values[i])
+			} else if value.Valid {
+				m.Birthday = value.String
 			}
 		case member.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -256,6 +270,12 @@ func (m *Member) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(m.Email)
+	builder.WriteString(", ")
+	builder.WriteString("gender=")
+	builder.WriteString(m.Gender)
+	builder.WriteString(", ")
+	builder.WriteString("birthday=")
+	builder.WriteString(m.Birthday)
 	builder.WriteString(", ")
 	builder.WriteString("avatar=")
 	builder.WriteString(m.Avatar)

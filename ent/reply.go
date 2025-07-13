@@ -52,12 +52,10 @@ type ReplyEdges struct {
 // CommentOrErr returns the Comment value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e ReplyEdges) CommentOrErr() (*Comment, error) {
-	if e.loadedTypes[0] {
-		if e.Comment == nil {
-			// Edge was loaded but was not found.
-			return nil, &NotFoundError{label: comment.Label}
-		}
+	if e.Comment != nil {
 		return e.Comment, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: comment.Label}
 	}
 	return nil, &NotLoadedError{edge: "comment"}
 }

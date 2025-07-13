@@ -898,6 +898,8 @@ type MemberMutation struct {
 	nickname       *string
 	mobile         *string
 	email          *string
+	gender         *string
+	birthday       *string
 	avatar         *string
 	wechat_open_id *string
 	expired_at     *time.Time
@@ -1446,6 +1448,104 @@ func (m *MemberMutation) ResetEmail() {
 	delete(m.clearedFields, member.FieldEmail)
 }
 
+// SetGender sets the "gender" field.
+func (m *MemberMutation) SetGender(s string) {
+	m.gender = &s
+}
+
+// Gender returns the value of the "gender" field in the mutation.
+func (m *MemberMutation) Gender() (r string, exists bool) {
+	v := m.gender
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGender returns the old "gender" field's value of the Member entity.
+// If the Member object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MemberMutation) OldGender(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGender is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGender requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGender: %w", err)
+	}
+	return oldValue.Gender, nil
+}
+
+// ClearGender clears the value of the "gender" field.
+func (m *MemberMutation) ClearGender() {
+	m.gender = nil
+	m.clearedFields[member.FieldGender] = struct{}{}
+}
+
+// GenderCleared returns if the "gender" field was cleared in this mutation.
+func (m *MemberMutation) GenderCleared() bool {
+	_, ok := m.clearedFields[member.FieldGender]
+	return ok
+}
+
+// ResetGender resets all changes to the "gender" field.
+func (m *MemberMutation) ResetGender() {
+	m.gender = nil
+	delete(m.clearedFields, member.FieldGender)
+}
+
+// SetBirthday sets the "birthday" field.
+func (m *MemberMutation) SetBirthday(s string) {
+	m.birthday = &s
+}
+
+// Birthday returns the value of the "birthday" field in the mutation.
+func (m *MemberMutation) Birthday() (r string, exists bool) {
+	v := m.birthday
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBirthday returns the old "birthday" field's value of the Member entity.
+// If the Member object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MemberMutation) OldBirthday(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBirthday is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBirthday requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBirthday: %w", err)
+	}
+	return oldValue.Birthday, nil
+}
+
+// ClearBirthday clears the value of the "birthday" field.
+func (m *MemberMutation) ClearBirthday() {
+	m.birthday = nil
+	m.clearedFields[member.FieldBirthday] = struct{}{}
+}
+
+// BirthdayCleared returns if the "birthday" field was cleared in this mutation.
+func (m *MemberMutation) BirthdayCleared() bool {
+	_, ok := m.clearedFields[member.FieldBirthday]
+	return ok
+}
+
+// ResetBirthday resets all changes to the "birthday" field.
+func (m *MemberMutation) ResetBirthday() {
+	m.birthday = nil
+	delete(m.clearedFields, member.FieldBirthday)
+}
+
 // SetAvatar sets the "avatar" field.
 func (m *MemberMutation) SetAvatar(s string) {
 	m.avatar = &s
@@ -1667,7 +1767,7 @@ func (m *MemberMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MemberMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 15)
 	if m.created_at != nil {
 		fields = append(fields, member.FieldCreatedAt)
 	}
@@ -1697,6 +1797,12 @@ func (m *MemberMutation) Fields() []string {
 	}
 	if m.email != nil {
 		fields = append(fields, member.FieldEmail)
+	}
+	if m.gender != nil {
+		fields = append(fields, member.FieldGender)
+	}
+	if m.birthday != nil {
+		fields = append(fields, member.FieldBirthday)
 	}
 	if m.avatar != nil {
 		fields = append(fields, member.FieldAvatar)
@@ -1735,6 +1841,10 @@ func (m *MemberMutation) Field(name string) (ent.Value, bool) {
 		return m.Mobile()
 	case member.FieldEmail:
 		return m.Email()
+	case member.FieldGender:
+		return m.Gender()
+	case member.FieldBirthday:
+		return m.Birthday()
 	case member.FieldAvatar:
 		return m.Avatar()
 	case member.FieldWechatOpenID:
@@ -1770,6 +1880,10 @@ func (m *MemberMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldMobile(ctx)
 	case member.FieldEmail:
 		return m.OldEmail(ctx)
+	case member.FieldGender:
+		return m.OldGender(ctx)
+	case member.FieldBirthday:
+		return m.OldBirthday(ctx)
 	case member.FieldAvatar:
 		return m.OldAvatar(ctx)
 	case member.FieldWechatOpenID:
@@ -1855,6 +1969,20 @@ func (m *MemberMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetEmail(v)
 		return nil
+	case member.FieldGender:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGender(v)
+		return nil
+	case member.FieldBirthday:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBirthday(v)
+		return nil
 	case member.FieldAvatar:
 		v, ok := value.(string)
 		if !ok {
@@ -1933,6 +2061,12 @@ func (m *MemberMutation) ClearedFields() []string {
 	if m.FieldCleared(member.FieldEmail) {
 		fields = append(fields, member.FieldEmail)
 	}
+	if m.FieldCleared(member.FieldGender) {
+		fields = append(fields, member.FieldGender)
+	}
+	if m.FieldCleared(member.FieldBirthday) {
+		fields = append(fields, member.FieldBirthday)
+	}
 	if m.FieldCleared(member.FieldAvatar) {
 		fields = append(fields, member.FieldAvatar)
 	}
@@ -1967,6 +2101,12 @@ func (m *MemberMutation) ClearField(name string) error {
 		return nil
 	case member.FieldEmail:
 		m.ClearEmail()
+		return nil
+	case member.FieldGender:
+		m.ClearGender()
+		return nil
+	case member.FieldBirthday:
+		m.ClearBirthday()
 		return nil
 	case member.FieldAvatar:
 		m.ClearAvatar()
@@ -2014,6 +2154,12 @@ func (m *MemberMutation) ResetField(name string) error {
 		return nil
 	case member.FieldEmail:
 		m.ResetEmail()
+		return nil
+	case member.FieldGender:
+		m.ResetGender()
+		return nil
+	case member.FieldBirthday:
+		m.ResetBirthday()
 		return nil
 	case member.FieldAvatar:
 		m.ResetAvatar()

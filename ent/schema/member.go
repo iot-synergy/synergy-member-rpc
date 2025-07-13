@@ -42,6 +42,12 @@ func (Member) Fields() []ent.Field {
 		field.String("email").Optional().
 			Comment("Email | 邮箱号").
 			Annotations(entsql.WithComments(true)),
+		field.String("gender").Optional().
+			Comment("Gender | 性别").
+			Annotations(entsql.WithComments(true)),
+		field.String("birthday").Optional().
+			Comment("Birthday | 生日").
+			Annotations(entsql.WithComments(true)),
 		field.String("avatar").
 			SchemaType(map[string]string{dialect.MySQL: "varchar(512)"}).
 			Optional().

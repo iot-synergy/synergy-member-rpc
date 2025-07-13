@@ -61,7 +61,9 @@ func (l *UpdateMember2Logic) UpdateMember2(in *mms.MemberInfo) (*mms.UpdateMembe
 		SetNotNilNickname(in.Nickname).
 		SetNotNilAvatar(in.Avatar).
 		SetNotNilMobile(in.Mobile).
-		SetNotNilEmail(in.Email)
+		SetNotNilEmail(in.Email).
+		SetNotNilGender(in.Gender).
+		SetNotNilBirthday(in.Birthday)
 
 	err := query.Exec(l.ctx)
 

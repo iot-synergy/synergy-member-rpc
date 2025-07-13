@@ -35,6 +35,10 @@ const (
 	FieldMobile = "mobile"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldGender holds the string denoting the gender field in the database.
+	FieldGender = "gender"
+	// FieldBirthday holds the string denoting the birthday field in the database.
+	FieldBirthday = "birthday"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldWechatOpenID holds the string denoting the wechat_open_id field in the database.
@@ -67,6 +71,8 @@ var Columns = []string{
 	FieldRankID,
 	FieldMobile,
 	FieldEmail,
+	FieldGender,
+	FieldBirthday,
 	FieldAvatar,
 	FieldWechatOpenID,
 	FieldExpiredAt,
@@ -157,6 +163,16 @@ func ByMobile(opts ...sql.OrderTermOption) OrderOption {
 // ByEmail orders the results by the email field.
 func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByGender orders the results by the gender field.
+func ByGender(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGender, opts...).ToFunc()
+}
+
+// ByBirthday orders the results by the birthday field.
+func ByBirthday(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBirthday, opts...).ToFunc()
 }
 
 // ByAvatar orders the results by the avatar field.

@@ -106,6 +106,16 @@ func Email(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldEmail, v))
 }
 
+// Gender applies equality check predicate on the "gender" field. It's identical to GenderEQ.
+func Gender(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldGender, v))
+}
+
+// Birthday applies equality check predicate on the "birthday" field. It's identical to BirthdayEQ.
+func Birthday(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldBirthday, v))
+}
+
 // Avatar applies equality check predicate on the "avatar" field. It's identical to AvatarEQ.
 func Avatar(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldAvatar, v))
@@ -689,6 +699,156 @@ func EmailEqualFold(v string) predicate.Member {
 // EmailContainsFold applies the ContainsFold predicate on the "email" field.
 func EmailContainsFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldContainsFold(FieldEmail, v))
+}
+
+// GenderEQ applies the EQ predicate on the "gender" field.
+func GenderEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldGender, v))
+}
+
+// GenderNEQ applies the NEQ predicate on the "gender" field.
+func GenderNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldGender, v))
+}
+
+// GenderIn applies the In predicate on the "gender" field.
+func GenderIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldGender, vs...))
+}
+
+// GenderNotIn applies the NotIn predicate on the "gender" field.
+func GenderNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldGender, vs...))
+}
+
+// GenderGT applies the GT predicate on the "gender" field.
+func GenderGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldGender, v))
+}
+
+// GenderGTE applies the GTE predicate on the "gender" field.
+func GenderGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldGender, v))
+}
+
+// GenderLT applies the LT predicate on the "gender" field.
+func GenderLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldGender, v))
+}
+
+// GenderLTE applies the LTE predicate on the "gender" field.
+func GenderLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldGender, v))
+}
+
+// GenderContains applies the Contains predicate on the "gender" field.
+func GenderContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldGender, v))
+}
+
+// GenderHasPrefix applies the HasPrefix predicate on the "gender" field.
+func GenderHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldGender, v))
+}
+
+// GenderHasSuffix applies the HasSuffix predicate on the "gender" field.
+func GenderHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldGender, v))
+}
+
+// GenderIsNil applies the IsNil predicate on the "gender" field.
+func GenderIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldGender))
+}
+
+// GenderNotNil applies the NotNil predicate on the "gender" field.
+func GenderNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldGender))
+}
+
+// GenderEqualFold applies the EqualFold predicate on the "gender" field.
+func GenderEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldGender, v))
+}
+
+// GenderContainsFold applies the ContainsFold predicate on the "gender" field.
+func GenderContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldGender, v))
+}
+
+// BirthdayEQ applies the EQ predicate on the "birthday" field.
+func BirthdayEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldBirthday, v))
+}
+
+// BirthdayNEQ applies the NEQ predicate on the "birthday" field.
+func BirthdayNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldBirthday, v))
+}
+
+// BirthdayIn applies the In predicate on the "birthday" field.
+func BirthdayIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldBirthday, vs...))
+}
+
+// BirthdayNotIn applies the NotIn predicate on the "birthday" field.
+func BirthdayNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldBirthday, vs...))
+}
+
+// BirthdayGT applies the GT predicate on the "birthday" field.
+func BirthdayGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldBirthday, v))
+}
+
+// BirthdayGTE applies the GTE predicate on the "birthday" field.
+func BirthdayGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldBirthday, v))
+}
+
+// BirthdayLT applies the LT predicate on the "birthday" field.
+func BirthdayLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldBirthday, v))
+}
+
+// BirthdayLTE applies the LTE predicate on the "birthday" field.
+func BirthdayLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldBirthday, v))
+}
+
+// BirthdayContains applies the Contains predicate on the "birthday" field.
+func BirthdayContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldBirthday, v))
+}
+
+// BirthdayHasPrefix applies the HasPrefix predicate on the "birthday" field.
+func BirthdayHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldBirthday, v))
+}
+
+// BirthdayHasSuffix applies the HasSuffix predicate on the "birthday" field.
+func BirthdayHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldBirthday, v))
+}
+
+// BirthdayIsNil applies the IsNil predicate on the "birthday" field.
+func BirthdayIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldBirthday))
+}
+
+// BirthdayNotNil applies the NotNil predicate on the "birthday" field.
+func BirthdayNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldBirthday))
+}
+
+// BirthdayEqualFold applies the EqualFold predicate on the "birthday" field.
+func BirthdayEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldBirthday, v))
+}
+
+// BirthdayContainsFold applies the ContainsFold predicate on the "birthday" field.
+func BirthdayContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldBirthday, v))
 }
 
 // AvatarEQ applies the EQ predicate on the "avatar" field.

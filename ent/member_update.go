@@ -178,6 +178,46 @@ func (mu *MemberUpdate) ClearEmail() *MemberUpdate {
 	return mu
 }
 
+// SetGender sets the "gender" field.
+func (mu *MemberUpdate) SetGender(s string) *MemberUpdate {
+	mu.mutation.SetGender(s)
+	return mu
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableGender(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetGender(*s)
+	}
+	return mu
+}
+
+// ClearGender clears the value of the "gender" field.
+func (mu *MemberUpdate) ClearGender() *MemberUpdate {
+	mu.mutation.ClearGender()
+	return mu
+}
+
+// SetBirthday sets the "birthday" field.
+func (mu *MemberUpdate) SetBirthday(s string) *MemberUpdate {
+	mu.mutation.SetBirthday(s)
+	return mu
+}
+
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableBirthday(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetBirthday(*s)
+	}
+	return mu
+}
+
+// ClearBirthday clears the value of the "birthday" field.
+func (mu *MemberUpdate) ClearBirthday() *MemberUpdate {
+	mu.mutation.ClearBirthday()
+	return mu
+}
+
 // SetAvatar sets the "avatar" field.
 func (mu *MemberUpdate) SetAvatar(s string) *MemberUpdate {
 	mu.mutation.SetAvatar(s)
@@ -348,6 +388,18 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if mu.mutation.EmailCleared() {
 		_spec.ClearField(member.FieldEmail, field.TypeString)
+	}
+	if value, ok := mu.mutation.Gender(); ok {
+		_spec.SetField(member.FieldGender, field.TypeString, value)
+	}
+	if mu.mutation.GenderCleared() {
+		_spec.ClearField(member.FieldGender, field.TypeString)
+	}
+	if value, ok := mu.mutation.Birthday(); ok {
+		_spec.SetField(member.FieldBirthday, field.TypeString, value)
+	}
+	if mu.mutation.BirthdayCleared() {
+		_spec.ClearField(member.FieldBirthday, field.TypeString)
 	}
 	if value, ok := mu.mutation.Avatar(); ok {
 		_spec.SetField(member.FieldAvatar, field.TypeString, value)
@@ -565,6 +617,46 @@ func (muo *MemberUpdateOne) ClearEmail() *MemberUpdateOne {
 	return muo
 }
 
+// SetGender sets the "gender" field.
+func (muo *MemberUpdateOne) SetGender(s string) *MemberUpdateOne {
+	muo.mutation.SetGender(s)
+	return muo
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableGender(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetGender(*s)
+	}
+	return muo
+}
+
+// ClearGender clears the value of the "gender" field.
+func (muo *MemberUpdateOne) ClearGender() *MemberUpdateOne {
+	muo.mutation.ClearGender()
+	return muo
+}
+
+// SetBirthday sets the "birthday" field.
+func (muo *MemberUpdateOne) SetBirthday(s string) *MemberUpdateOne {
+	muo.mutation.SetBirthday(s)
+	return muo
+}
+
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableBirthday(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetBirthday(*s)
+	}
+	return muo
+}
+
+// ClearBirthday clears the value of the "birthday" field.
+func (muo *MemberUpdateOne) ClearBirthday() *MemberUpdateOne {
+	muo.mutation.ClearBirthday()
+	return muo
+}
+
 // SetAvatar sets the "avatar" field.
 func (muo *MemberUpdateOne) SetAvatar(s string) *MemberUpdateOne {
 	muo.mutation.SetAvatar(s)
@@ -765,6 +857,18 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	}
 	if muo.mutation.EmailCleared() {
 		_spec.ClearField(member.FieldEmail, field.TypeString)
+	}
+	if value, ok := muo.mutation.Gender(); ok {
+		_spec.SetField(member.FieldGender, field.TypeString, value)
+	}
+	if muo.mutation.GenderCleared() {
+		_spec.ClearField(member.FieldGender, field.TypeString)
+	}
+	if value, ok := muo.mutation.Birthday(); ok {
+		_spec.SetField(member.FieldBirthday, field.TypeString, value)
+	}
+	if muo.mutation.BirthdayCleared() {
+		_spec.ClearField(member.FieldBirthday, field.TypeString)
 	}
 	if value, ok := muo.mutation.Avatar(); ok {
 		_spec.SetField(member.FieldAvatar, field.TypeString, value)

@@ -18,6 +18,8 @@ message MemberInfo {
   optional string rank_code = 13;
   optional int64 expired_at = 14;
   optional string forein_id = 15;
+  optional string gender = 16;
+  optional string birthday = 17;
 }
 
 message MemberListResp {

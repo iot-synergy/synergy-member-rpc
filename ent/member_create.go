@@ -130,6 +130,34 @@ func (mc *MemberCreate) SetNillableEmail(s *string) *MemberCreate {
 	return mc
 }
 
+// SetGender sets the "gender" field.
+func (mc *MemberCreate) SetGender(s string) *MemberCreate {
+	mc.mutation.SetGender(s)
+	return mc
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableGender(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetGender(*s)
+	}
+	return mc
+}
+
+// SetBirthday sets the "birthday" field.
+func (mc *MemberCreate) SetBirthday(s string) *MemberCreate {
+	mc.mutation.SetBirthday(s)
+	return mc
+}
+
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBirthday(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetBirthday(*s)
+	}
+	return mc
+}
+
 // SetAvatar sets the "avatar" field.
 func (mc *MemberCreate) SetAvatar(s string) *MemberCreate {
 	mc.mutation.SetAvatar(s)
@@ -360,6 +388,14 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.Email(); ok {
 		_spec.SetField(member.FieldEmail, field.TypeString, value)
 		_node.Email = value
+	}
+	if value, ok := mc.mutation.Gender(); ok {
+		_spec.SetField(member.FieldGender, field.TypeString, value)
+		_node.Gender = value
+	}
+	if value, ok := mc.mutation.Birthday(); ok {
+		_spec.SetField(member.FieldBirthday, field.TypeString, value)
+		_node.Birthday = value
 	}
 	if value, ok := mc.mutation.Avatar(); ok {
 		_spec.SetField(member.FieldAvatar, field.TypeString, value)

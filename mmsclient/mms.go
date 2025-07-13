@@ -13,62 +13,57 @@ import (
 )
 
 type (
-	ActivatingDeviceVipReq  = mms.ActivatingDeviceVipReq
-	ActivatingDeviceVipResp = mms.ActivatingDeviceVipResp
-	AlarmConfigInit         = mms.AlarmConfigInit
-	AlarmConfigResp         = mms.AlarmConfigResp
-	BaseIDResp              = mms.BaseIDResp
-	BaseResp                = mms.BaseResp
-	BaseUUIDResp            = mms.BaseUUIDResp
-	CallbackReq             = mms.CallbackReq
-	CommentIdReq            = mms.CommentIdReq
-	CommentInfo             = mms.CommentInfo
-	CommentInfoResp         = mms.CommentInfoResp
-	CommentList             = mms.CommentList
-	CommentListData         = mms.CommentListData
-	CommentListReq          = mms.CommentListReq
-	CommentListResp         = mms.CommentListResp
-	Empty                   = mms.Empty
-	EmptyResp               = mms.EmptyResp
-	FindAlarmConfigReq      = mms.FindAlarmConfigReq
-	IDReq                   = mms.IDReq
-	IDsReq                  = mms.IDsReq
-	MemberCommentResp       = mms.MemberCommentResp
-	MemberInfo              = mms.MemberInfo
-	MemberInfoResp          = mms.MemberInfoResp
-	MemberInfoRespData      = mms.MemberInfoRespData
-	MemberListReq           = mms.MemberListReq
-	MemberListResp          = mms.MemberListResp
-	MemberLoginResp         = mms.MemberLoginResp
-	MemberRankInfo          = mms.MemberRankInfo
-	MemberRankListReq       = mms.MemberRankListReq
-	MemberRankListResp      = mms.MemberRankListResp
-	MemberRegisterReq       = mms.MemberRegisterReq
-	OauthLoginReq           = mms.OauthLoginReq
-	OauthProviderInfo       = mms.OauthProviderInfo
-	OauthProviderListReq    = mms.OauthProviderListReq
-	OauthProviderListResp   = mms.OauthProviderListResp
-	OauthRedirectResp       = mms.OauthRedirectResp
-	PageInfoReq             = mms.PageInfoReq
-	QueryVipConfigReq       = mms.QueryVipConfigReq
-	QueryVipConfigResp      = mms.QueryVipConfigResp
-	QueryVipConfigRespData  = mms.QueryVipConfigRespData
-	RegisterMemberResp      = mms.RegisterMemberResp
-	RegisterMemberRespData  = mms.RegisterMemberRespData
-	ReplyInfo               = mms.ReplyInfo
-	ReplyList               = mms.ReplyList
-	ReplyReq                = mms.ReplyReq
-	SendAlarmReq            = mms.SendAlarmReq
-	SetAlarmConfigReq       = mms.SetAlarmConfigReq
-	SyncMemberReq           = mms.SyncMemberReq
-	SyncMemberResp          = mms.SyncMemberResp
-	TokenInfo               = mms.TokenInfo
-	TokenListReq            = mms.TokenListReq
-	TokenListResp           = mms.TokenListResp
-	UUIDReq                 = mms.UUIDReq
-	UUIDsReq                = mms.UUIDsReq
-	UpdateMember2Resp       = mms.UpdateMember2Resp
-	UsernameReq             = mms.UsernameReq
+	AlarmConfigInit        = mms.AlarmConfigInit
+	AlarmConfigResp        = mms.AlarmConfigResp
+	BaseIDResp             = mms.BaseIDResp
+	BaseResp               = mms.BaseResp
+	BaseUUIDResp           = mms.BaseUUIDResp
+	CallbackReq            = mms.CallbackReq
+	CommentIdReq           = mms.CommentIdReq
+	CommentInfo            = mms.CommentInfo
+	CommentInfoResp        = mms.CommentInfoResp
+	CommentList            = mms.CommentList
+	CommentListData        = mms.CommentListData
+	CommentListReq         = mms.CommentListReq
+	CommentListResp        = mms.CommentListResp
+	Empty                  = mms.Empty
+	EmptyResp              = mms.EmptyResp
+	FindAlarmConfigReq     = mms.FindAlarmConfigReq
+	IDReq                  = mms.IDReq
+	IDsReq                 = mms.IDsReq
+	MemberCommentResp      = mms.MemberCommentResp
+	MemberInfo             = mms.MemberInfo
+	MemberInfoResp         = mms.MemberInfoResp
+	MemberInfoRespData     = mms.MemberInfoRespData
+	MemberListReq          = mms.MemberListReq
+	MemberListResp         = mms.MemberListResp
+	MemberLoginResp        = mms.MemberLoginResp
+	MemberRankInfo         = mms.MemberRankInfo
+	MemberRankListReq      = mms.MemberRankListReq
+	MemberRankListResp     = mms.MemberRankListResp
+	MemberRegisterReq      = mms.MemberRegisterReq
+	OauthLoginReq          = mms.OauthLoginReq
+	OauthProviderInfo      = mms.OauthProviderInfo
+	OauthProviderListReq   = mms.OauthProviderListReq
+	OauthProviderListResp  = mms.OauthProviderListResp
+	OauthRedirectResp      = mms.OauthRedirectResp
+	PageInfoReq            = mms.PageInfoReq
+	RegisterMemberResp     = mms.RegisterMemberResp
+	RegisterMemberRespData = mms.RegisterMemberRespData
+	ReplyInfo              = mms.ReplyInfo
+	ReplyList              = mms.ReplyList
+	ReplyReq               = mms.ReplyReq
+	SendAlarmReq           = mms.SendAlarmReq
+	SetAlarmConfigReq      = mms.SetAlarmConfigReq
+	SyncMemberReq          = mms.SyncMemberReq
+	SyncMemberResp         = mms.SyncMemberResp
+	TokenInfo              = mms.TokenInfo
+	TokenListReq           = mms.TokenListReq
+	TokenListResp          = mms.TokenListResp
+	UUIDReq                = mms.UUIDReq
+	UUIDsReq               = mms.UUIDsReq
+	UpdateMember2Resp      = mms.UpdateMember2Resp
+	UsernameReq            = mms.UsernameReq
 
 	Mms interface {
 		// Member management
@@ -83,8 +78,6 @@ type (
 		AdminGetCommentList(ctx context.Context, in *CommentListReq, opts ...grpc.CallOption) (*CommentList, error)
 		AdminGetComment(ctx context.Context, in *CommentIdReq, opts ...grpc.CallOption) (*CommentInfo, error)
 		AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error)
-		ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error)
-		QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error)
 		// Member management
 		CreateMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 		RegisterMember(ctx context.Context, in *MemberInfo, opts ...grpc.CallOption) (*RegisterMemberResp, error)
@@ -187,16 +180,6 @@ func (m *defaultMms) AdminGetComment(ctx context.Context, in *CommentIdReq, opts
 func (m *defaultMms) AdminGetReplyList(ctx context.Context, in *ReplyReq, opts ...grpc.CallOption) (*ReplyList, error) {
 	client := mms.NewMmsClient(m.cli.Conn())
 	return client.AdminGetReplyList(ctx, in, opts...)
-}
-
-func (m *defaultMms) ActivatingDeviceVip(ctx context.Context, in *ActivatingDeviceVipReq, opts ...grpc.CallOption) (*ActivatingDeviceVipResp, error) {
-	client := mms.NewMmsClient(m.cli.Conn())
-	return client.ActivatingDeviceVip(ctx, in, opts...)
-}
-
-func (m *defaultMms) QueryVipConfig(ctx context.Context, in *QueryVipConfigReq, opts ...grpc.CallOption) (*QueryVipConfigResp, error) {
-	client := mms.NewMmsClient(m.cli.Conn())
-	return client.QueryVipConfig(ctx, in, opts...)
 }
 
 // Member management

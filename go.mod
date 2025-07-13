@@ -10,7 +10,7 @@ require (
 	entgo.io/ent v0.13.1
 	github.com/gofrs/uuid/v5 v5.0.0
 	github.com/iot-synergy/synergy-activation-code-rpc v0.0.1
-	github.com/iot-synergy/synergy-addx-proxy v0.1.4
+	github.com/iot-synergy/synergy-addx-proxy v0.1.6
 	github.com/iot-synergy/synergy-common v1.3.3
 	github.com/iot-synergy/synergy-fcm v1.0.1
 	github.com/redis/go-redis/v9 v9.5.1

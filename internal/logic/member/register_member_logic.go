@@ -67,7 +67,9 @@ func (l *RegisterMemberLogic) RegisterMember(in *mms.MemberInfo) (*mms.RegisterM
 		SetNotNilEmail(in.Email).
 		SetNotNilAvatar(in.Avatar).
 		SetNotNilWechatOpenID(in.WechatId).
-		SetNotNilExpiredAt(pointy.GetTimeMilliPointer(in.ExpiredAt))
+		SetNotNilExpiredAt(pointy.GetTimeMilliPointer(in.ExpiredAt)).
+		SetNotNilGender(in.Gender).
+		SetNotNilBirthday(in.Birthday)
 
 	if in.Nickname == nil || *in.Nickname == "" {
 		v1, _ := uuid.NewV1()
