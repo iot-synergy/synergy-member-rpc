@@ -1,9 +1,6 @@
 package svc
 
 import (
-	"context"
-
-	"entgo.io/ent/dialect/sql/schema"
 	"github.com/iot-synergy/synergy-addx-proxy/synergy_addx_proxy_client"
 	"github.com/iot-synergy/synergy-fcm/fcm"
 	"github.com/iot-synergy/synergy-member-rpc/ent"
@@ -30,10 +27,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		ent.Driver(c.DatabaseConf.NewNoCacheDriver()),
 		ent.Debug(), // debug mode
 	)
-
-	if err := db.Schema.Create(context.Background(), schema.WithForeignKeys(false)); err != nil {
-		return nil
-	}
 
 	return &ServiceContext{
 		Config:           c,
